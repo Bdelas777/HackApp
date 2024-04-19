@@ -12,6 +12,7 @@
 		F8B0CACA2BC6F22F00CB8497 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */; };
 		F8B0CACD2BC6F22F00CB8497 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8B0CACC2BC6F22F00CB8497 /* Preview Assets.xcassets */; };
 		F8C2E1B12BD0456E00B470F0 /* HomeViewAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B02BD0456E00B470F0 /* HomeViewAdmin.swift */; };
+		F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F8B0CACC2BC6F22F00CB8497 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F8C2E1B02BD0456E00B470F0 /* HomeViewAdmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewAdmin.swift; sourceTree = "<group>"; };
+		F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewButtonStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 				F8B0CAC52BC6F22D00CB8497 /* HackAppApp.swift */,
 				F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */,
 				F8C2E1B02BD0456E00B470F0 /* HomeViewAdmin.swift */,
+				F8C2E1B22BD2D91D00B470F0 /* SupportingElements */,
 				F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */,
 				F8B0CACB2BC6F22F00CB8497 /* Preview Content */,
 			);
@@ -68,6 +71,14 @@
 				F8B0CACC2BC6F22F00CB8497 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F8C2E1B22BD2D91D00B470F0 /* SupportingElements */ = {
+			isa = PBXGroup;
+			children = (
+				F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */,
+			);
+			path = SupportingElements;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8B0CAC82BC6F22D00CB8497 /* ContentView.swift in Sources */,
+				F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */,
 				F8C2E1B12BD0456E00B470F0 /* HomeViewAdmin.swift in Sources */,
 				F8B0CAC62BC6F22D00CB8497 /* HackAppApp.swift in Sources */,
 			);
