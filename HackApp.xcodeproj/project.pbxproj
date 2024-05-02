@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F81F3FDA2BE2EFE2007927D7 /* JudgeHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */; };
 		F8B0CAC62BC6F22D00CB8497 /* HackAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B0CAC52BC6F22D00CB8497 /* HackAppApp.swift */; };
 		F8B0CAC82BC6F22D00CB8497 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */; };
 		F8B0CACA2BC6F22F00CB8497 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */; };
@@ -16,12 +17,13 @@
 		F8BD95702BE07131002E496B /* Rubro.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD956F2BE07131002E496B /* Rubro.swift */; };
 		F8BD95722BE0713B002E496B /* Hack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD95712BE0713B002E496B /* Hack.swift */; };
 		F8BD95742BE0717F002E496B /* Evaluacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD95732BE0717F002E496B /* Evaluacion.swift */; };
-		F8C2E1B12BD0456E00B470F0 /* HomeViewAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B02BD0456E00B470F0 /* HomeViewAdmin.swift */; };
+		F8C2E1B12BD0456E00B470F0 /* HomeAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */; };
 		F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */; };
-		F8C2E1B62BD962F800B470F0 /* TeamViewAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B52BD962F800B470F0 /* TeamViewAdmin.swift */; };
+		F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeHomeView.swift; sourceTree = "<group>"; };
 		F8B0CAC22BC6F22D00CB8497 /* HackApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B0CAC52BC6F22D00CB8497 /* HackAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackAppApp.swift; sourceTree = "<group>"; };
 		F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -32,9 +34,9 @@
 		F8BD956F2BE07131002E496B /* Rubro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rubro.swift; sourceTree = "<group>"; };
 		F8BD95712BE0713B002E496B /* Hack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hack.swift; sourceTree = "<group>"; };
 		F8BD95732BE0717F002E496B /* Evaluacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evaluacion.swift; sourceTree = "<group>"; };
-		F8C2E1B02BD0456E00B470F0 /* HomeViewAdmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewAdmin.swift; sourceTree = "<group>"; };
+		F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAdminView.swift; sourceTree = "<group>"; };
 		F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewButtonStyle.swift; sourceTree = "<group>"; };
-		F8C2E1B52BD962F800B470F0 /* TeamViewAdmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamViewAdmin.swift; sourceTree = "<group>"; };
+		F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAdminView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +72,9 @@
 				F8B0CAC52BC6F22D00CB8497 /* HackAppApp.swift */,
 				F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */,
 				F8BD956A2BE070A3002E496B /* Model */,
-				F8C2E1B02BD0456E00B470F0 /* HomeViewAdmin.swift */,
-				F8C2E1B52BD962F800B470F0 /* TeamViewAdmin.swift */,
+				F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */,
+				F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */,
+				F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */,
 				F8C2E1B22BD2D91D00B470F0 /* SupportingElements */,
 				F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */,
 				F8B0CACB2BC6F22F00CB8497 /* Preview Content */,
@@ -183,8 +186,9 @@
 				F8BD956C2BE070B7002E496B /* Equipo.swift in Sources */,
 				F8BD956E2BE0711C002E496B /* Juez.swift in Sources */,
 				F8BD95722BE0713B002E496B /* Hack.swift in Sources */,
-				F8C2E1B62BD962F800B470F0 /* TeamViewAdmin.swift in Sources */,
-				F8C2E1B12BD0456E00B470F0 /* HomeViewAdmin.swift in Sources */,
+				F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */,
+				F8C2E1B12BD0456E00B470F0 /* HomeAdminView.swift in Sources */,
+				F81F3FDA2BE2EFE2007927D7 /* JudgeHomeView.swift in Sources */,
 				F8BD95742BE0717F002E496B /* Evaluacion.swift in Sources */,
 				F8B0CAC62BC6F22D00CB8497 /* HackAppApp.swift in Sources */,
 			);
