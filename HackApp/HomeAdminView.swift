@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeAdminView: View {
-    let dummyData = ["Elemento 1", "Elemento 2", "Elemento 3", "Elemento 4", "Elemento 5", "Elemento 6","Elemento 7", "Elemento 8", "Elemento 9" ]
+    let dummyData = ["Hack 1", "Hack 2", "Hack 3", "Hack 4", "Hack 5", "Hack 6","Hack 7", "Hack 8", "Hack 9" ]
     var body: some View {
         NavigationStack{
             GeometryReader{ geo in

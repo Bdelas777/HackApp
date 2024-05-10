@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F81F3FDA2BE2EFE2007927D7 /* JudgeHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */; };
+		F81F3FDC2BE420C6007927D7 /* RateJudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81F3FDB2BE420C6007927D7 /* RateJudgeView.swift */; };
 		F8B0CAC62BC6F22D00CB8497 /* HackAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B0CAC52BC6F22D00CB8497 /* HackAppApp.swift */; };
 		F8B0CAC82BC6F22D00CB8497 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */; };
 		F8B0CACA2BC6F22F00CB8497 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeHomeView.swift; sourceTree = "<group>"; };
+		F81F3FDB2BE420C6007927D7 /* RateJudgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateJudgeView.swift; sourceTree = "<group>"; };
 		F8B0CAC22BC6F22D00CB8497 /* HackApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B0CAC52BC6F22D00CB8497 /* HackAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackAppApp.swift; sourceTree = "<group>"; };
 		F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				F8BD956A2BE070A3002E496B /* Model */,
 				F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */,
 				F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */,
+				F81F3FDB2BE420C6007927D7 /* RateJudgeView.swift */,
 				F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */,
 				F8C2E1B22BD2D91D00B470F0 /* SupportingElements */,
 				F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */,
@@ -180,6 +183,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F81F3FDC2BE420C6007927D7 /* RateJudgeView.swift in Sources */,
 				F8BD95702BE07131002E496B /* Rubro.swift in Sources */,
 				F8B0CAC82BC6F22D00CB8497 /* ContentView.swift in Sources */,
 				F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */,

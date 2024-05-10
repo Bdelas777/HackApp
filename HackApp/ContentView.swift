@@ -26,75 +26,80 @@ struct ContentView: View {
         .init(title: "Lifetime", revenue: 0.1)
     ]
     
-    let dummyData = ["Elemento 1", "Elemento 2", "Elemento 3", "Elemento 4", "Elemento 5", "Elemento 6","Elemento 7", "Elemento 8", "Elemento 9" ]
+    let dummyData = ["Equipo 1", "Equipo 2", "Equipo 3", "Equipo 4", "Equipo 5", "Equipo 6","Equipo 7", "Equipo 8", "Equipo 9" ]
     var body: some View {
-        GeometryReader{ geo in
-            HStack(spacing: 0) {
-                // Right Part
-                VStack {
-                    List{
-                        ForEach(dummyData, id: \.self){data in
-                            Text(data)
-                                .font(.headline)
-                                .padding()
+        NavigationStack{
+            GeometryReader{ geo in
+                HStack(spacing: 0) {
+                    // Right Part
+                    VStack {
+                        List{
+                            ForEach(dummyData, id: \.self){data in
+                                NavigationLink(destination: TeamAdminView()){
+                                    Text(data)
+                                        .font(.title2)
+                                        .padding()
+                                }
+
+                            }
+                            .padding()
+                        }
+                        .frame(width: geo.size.width / 2)
+                        //.background(Color.red)
+                    }
+                    Divider()
+                    VStack {
+                        Chart(products) { product in
+                            SectorMark(
+                                angle: .value(
+                                    Text(verbatim: product.title),
+                                    product.revenue
+                                )
+                            )
+                            .foregroundStyle(
+                                by: .value(
+                                    Text(verbatim: product.title),
+                                    product.title
+                                )
+                            )
                         }
                         .padding()
-                    }
-                    .frame(width: geo.size.width / 2)
-                    //.background(Color.red)
-                }
-                Divider()
-                VStack {
-                    Chart(products) { product in
-                        SectorMark(
-                            angle: .value(
-                                Text(verbatim: product.title),
-                                product.revenue
-                            )
-                        )
-                        .foregroundStyle(
-                            by: .value(
-                                Text(verbatim: product.title),
-                                product.title
-                            )
-                        )
-                    }
-                    .padding()
-                    Divider()
-                    //.background(Color.blue)
-                    ZStack{
-                        Circle()
-                            .stroke(lineWidth: 20)
-                            .opacity(0.3)
-                            .padding()
-                        Circle()
-                            .trim(from: 0, to: CGFloat(1-(timeRemaining/10)))
-                            .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
-                            .rotationEffect(.degrees(-90))
-                            .padding()
-                        Text(formattedTime())
-                            .font(.largeTitle)
-                            .bold()
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    //.background(Color.green)
-                    HStack{
-                        Button{
-                            isRunning.toggle()
-                            if(isRunning){
-                                startTimer()
-                            }
-                            else{
-                                stopTimer()
-                            }
-                        }label: {
-                            Image(systemName: isRunning ? "stop.fill": "play.fill")
-                                .frame(width: 50, height: 50)
+                        Divider()
+                        //.background(Color.blue)
+                        ZStack{
+                            Circle()
+                                .stroke(lineWidth: 20)
+                                .opacity(0.3)
+                                .padding()
+                            Circle()
+                                .trim(from: 0, to: CGFloat(1-(timeRemaining/10)))
+                                .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+                                .rotationEffect(.degrees(-90))
+                                .padding()
+                            Text(formattedTime())
                                 .font(.largeTitle)
+                                .bold()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        //.background(Color.green)
+                        HStack{
+                            Button{
+                                isRunning.toggle()
+                                if(isRunning){
+                                    startTimer()
+                                }
+                                else{
+                                    stopTimer()
+                                }
+                            }label: {
+                                Image(systemName: isRunning ? "stop.fill": "play.fill")
+                                    .frame(width: 50, height: 50)
+                                    .font(.largeTitle)
+                            }
                         }
                     }
+                    .frame(width: geo.size.width / 2)
                 }
-                .frame(width: geo.size.width / 2)
             }
         }
     }

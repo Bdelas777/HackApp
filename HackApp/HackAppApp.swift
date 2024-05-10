@@ -11,7 +11,7 @@ import SwiftUI
 struct HackAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeAdminView()
         }
     }
 }

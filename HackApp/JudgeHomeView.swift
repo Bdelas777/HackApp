@@ -9,14 +9,14 @@ import SwiftUI
 
 struct JudgeHomeView: View {
     let nombreHack = "HackMTY 2024"
-    let dummyData = ["Elemento 1", "Elemento 2", "Elemento 3", "Elemento 4", "Elemento 5", "Elemento 6","Elemento 7", "Elemento 8", "Elemento 9" ]
+    let dummyData = ["Equipo 1", "Equipo 2", "Equipo 3", "Equipo 4", "Equipo 5", "Equipo 6","Equipo 7", "Equipo 8", "Equipo 9" ]
     var body: some View {
         NavigationStack{
             GeometryReader{ geo in
                 ZStack{
                     List{
                         ForEach(dummyData, id: \.self){data in
-                            NavigationLink(destination: ContentView()){
+                            NavigationLink(destination: RateJudgeView()){
                                 Text(data)
                                     .font(.title)
                                     .fontWeight(.medium)
