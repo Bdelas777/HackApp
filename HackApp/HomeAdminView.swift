@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct HomeAdminView: View {
-    let dummyData = ["Hack 1", "Hack 2", "Hack 3", "Hack 4", "Hack 5", "Hack 6","Hack 7", "Hack 8", "Hack 9" ]
     @StateObject var hackData = HackViewModel()
-    @State var isActivated : Bool = false
+    @State var isActivated: Bool = false
+
     var body: some View {
-        NavigationStack{
-            GeometryReader{ geo in
-                ZStack{
-                    List{
-                        ForEach(hackData.hackList, id: \.self){data in
-                            NavigationLink(destination: ContentView()){
-                                Text(data.nombre)
+        NavigationStack {
+            GeometryReader { geo in
+                ZStack {
+                    List {
+                        ForEach(hackData.hackList, id: \.id) { hack in
+                            NavigationLink(destination: ContentView(selectedHack: hack)) {
+                                Text(hack.nombre)
                                     .font(.title)
                                     .fontWeight(.medium)
                                     .padding()
@@ -26,9 +26,10 @@ struct HomeAdminView: View {
                         }
                     }
                     .listRowSpacing(10)
-                    Button{
+                    
+                    Button {
                         isActivated = true
-                    }label: {
+                    } label: {
                         Label("Nuevo Hackathon", systemImage: "plus")
                             .font(.title)
                             .bold()
@@ -40,8 +41,8 @@ struct HomeAdminView: View {
             }
             .navigationTitle("Tus Hackatons")
         }
-        .sheet(isPresented: $isActivated){
-            AddHackView(listaHacks: hackData)
+        .sheet(isPresented: $isActivated) {
+            AddHackView( listaHacks: hackData)
         }
     }
 }
