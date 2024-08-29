@@ -25,6 +25,8 @@ struct ContentView: View {
         .init(title: "Monthly", revenue: 0.2),
         .init(title: "Lifetime", revenue: 0.1)
     ]
+
+    
     
     let dummyData = ["Equipo 1", "Equipo 2", "Equipo 3", "Equipo 4", "Equipo 5", "Equipo 6","Equipo 7", "Equipo 8", "Equipo 9" ]
     var body: some View {

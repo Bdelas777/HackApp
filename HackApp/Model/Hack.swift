@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Hack: Identifiable {
+struct Hack: Identifiable, Hashable {
     let id: UUID
     var nombre: String
     var rubros: [Rubro]

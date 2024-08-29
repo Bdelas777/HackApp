@@ -13,3 +13,5 @@ struct Juez: Identifiable {
     var equipoIDs: [UUID] // Referencia a los equipos que evaluará el juez
     var hackID: UUID?     // Referencia opcional al hackathon específico
 }
+
+//Hacer tabla de calificaciones
