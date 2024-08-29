@@ -25,11 +25,12 @@ struct AddRubroPopoverView: View {
             }
             .padding()
             Button("Guardar") {
-                onSave()
+                onSave() 
             }
             .padding()
         }
         .frame(width: 400, height: 320)
     }
 }
+
 
