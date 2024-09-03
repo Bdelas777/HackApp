@@ -4,7 +4,7 @@
 //
 //  Created by Sebastian Presno Alvarado on 17/04/24.
 //
-
+// example
 import SwiftUI
 
 struct HomeAdminView: View {
