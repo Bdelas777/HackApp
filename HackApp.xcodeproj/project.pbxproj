@@ -26,6 +26,8 @@
 		F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */; };
 		F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */; };
 		FB3169122C87D5590021A389 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB3169112C87D5590021A389 /* GoogleService-Info.plist */; };
+		FB7697E62C89277900E37DDF /* FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7697E52C89277900E37DDF /* FontSize.swift */; };
+		FB7697E82C89278F00E37DDF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB7697E72C89278F00E37DDF /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,15 @@
 		F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewButtonStyle.swift; sourceTree = "<group>"; };
 		F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAdminView.swift; sourceTree = "<group>"; };
 		FB3169112C87D5590021A389 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FB7697DF2C89277100E37DDF /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lato-Light.ttf"; path = "../../Lato-Light.ttf"; sourceTree = "<group>"; };
+		FB7697E02C89277100E37DDF /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Bold.ttf"; path = "../../Inter-Bold.ttf"; sourceTree = "<group>"; };
+		FB7697E12C89277100E37DDF /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-ExtraLight.ttf"; path = "../../Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
+		FB7697E22C89277100E37DDF /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lato-Bold.ttf"; path = "../../Lato-Bold.ttf"; sourceTree = "<group>"; };
+		FB7697E32C89277100E37DDF /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lato-Regular.ttf"; path = "../../Lato-Regular.ttf"; sourceTree = "<group>"; };
+		FB7697E42C89277100E37DDF /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Regular.ttf"; path = "../../Inter-Regular.ttf"; sourceTree = "<group>"; };
+		FB7697E52C89277900E37DDF /* FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FontSize.swift; path = ../../FontSize.swift; sourceTree = "<group>"; };
+		FB7697E72C89278F00E37DDF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../../Info.plist; sourceTree = "<group>"; };
+		FB7697E92C89279200E37DDF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				FB3169162C8923E70021A389 /* Views */,
+				FB7697E92C89279200E37DDF /* Info.plist */,
 				FB3169152C89236F0021A389 /* Fonts */,
 				FB3169112C87D5590021A389 /* GoogleService-Info.plist */,
 				F86AC6BB2BF512A100BEAFCA /* ViewModel */,
@@ -142,6 +154,14 @@
 		FB3169152C89236F0021A389 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				FB7697E72C89278F00E37DDF /* Info.plist */,
+				FB7697E02C89277100E37DDF /* Inter-Bold.ttf */,
+				FB7697E52C89277900E37DDF /* FontSize.swift */,
+				FB7697E12C89277100E37DDF /* Inter-ExtraLight.ttf */,
+				FB7697E42C89277100E37DDF /* Inter-Regular.ttf */,
+				FB7697E22C89277100E37DDF /* Lato-Bold.ttf */,
+				FB7697DF2C89277100E37DDF /* Lato-Light.ttf */,
+				FB7697E32C89277100E37DDF /* Lato-Regular.ttf */,
 			);
 			name = Fonts;
 			sourceTree = "<group>";
@@ -245,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB7697E82C89278F00E37DDF /* Info.plist in Resources */,
 				F8B0CACD2BC6F22F00CB8497 /* Preview Assets.xcassets in Resources */,
 				F8B0CACA2BC6F22F00CB8497 /* Assets.xcassets in Resources */,
 				FB3169122C87D5590021A389 /* GoogleService-Info.plist in Resources */,
@@ -264,6 +285,7 @@
 				F8B0CAC82BC6F22D00CB8497 /* ContentView.swift in Sources */,
 				F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */,
 				F8BD956C2BE070B7002E496B /* Equipo.swift in Sources */,
+				FB7697E62C89277900E37DDF /* FontSize.swift in Sources */,
 				F8BD956E2BE0711C002E496B /* Juez.swift in Sources */,
 				F8BD95722BE0713B002E496B /* Hack.swift in Sources */,
 				F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */,
