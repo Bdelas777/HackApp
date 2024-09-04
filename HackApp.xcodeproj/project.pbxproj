@@ -90,17 +90,13 @@
 		F8B0CAC42BC6F22D00CB8497 /* HackApp */ = {
 			isa = PBXGroup;
 			children = (
+				FB3169162C8923E70021A389 /* Views */,
+				FB3169152C89236F0021A389 /* Fonts */,
 				FB3169112C87D5590021A389 /* GoogleService-Info.plist */,
 				F86AC6BB2BF512A100BEAFCA /* ViewModel */,
+				F8BD956A2BE070A3002E496B /* Model */,
 				F8B0CAC52BC6F22D00CB8497 /* HackAppApp.swift */,
 				F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */,
-				F8BD956A2BE070A3002E496B /* Model */,
-				F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */,
-				F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */,
-				F87E76CF2C08FE1C00CEF999 /* AddRubroPopOverView.swift */,
-				F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */,
-				F81F3FDB2BE420C6007927D7 /* RateJudgeView.swift */,
-				F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */,
 				F8C2E1B22BD2D91D00B470F0 /* SupportingElements */,
 				F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */,
 				F8B0CACB2BC6F22F00CB8497 /* Preview Content */,
@@ -134,6 +130,58 @@
 				F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */,
 			);
 			path = SupportingElements;
+			sourceTree = "<group>";
+		};
+		FB3169142C8923610021A389 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		FB3169152C89236F0021A389 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		FB3169162C8923E70021A389 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FB3169142C8923610021A389 /* Components */,
+				FB3169192C89241D0021A389 /* Start */,
+				FB3169182C8923FD0021A389 /* Judge */,
+				FB3169172C8923F30021A389 /* Admin */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FB3169172C8923F30021A389 /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				F87E76CF2C08FE1C00CEF999 /* AddRubroPopOverView.swift */,
+				F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */,
+				F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */,
+			);
+			path = Admin;
+			sourceTree = "<group>";
+		};
+		FB3169182C8923FD0021A389 /* Judge */ = {
+			isa = PBXGroup;
+			children = (
+				F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */,
+				F81F3FDB2BE420C6007927D7 /* RateJudgeView.swift */,
+			);
+			path = Judge;
+			sourceTree = "<group>";
+		};
+		FB3169192C89241D0021A389 /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */,
+			);
+			path = Start;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
