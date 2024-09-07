@@ -24,7 +24,7 @@ struct HackApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeAdminView()
+            HomeView()
                 .modelContainer(for: Hack.self)
         }
     }

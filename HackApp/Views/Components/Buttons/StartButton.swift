@@ -26,7 +26,7 @@ struct StartButton: View {
                         .foregroundColor(.white)
                         .font(.custom("Lato", size: FontSizeApp.largeButtonText.rawValue))
                         .bold()
-                        .frame(width: 150)
+                        .frame(width: 300)
                 }// End VStack
                 .frame(width: 400, height: 250)
                 .background(Color("LightBlue"))

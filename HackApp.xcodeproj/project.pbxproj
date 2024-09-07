@@ -26,6 +26,7 @@
 		F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */; };
 		F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */; };
 		FB3169122C87D5590021A389 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB3169112C87D5590021A389 /* GoogleService-Info.plist */; };
+		FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CF67D2C8BD6A000835D7B /* HomeView.swift */; };
 		FBCBA3C82C8A69EB005548A0 /* StartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBA3C72C8A69EB005548A0 /* StartButton.swift */; };
 		FBCBA3CA2C8A6F01005548A0 /* FontSizeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBA3C92C8A6F01005548A0 /* FontSizeApp.swift */; };
 /* End PBXBuildFile section */
@@ -51,6 +52,7 @@
 		F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewButtonStyle.swift; sourceTree = "<group>"; };
 		F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAdminView.swift; sourceTree = "<group>"; };
 		FB3169112C87D5590021A389 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FB5CF67D2C8BD6A000835D7B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FB7697E92C89279200E37DDF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB7697F72C89295500E37DDF /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
 		FB7697F82C89295500E37DDF /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 		FB3169172C8923F30021A389 /* Admin */ = {
 			isa = PBXGroup;
 			children = (
+				F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */,
 				F87E76CF2C08FE1C00CEF999 /* AddRubroPopOverView.swift */,
 				F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */,
 				F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */,
@@ -185,7 +188,7 @@
 		FB3169192C89241D0021A389 /* Start */ = {
 			isa = PBXGroup;
 			children = (
-				F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */,
+				FB5CF67D2C8BD6A000835D7B /* HomeView.swift */,
 			);
 			path = Start;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				F87E76D02C08FE1C00CEF999 /* AddRubroPopOverView.swift in Sources */,
 				F87E76CE2C08F6FA00CEF999 /* RubroViewModel.swift in Sources */,
 				F8B0CAC62BC6F22D00CB8497 /* HackAppApp.swift in Sources */,
+				FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
