@@ -13,7 +13,7 @@ enum FontSizeApp: CGFloat {
     case title = 38
     case subtitle = 34
     case heading = 30
-    case largeButtonText = 48
+    case largeButtonText = 52
     case buttonText = 26
     case label = 24
     case bigText = 22
