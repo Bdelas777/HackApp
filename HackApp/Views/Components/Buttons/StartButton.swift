@@ -14,13 +14,14 @@ struct StartButton: View {
     var action: ()-> Void
     
     var body: some View {
+       
         Button(action: action){
-            ZStack{
-                VStack{
-                    Image(systemName: iconName)
-                        .resizable()
-                        .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-                        .foregroundColor(.white)
+                    ZStack{
+                        VStack{
+                            Image(systemName: iconName)
+                                .resizable()
+                                .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(.white)
                         .frame(width: 90, height: 90)
                     Text(title)
                         .foregroundColor(.white)

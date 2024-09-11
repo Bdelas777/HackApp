@@ -10,7 +10,6 @@ import SwiftData
 
 @main
 struct HackApp: App {
-    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([Hack.self])
         let modelConfiguration = ModelConfiguration(schema: schema)
@@ -21,11 +20,14 @@ struct HackApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
     var body: some Scene {
         WindowGroup {
-            HomeView()
-                .modelContainer(for: Hack.self)
+            NavigationView {
+                HomeView()
+            }
+            .navigationViewStyle(StackNavigationViewStyle()) // Forza el estilo de pila
         }
     }
 }
+
