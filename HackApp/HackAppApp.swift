@@ -13,6 +13,8 @@ struct HackApp: App {
     
 
     var body: some Scene {
+        @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
         WindowGroup {
             NavigationView {
                 HomeView()
