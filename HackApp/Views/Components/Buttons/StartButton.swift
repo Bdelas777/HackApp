@@ -24,7 +24,7 @@ struct StartButton<Destination: View>: View {
                     
                     Text(title)
                         .foregroundColor(.white)
-                        .font(.custom("Lato", size: 55))
+                        .font(.custom("Lato", size: 53))
                         .bold()
                         .frame(width: 330)
                 }

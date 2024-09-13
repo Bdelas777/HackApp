@@ -24,6 +24,14 @@
 		F8C2E1B12BD0456E00B470F0 /* HomeAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */; };
 		F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */; };
 		F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */; };
+		FB0AB0D52C94F9F2003F94E7 /* AddEquipoPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0AB0D42C94F9F2003F94E7 /* AddEquipoPopoverView.swift */; };
+		FB0AB0D72C94FA63003F94E7 /* AddEquipoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0AB0D62C94FA63003F94E7 /* AddEquipoButton.swift */; };
+		FB0AB0D92C94FAA7003F94E7 /* EquipoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */; };
+		FB0AB0DB2C94FF3D003F94E7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0DA2C94FF3D003F94E7 /* FirebaseAnalytics */; };
+		FB0AB0DD2C94FF3D003F94E7 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0DC2C94FF3D003F94E7 /* FirebaseAnalyticsOnDeviceConversion */; };
+		FB0AB0DF2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0DE2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		FB0AB0E12C94FF3D003F94E7 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0E02C94FF3D003F94E7 /* FirebaseAppCheck */; };
+		FB0AB0E32C94FF3D003F94E7 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0E22C94FF3D003F94E7 /* FirebaseAppDistribution-Beta */; };
 		FB3169122C87D5590021A389 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB3169112C87D5590021A389 /* GoogleService-Info.plist */; };
 		FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CF67D2C8BD6A000835D7B /* HomeView.swift */; };
 		FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */; };
@@ -52,6 +60,9 @@
 		F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAdminView.swift; sourceTree = "<group>"; };
 		F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewButtonStyle.swift; sourceTree = "<group>"; };
 		F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAdminView.swift; sourceTree = "<group>"; };
+		FB0AB0D42C94F9F2003F94E7 /* AddEquipoPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipoPopoverView.swift; sourceTree = "<group>"; };
+		FB0AB0D62C94FA63003F94E7 /* AddEquipoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipoButton.swift; sourceTree = "<group>"; };
+		FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipoViewModel.swift; sourceTree = "<group>"; };
 		FB3169112C87D5590021A389 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FB5CF67D2C8BD6A000835D7B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackForm.swift; sourceTree = "<group>"; };
@@ -73,6 +84,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB0AB0E12C94FF3D003F94E7 /* FirebaseAppCheck in Frameworks */,
+				FB0AB0DB2C94FF3D003F94E7 /* FirebaseAnalytics in Frameworks */,
+				FB0AB0E32C94FF3D003F94E7 /* FirebaseAppDistribution-Beta in Frameworks */,
+				FB0AB0DF2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				FB0AB0DD2C94FF3D003F94E7 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +100,7 @@
 			children = (
 				F86AC6BC2BF514C900BEAFCA /* HackViewModel.swift */,
 				F87E76CD2C08F6FA00CEF999 /* RubroViewModel.swift */,
+				FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -203,6 +220,8 @@
 				FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */,
 				FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */,
 				FB701F922C93C62100EF83E4 /* AddRubroPopoverView.swift */,
+				FB0AB0D42C94F9F2003F94E7 /* AddEquipoPopoverView.swift */,
+				FB0AB0D62C94FA63003F94E7 /* AddEquipoButton.swift */,
 			);
 			path = AddHack;
 			sourceTree = "<group>";
@@ -245,6 +264,13 @@
 			dependencies = (
 			);
 			name = HackApp;
+			packageProductDependencies = (
+				FB0AB0DA2C94FF3D003F94E7 /* FirebaseAnalytics */,
+				FB0AB0DC2C94FF3D003F94E7 /* FirebaseAnalyticsOnDeviceConversion */,
+				FB0AB0DE2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				FB0AB0E02C94FF3D003F94E7 /* FirebaseAppCheck */,
+				FB0AB0E22C94FF3D003F94E7 /* FirebaseAppDistribution-Beta */,
+			);
 			productName = HackApp;
 			productReference = F8B0CAC22BC6F22D00CB8497 /* HackApp.app */;
 			productType = "com.apple.product-type.application";
@@ -306,6 +332,7 @@
 				F81F3FDC2BE420C6007927D7 /* RateJudgeView.swift in Sources */,
 				F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */,
 				F8BD95702BE07131002E496B /* Rubro.swift in Sources */,
+				FB0AB0D52C94F9F2003F94E7 /* AddEquipoPopoverView.swift in Sources */,
 				FBCBA3CA2C8A6F01005548A0 /* FontSizeApp.swift in Sources */,
 				FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */,
 				F8B0CAC82BC6F22D00CB8497 /* ContentView.swift in Sources */,
@@ -315,7 +342,9 @@
 				F8BD956E2BE0711C002E496B /* Juez.swift in Sources */,
 				F8BD95722BE0713B002E496B /* Hack.swift in Sources */,
 				F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */,
+				FB0AB0D72C94FA63003F94E7 /* AddEquipoButton.swift in Sources */,
 				F8C2E1B12BD0456E00B470F0 /* HomeAdminView.swift in Sources */,
+				FB0AB0D92C94FAA7003F94E7 /* EquipoViewModel.swift in Sources */,
 				F86AC6BD2BF514C900BEAFCA /* HackViewModel.swift in Sources */,
 				F81F3FDA2BE2EFE2007927D7 /* JudgeHomeView.swift in Sources */,
 				F8BD95742BE0717F002E496B /* Evaluacion.swift in Sources */,
@@ -544,6 +573,34 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FB0AB0DA2C94FF3D003F94E7 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB3169132C891D200021A389 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		FB0AB0DC2C94FF3D003F94E7 /* FirebaseAnalyticsOnDeviceConversion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB3169132C891D200021A389 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsOnDeviceConversion;
+		};
+		FB0AB0DE2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB3169132C891D200021A389 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		FB0AB0E02C94FF3D003F94E7 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB3169132C891D200021A389 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		FB0AB0E22C94FF3D003F94E7 /* FirebaseAppDistribution-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB3169132C891D200021A389 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAppDistribution-Beta";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F8B0CABA2BC6F22D00CB8497 /* Project object */;
 }

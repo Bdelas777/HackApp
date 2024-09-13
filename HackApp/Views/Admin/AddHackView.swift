@@ -7,6 +7,7 @@ struct AddHackView: View {
     @State var date: Date = Date.now
     @State var tiempoPitch: Double = 0.0
     @StateObject var listaRubros = RubroViewModel()
+    @StateObject var listaEquipos = EquipoViewModel() // Añade esta propiedad
     @State private var showingAlert = false
     @ObservedObject var listaHacks: HackViewModel
     @Environment(\.presentationMode) var presentationMode
@@ -27,6 +28,7 @@ struct AddHackView: View {
                 date: $date,
                 tiempoPitch: $tiempoPitch,
                 listaRubros: listaRubros,
+                listaEquipos: listaEquipos, // Añade esta propiedad
                 showingAlert: $showingAlert
             )
             Button {
@@ -34,7 +36,7 @@ struct AddHackView: View {
                     nombre: nombre,
                     rubros: listaRubros.rubroList,
                     tiempoPitch: tiempoPitch,
-                    equipoIDs: [],
+                    equipoIDs: [], // Aquí deberías manejar los IDs de los equipos si los estás utilizando
                     estaActivo: true,
                     juecesIDs: [],
                     rangoPuntuacion: 1...5

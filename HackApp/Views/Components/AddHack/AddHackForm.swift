@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct AddHackForm: View {
     @Binding var nombre: String
     @Binding var descripcion: String
@@ -15,9 +14,12 @@ struct AddHackForm: View {
     @Binding var date: Date
     @Binding var tiempoPitch: Double
     @ObservedObject var listaRubros: RubroViewModel
+    @ObservedObject var listaEquipos: EquipoViewModel // Añade esta propiedad
     @State private var showingAddRubroPopover = false
+    @State private var showingAddEquipoPopover = false // Añade esta propiedad
     @State private var rubroNombre: String = ""
     @State private var rubroValor: String = ""
+    @State private var equipoNombre: String = "" // Añade esta propiedad
     @Binding var showingAlert: Bool
     
     var body: some View {
@@ -57,8 +59,18 @@ struct AddHackForm: View {
                     }
                 }
             }
+            Section(header: Text("Equipos")) {
+                AddEquipoButton(showingAddEquipoPopover: $showingAddEquipoPopover,
+                                listaEquipos: listaEquipos,
+                                equipoNombre: $equipoNombre,
+                                showingAlert: $showingAlert)
+                
+                ForEach(listaEquipos.equipoList) { equipo in
+                    HStack {
+                        Text(equipo.nombre)
+                    }
+                }
+            }
         }
     }
 }
-
-

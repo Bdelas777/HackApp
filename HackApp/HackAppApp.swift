@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
-import SwiftData
+
 
 @main
 struct HackApp: App {
     
+
     var body: some Scene {
         WindowGroup {
             NavigationView {
