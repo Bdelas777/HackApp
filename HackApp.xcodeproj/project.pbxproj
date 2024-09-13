@@ -12,7 +12,6 @@
 		F86AC6BD2BF514C900BEAFCA /* HackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86AC6BC2BF514C900BEAFCA /* HackViewModel.swift */; };
 		F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */; };
 		F87E76CE2C08F6FA00CEF999 /* RubroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E76CD2C08F6FA00CEF999 /* RubroViewModel.swift */; };
-		F87E76D02C08FE1C00CEF999 /* AddRubroPopOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E76CF2C08FE1C00CEF999 /* AddRubroPopOverView.swift */; };
 		F8B0CAC62BC6F22D00CB8497 /* HackAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B0CAC52BC6F22D00CB8497 /* HackAppApp.swift */; };
 		F8B0CAC82BC6F22D00CB8497 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */; };
 		F8B0CACA2BC6F22F00CB8497 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */; };
@@ -27,6 +26,9 @@
 		F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */; };
 		FB3169122C87D5590021A389 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB3169112C87D5590021A389 /* GoogleService-Info.plist */; };
 		FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CF67D2C8BD6A000835D7B /* HomeView.swift */; };
+		FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */; };
+		FB701F912C93C5CD00EF83E4 /* AddRubroButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */; };
+		FB701F932C93C62100EF83E4 /* AddRubroPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F922C93C62100EF83E4 /* AddRubroPopoverView.swift */; };
 		FBCBA3C82C8A69EB005548A0 /* StartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBA3C72C8A69EB005548A0 /* StartButton.swift */; };
 		FBCBA3CA2C8A6F01005548A0 /* FontSizeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBA3C92C8A6F01005548A0 /* FontSizeApp.swift */; };
 /* End PBXBuildFile section */
@@ -37,7 +39,6 @@
 		F86AC6BC2BF514C900BEAFCA /* HackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackViewModel.swift; sourceTree = "<group>"; };
 		F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackView.swift; sourceTree = "<group>"; };
 		F87E76CD2C08F6FA00CEF999 /* RubroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubroViewModel.swift; sourceTree = "<group>"; };
-		F87E76CF2C08FE1C00CEF999 /* AddRubroPopOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRubroPopOverView.swift; sourceTree = "<group>"; };
 		F8B0CAC22BC6F22D00CB8497 /* HackApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B0CAC52BC6F22D00CB8497 /* HackAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackAppApp.swift; sourceTree = "<group>"; };
 		F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,6 +54,9 @@
 		F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAdminView.swift; sourceTree = "<group>"; };
 		FB3169112C87D5590021A389 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FB5CF67D2C8BD6A000835D7B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackForm.swift; sourceTree = "<group>"; };
+		FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRubroButton.swift; sourceTree = "<group>"; };
+		FB701F922C93C62100EF83E4 /* AddRubroPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRubroPopoverView.swift; sourceTree = "<group>"; };
 		FB7697E92C89279200E37DDF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB7697F72C89295500E37DDF /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
 		FB7697F82C89295500E37DDF /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -149,6 +153,7 @@
 		FB3169142C8923610021A389 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				FB701F8B2C93BE6A00EF83E4 /* AddHack */,
 				FBCBA3C62C8A69C3005548A0 /* Buttons */,
 			);
 			path = Components;
@@ -169,7 +174,6 @@
 			isa = PBXGroup;
 			children = (
 				F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */,
-				F87E76CF2C08FE1C00CEF999 /* AddRubroPopOverView.swift */,
 				F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */,
 				F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */,
 			);
@@ -191,6 +195,16 @@
 				FB5CF67D2C8BD6A000835D7B /* HomeView.swift */,
 			);
 			path = Start;
+			sourceTree = "<group>";
+		};
+		FB701F8B2C93BE6A00EF83E4 /* AddHack */ = {
+			isa = PBXGroup;
+			children = (
+				FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */,
+				FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */,
+				FB701F922C93C62100EF83E4 /* AddRubroPopoverView.swift */,
+			);
+			path = AddHack;
 			sourceTree = "<group>";
 		};
 		FB7697FD2C89295500E37DDF /* Fonts */ = {
@@ -293,6 +307,7 @@
 				F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */,
 				F8BD95702BE07131002E496B /* Rubro.swift in Sources */,
 				FBCBA3CA2C8A6F01005548A0 /* FontSizeApp.swift in Sources */,
+				FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */,
 				F8B0CAC82BC6F22D00CB8497 /* ContentView.swift in Sources */,
 				F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */,
 				F8BD956C2BE070B7002E496B /* Equipo.swift in Sources */,
@@ -304,8 +319,9 @@
 				F86AC6BD2BF514C900BEAFCA /* HackViewModel.swift in Sources */,
 				F81F3FDA2BE2EFE2007927D7 /* JudgeHomeView.swift in Sources */,
 				F8BD95742BE0717F002E496B /* Evaluacion.swift in Sources */,
-				F87E76D02C08FE1C00CEF999 /* AddRubroPopOverView.swift in Sources */,
+				FB701F912C93C5CD00EF83E4 /* AddRubroButton.swift in Sources */,
 				F87E76CE2C08F6FA00CEF999 /* RubroViewModel.swift in Sources */,
+				FB701F932C93C62100EF83E4 /* AddRubroPopoverView.swift in Sources */,
 				F8B0CAC62BC6F22D00CB8497 /* HackAppApp.swift in Sources */,
 				FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */,
 			);
@@ -472,7 +488,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HackApp/Preview Content\"";
-				DEVELOPMENT_TEAM = 7MLM8NTU75;
+				DEVELOPMENT_TEAM = X5KY75J3RV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -485,7 +501,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Yo.HackApp;
+				PRODUCT_BUNDLE_IDENTIFIER = Yo2.HackApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

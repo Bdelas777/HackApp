@@ -9,14 +9,14 @@ import SwiftUI
 import SwiftData
 
 @main
-struct HackAppApp: App {
+struct HackApp: App {
     
     var body: some Scene {
         WindowGroup {
             NavigationView {
                 HomeView()
             }
-            .navigationViewStyle(StackNavigationViewStyle()) // Forza el estilo de pila
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }
