@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 @main
 struct HackApp: App {
     
