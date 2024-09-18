@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>316462507223-a11uo1th4me3fjighu1q5enlu6oprd5g.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.316462507223-a11uo1th4me3fjighu1q5enlu6oprd5g</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDT1rzWKrASuJlSX4SWMqOUFY9blmBg2-E</string>
+	<key>GCM_SENDER_ID</key>
+	<string>316462507223</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>hackapp</string>
+	<key>PROJECT_ID</key>
+	<string>hackapp-b8ed0</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hackapp-b8ed0.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:316462507223:ios:b953fc653e9e488616fc92</string>
+	<key>DATABASE_URL</key>
+	<string>https://hackapp-b8ed0-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

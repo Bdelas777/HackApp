@@ -32,7 +32,6 @@
 		FB0AB0DF2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0DE2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		FB0AB0E12C94FF3D003F94E7 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0E02C94FF3D003F94E7 /* FirebaseAppCheck */; };
 		FB0AB0E32C94FF3D003F94E7 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0E22C94FF3D003F94E7 /* FirebaseAppDistribution-Beta */; };
-		FB0AB0E52C950380003F94E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0AB0E42C950380003F94E7 /* AppDelegate.swift */; };
 		FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CF67D2C8BD6A000835D7B /* HomeView.swift */; };
 		FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */; };
 		FB701F912C93C5CD00EF83E4 /* AddRubroButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */; };
@@ -42,6 +41,7 @@
 		FBFC5DFF2C9B93E3002813E4 /* AddJuezPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFC5DFE2C9B93E3002813E4 /* AddJuezPopoverView.swift */; };
 		FBFC5E012C9B93F6002813E4 /* AddJuezButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFC5E002C9B93F6002813E4 /* AddJuezButton.swift */; };
 		FBFC5E032C9B9452002813E4 /* JuezViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFC5E022C9B9452002813E4 /* JuezViewModel.swift */; };
+		FBFC5E052C9B9A46002813E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBFC5E042C9B9A46002813E4 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,7 +66,6 @@
 		FB0AB0D42C94F9F2003F94E7 /* AddEquipoPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipoPopoverView.swift; sourceTree = "<group>"; };
 		FB0AB0D62C94FA63003F94E7 /* AddEquipoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipoButton.swift; sourceTree = "<group>"; };
 		FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipoViewModel.swift; sourceTree = "<group>"; };
-		FB0AB0E42C950380003F94E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FB5CF67D2C8BD6A000835D7B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackForm.swift; sourceTree = "<group>"; };
 		FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRubroButton.swift; sourceTree = "<group>"; };
@@ -83,6 +82,7 @@
 		FBFC5DFE2C9B93E3002813E4 /* AddJuezPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJuezPopoverView.swift; sourceTree = "<group>"; };
 		FBFC5E002C9B93F6002813E4 /* AddJuezButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJuezButton.swift; sourceTree = "<group>"; };
 		FBFC5E022C9B9452002813E4 /* JuezViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuezViewModel.swift; sourceTree = "<group>"; };
+		FBFC5E042C9B9A46002813E4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,8 +137,8 @@
 				F86AC6BB2BF512A100BEAFCA /* ViewModel */,
 				F8BD956A2BE070A3002E496B /* Model */,
 				F8B0CAC52BC6F22D00CB8497 /* HackApp.swift */,
-				FB0AB0E42C950380003F94E7 /* AppDelegate.swift */,
 				F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */,
+				FBFC5E042C9B9A46002813E4 /* GoogleService-Info.plist */,
 				F8C2E1B22BD2D91D00B470F0 /* SupportingElements */,
 				F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */,
 				F8B0CACB2BC6F22F00CB8497 /* Preview Content */,
@@ -327,6 +327,7 @@
 			files = (
 				F8B0CACD2BC6F22F00CB8497 /* Preview Assets.xcassets in Resources */,
 				F8B0CACA2BC6F22F00CB8497 /* Assets.xcassets in Resources */,
+				FBFC5E052C9B9A46002813E4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +353,6 @@
 				F8BD956E2BE0711C002E496B /* Juez.swift in Sources */,
 				F8BD95722BE0713B002E496B /* Hack.swift in Sources */,
 				F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */,
-				FB0AB0E52C950380003F94E7 /* AppDelegate.swift in Sources */,
 				FB0AB0D72C94FA63003F94E7 /* AddEquipoButton.swift in Sources */,
 				F8C2E1B12BD0456E00B470F0 /* HomeAdminView.swift in Sources */,
 				FB0AB0D92C94FAA7003F94E7 /* EquipoViewModel.swift in Sources */,
