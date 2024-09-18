@@ -18,7 +18,7 @@ struct AddEquipoButton: View {
             showingAddEquipoPopover.toggle()
         } label: {
             Label("Añadir equipo", systemImage: "plus")
-                .foregroundColor(.green) // Ajusta el color según tu lógica
+                .foregroundColor(.blue)
         }
         .popover(isPresented: $showingAddEquipoPopover) {
             AddEquipoPopoverView(

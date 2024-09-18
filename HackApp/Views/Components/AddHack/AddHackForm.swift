@@ -4,7 +4,6 @@
 //
 //  Created by Alumno on 12/09/24.
 //
-
 import SwiftUI
 
 struct AddHackForm: View {
@@ -14,12 +13,15 @@ struct AddHackForm: View {
     @Binding var date: Date
     @Binding var tiempoPitch: Double
     @ObservedObject var listaRubros: RubroViewModel
-    @ObservedObject var listaEquipos: EquipoViewModel // Añade esta propiedad
+    @ObservedObject var listaEquipos: EquipoViewModel
+    @ObservedObject var listaJueces: JuezViewModel
     @State private var showingAddRubroPopover = false
-    @State private var showingAddEquipoPopover = false // Añade esta propiedad
+    @State private var showingAddEquipoPopover = false
+    @State private var showingAddJuezPopover = false
     @State private var rubroNombre: String = ""
     @State private var rubroValor: String = ""
-    @State private var equipoNombre: String = "" // Añade esta propiedad
+    @State private var equipoNombre: String = ""
+    @State private var juezNombre: String = ""
     @Binding var showingAlert: Bool
     
     var body: some View {
@@ -68,6 +70,18 @@ struct AddHackForm: View {
                 ForEach(listaEquipos.equipoList) { equipo in
                     HStack {
                         Text(equipo.nombre)
+                    }
+                }
+            }
+            Section(header: Text("Jueces")) {
+                AddJuezButton(showingAddJuezPopover: $showingAddJuezPopover,
+                               listaJueces: listaJueces,
+                               juezNombre: $juezNombre,
+                               showingAlert: $showingAlert)
+                
+                ForEach(listaJueces.juezList) { juez in
+                    HStack {
+                        Text(juez.nombre)
                     }
                 }
             }

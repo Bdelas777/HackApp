@@ -19,7 +19,7 @@ struct AddRubroButton: View {
             showingAddRubroPopover.toggle()
         } label: {
             Label("Añadir rubro", systemImage: "plus")
-                .foregroundColor(totalRubroValue() >= 100 ? .gray : .green)
+                .foregroundColor(.blue)
         }
         .disabled(totalRubroValue() >= 100)
         .popover(isPresented: $showingAddRubroPopover) {

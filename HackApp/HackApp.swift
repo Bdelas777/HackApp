@@ -6,14 +6,14 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct HackApp: App {
-    
-
+    init(){
+        FirebaseApp.configure()
+    }
     var body: some Scene {
-        @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
         WindowGroup {
             NavigationView {
                 HomeView()
