@@ -42,6 +42,7 @@
 		FBFC5E012C9B93F6002813E4 /* AddJuezButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFC5E002C9B93F6002813E4 /* AddJuezButton.swift */; };
 		FBFC5E032C9B9452002813E4 /* JuezViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFC5E022C9B9452002813E4 /* JuezViewModel.swift */; };
 		FBFC5E052C9B9A46002813E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBFC5E042C9B9A46002813E4 /* GoogleService-Info.plist */; };
+		FBFC5E082C9B9E30002813E4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FBFC5E072C9B9E30002813E4 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,6 +96,7 @@
 				FB0AB0E32C94FF3D003F94E7 /* FirebaseAppDistribution-Beta in Frameworks */,
 				FB0AB0DF2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				FB0AB0DD2C94FF3D003F94E7 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				FBFC5E082C9B9E30002813E4 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				F8B0CAC42BC6F22D00CB8497 /* HackApp */,
+				FBFC5E062C9B9E30002813E4 /* Frameworks */,
 				F8B0CAC32BC6F22D00CB8497 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -257,6 +260,13 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		FBFC5E062C9B9E30002813E4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -279,6 +289,7 @@
 				FB0AB0DE2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				FB0AB0E02C94FF3D003F94E7 /* FirebaseAppCheck */,
 				FB0AB0E22C94FF3D003F94E7 /* FirebaseAppDistribution-Beta */,
+				FBFC5E072C9B9E30002813E4 /* FirebaseFirestore */,
 			);
 			productName = HackApp;
 			productReference = F8B0CAC22BC6F22D00CB8497 /* HackApp.app */;
@@ -611,6 +622,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FB3169132C891D200021A389 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseAppDistribution-Beta";
+		};
+		FBFC5E072C9B9E30002813E4 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB3169132C891D200021A389 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
