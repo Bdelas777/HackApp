@@ -37,6 +37,8 @@
 		FB701F912C93C5CD00EF83E4 /* AddRubroButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */; };
 		FB701F932C93C62100EF83E4 /* AddRubroPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F922C93C62100EF83E4 /* AddRubroPopoverView.swift */; };
 		FB8ACC0B2C9E4254002479D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB8ACC0A2C9E4254002479D5 /* GoogleService-Info.plist */; };
+		FB8ACC0D2C9E42CB002479D5 /* LinkDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8ACC0C2C9E42C6002479D5 /* LinkDataSource.swift */; };
+		FB8ACC0F2C9E42F5002479D5 /* HackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8ACC0E2C9E42F0002479D5 /* HackListView.swift */; };
 		FBCBA3C82C8A69EB005548A0 /* StartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBA3C72C8A69EB005548A0 /* StartButton.swift */; };
 		FBCBA3CA2C8A6F01005548A0 /* FontSizeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBA3C92C8A6F01005548A0 /* FontSizeApp.swift */; };
 		FBFC5DFF2C9B93E3002813E4 /* AddJuezPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFC5DFE2C9B93E3002813E4 /* AddJuezPopoverView.swift */; };
@@ -79,6 +81,8 @@
 		FB7697FB2C89295500E37DDF /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		FB7697FC2C89295500E37DDF /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		FB8ACC0A2C9E4254002479D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FB8ACC0C2C9E42C6002479D5 /* LinkDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkDataSource.swift; sourceTree = "<group>"; };
+		FB8ACC0E2C9E42F0002479D5 /* HackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackListView.swift; sourceTree = "<group>"; };
 		FBCBA3C72C8A69EB005548A0 /* StartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartButton.swift; sourceTree = "<group>"; };
 		FBCBA3C92C8A6F01005548A0 /* FontSizeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSizeApp.swift; sourceTree = "<group>"; };
 		FBFC5DFE2C9B93E3002813E4 /* AddJuezPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJuezPopoverView.swift; sourceTree = "<group>"; };
@@ -106,6 +110,7 @@
 		F86AC6BB2BF512A100BEAFCA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				FB8ACC0C2C9E42C6002479D5 /* LinkDataSource.swift */,
 				FBFC5E022C9B9452002813E4 /* JuezViewModel.swift */,
 				F86AC6BC2BF514C900BEAFCA /* HackViewModel.swift */,
 				F87E76CD2C08F6FA00CEF999 /* RubroViewModel.swift */,
@@ -200,6 +205,7 @@
 		FB3169172C8923F30021A389 /* Admin */ = {
 			isa = PBXGroup;
 			children = (
+				FB8ACC0E2C9E42F0002479D5 /* HackListView.swift */,
 				F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */,
 				F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */,
 				F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */,
@@ -361,9 +367,11 @@
 				F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */,
 				F8BD956C2BE070B7002E496B /* Equipo.swift in Sources */,
 				FBCBA3C82C8A69EB005548A0 /* StartButton.swift in Sources */,
+				FB8ACC0D2C9E42CB002479D5 /* LinkDataSource.swift in Sources */,
 				F8BD956E2BE0711C002E496B /* Juez.swift in Sources */,
 				F8BD95722BE0713B002E496B /* Hack.swift in Sources */,
 				F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */,
+				FB8ACC0F2C9E42F5002479D5 /* HackListView.swift in Sources */,
 				FB0AB0D72C94FA63003F94E7 /* AddEquipoButton.swift in Sources */,
 				F8C2E1B12BD0456E00B470F0 /* HomeAdminView.swift in Sources */,
 				FB0AB0D92C94FAA7003F94E7 /* EquipoViewModel.swift in Sources */,
@@ -522,7 +530,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Hackpp;
+				PRODUCT_BUNDLE_IDENTIFIER = Hackapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -553,7 +561,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Hackpp;
+				PRODUCT_BUNDLE_IDENTIFIER = Hackapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

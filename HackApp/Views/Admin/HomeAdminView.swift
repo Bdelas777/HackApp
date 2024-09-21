@@ -26,7 +26,7 @@ struct HomeAdminView: View {
                         }
                     }
                     .listRowSpacing(10)
-                    
+                    HacksListView()
                     Button {
                         isActivated = true
                     } label: {
