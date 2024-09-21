@@ -12,20 +12,10 @@ struct HomeAdminView: View {
     @State var isActivated: Bool = false
 
     var body: some View {
-        NavigationStack {
+     
             GeometryReader { geo in
                 ZStack {
-                    List {
-                        ForEach(hackData.hackList, id: \.id) { hack in
-                            NavigationLink(destination: ContentView(selectedHack: hack)) {
-                                Text(hack.nombre)
-                                    .font(.title)
-                                    .fontWeight(.medium)
-                                    .padding()
-                            }
-                        }
-                    }
-                    .listRowSpacing(10)
+                    
                     HacksListView()
                     Button {
                         isActivated = true
@@ -40,7 +30,7 @@ struct HomeAdminView: View {
                 }
             }
             .navigationTitle("Tus Hackatons")
-        }
+        
         .sheet(isPresented: $isActivated) {
             AddHackView( listaHacks: hackData)
         }

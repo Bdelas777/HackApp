@@ -25,7 +25,7 @@ struct HacksListView: View {
             }
             .navigationTitle("Hackathons")
             .onAppear {
-                viewModel.fetchHacks() 
+                viewModel.fetchHacks()
             }
         }
     }
