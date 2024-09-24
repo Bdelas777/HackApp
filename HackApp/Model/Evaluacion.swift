@@ -14,9 +14,3 @@ struct Evaluacion: Identifiable {
     var valoresRubros: [UUID: Double] // Diccionario que asocia un rubro con su valoración
 }
 
-extension Evaluacion {
-    // Función para añadir una evaluación de rubro
-    mutating func evaluar(rubro: Rubro, valor: Double) {
-        valoresRubros[rubro.id] = valor
-    }
-}

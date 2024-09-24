@@ -37,7 +37,7 @@ struct AddJuezButton: View {
     
     private func addJuez() {
         if !juezNombre.isEmpty {
-            let nuevoJuez = Juez(id: UUID(), nombre: juezNombre, equipoIDs: [], hackID: nil)
+            let nuevoJuez = Juez(id: UUID(), nombre: juezNombre)
             listaJueces.juezList.append(nuevoJuez)
             juezNombre = ""
             showingAddJuezPopover = false

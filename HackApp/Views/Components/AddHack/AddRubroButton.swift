@@ -40,7 +40,7 @@ struct AddRubroButton: View {
     
     private func addRubro() {
         if let valor = Double(rubroValor), totalRubroValue() + valor <= 100 {
-            let nuevoRubro = Rubro(id: UUID(), nombre: rubroNombre, valor: valor)
+            let nuevoRubro = Rubro( nombre: rubroNombre, valor: valor)
             listaRubros.rubroList.append(nuevoRubro)
             rubroNombre = ""
             rubroValor = ""

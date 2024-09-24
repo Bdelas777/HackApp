@@ -32,13 +32,6 @@ struct AddHackForm: View {
             Section(header: Text("Descripción del Hackathon")) {
                 TextField("Descripción del hack", text: $descripcion)
             }
-            Section(header: Text("Número de jueces")) {
-                Picker("Número de jueces", selection: $numJueces) {
-                    ForEach(1..<11) { index in
-                        Text("\(index)")
-                    }
-                }
-            }
             Section(header: Text("Fecha de tu Hackathon")) {
                 DatePicker("Selecciona la fecha", selection: $date)
             }

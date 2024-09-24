@@ -13,7 +13,7 @@ class JuezViewModel: ObservableObject {
     @Published var juezList: [Juez] = []
     
     func addJuez(nombre: String, equipoIDs: [UUID]) {
-        let newJuez = Juez(id: UUID(), nombre: nombre, equipoIDs: equipoIDs, hackID: nil)
+        let newJuez = Juez(id: UUID(), nombre: nombre)
         juezList.append(newJuez)
     }
 }

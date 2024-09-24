@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeAdminView: View {
-    @StateObject var hackData = HackViewModel()
+    @StateObject var hackData = HacksViewModel()
     @State var isActivated: Bool = false
 
     var body: some View {

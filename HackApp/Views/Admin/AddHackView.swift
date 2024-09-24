@@ -1,3 +1,11 @@
+
+//
+//  AddHackView.swift
+//  HackApp
+//
+//  Created by Alumno on 19/09/24.
+//
+
 import SwiftUI
 
 struct AddHackView: View {
@@ -10,7 +18,7 @@ struct AddHackView: View {
     @StateObject var listaEquipos = EquipoViewModel()
     @StateObject var listaJueces = JuezViewModel()
     @State private var showingAlert = false
-    @ObservedObject var listaHacks: HackViewModel
+    @ObservedObject var listaHacks: HacksViewModel
     @Environment(\.presentationMode) var presentationMode
     
     private var isFormValid: Bool {
@@ -29,21 +37,34 @@ struct AddHackView: View {
                 date: $date,
                 tiempoPitch: $tiempoPitch,
                 listaRubros: listaRubros,
-                listaEquipos: listaEquipos, listaJueces: listaJueces,
+                listaEquipos: listaEquipos,
+                listaJueces: listaJueces,
                 showingAlert: $showingAlert
             )
             Button {
-                let nuevoHack = Hack(
-                    nombre: nombre,
-                    rubros: listaRubros.rubroList,
-                    tiempoPitch: tiempoPitch,
-                    equipoIDs: [], // Aquí deberías manejar los IDs de los equipos si los estás utilizando
+                let nuevoHack = HackPrueba(
+                    descripcion: descripcion,
+                    equipos: listaEquipos.equipoList.map { $0.nombre }, // Map equipo names to array
+                    jueces: listaJueces.juezList.reduce(into: [String: [String: Int]]()) { result, juez in
+                        result[juez.nombre] = [:]
+                    },
+                    rubros: listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
                     estaActivo: true,
-                    juecesIDs: [],
-                    rangoPuntuacion: 1...5
+                    nombre: nombre,
+                    tiempoPitch: tiempoPitch,
+                    Fecha: date // Ensure 'Fecha' matches your HackPrueba model
                 )
-                listaHacks.hackList.append(nuevoHack)
-                presentationMode.wrappedValue.dismiss()
+                
+                // Call the addHackPrueba function to save to Firestore
+                listaHacks.addHackPrueba(hack: nuevoHack) { result in
+                    switch result {
+                    case .success:
+                        presentationMode.wrappedValue.dismiss() // Dismiss if successful
+                    case .failure(let error):
+                        print("Error adding hack: \(error.localizedDescription)")
+                        showingAlert = true // Show alert if there's an error
+                    }
+                }
             } label: {
                 Text("Guardar")
             }
@@ -51,9 +72,13 @@ struct AddHackView: View {
             .disabled(!isFormValid)
             .padding()
         }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text("Error"), message: Text("Hubo un problema al guardar el hack."), dismissButton: .default(Text("OK")))
+        }
     }
 }
 
 #Preview {
-    AddHackView(listaHacks: HackViewModel())
+    AddHackView(listaHacks: HacksViewModel())
 }
+

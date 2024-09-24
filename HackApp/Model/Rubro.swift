@@ -7,8 +7,11 @@
 
 import Foundation
 
-struct Rubro: Identifiable, Hashable, Codable{
-    let id: UUID
+
+struct Rubro: Codable, Identifiable {
+    var id = UUID()
     var nombre: String
     var valor: Double
+    
+   
 }

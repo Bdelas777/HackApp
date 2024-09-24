@@ -32,6 +32,7 @@
 		FB0AB0DF2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0DE2C94FF3D003F94E7 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		FB0AB0E12C94FF3D003F94E7 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0E02C94FF3D003F94E7 /* FirebaseAppCheck */; };
 		FB0AB0E32C94FF3D003F94E7 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0E22C94FF3D003F94E7 /* FirebaseAppDistribution-Beta */; };
+		FB2F606D2CA37976004D2E55 /* HacksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */; };
 		FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CF67D2C8BD6A000835D7B /* HomeView.swift */; };
 		FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */; };
 		FB701F912C93C5CD00EF83E4 /* AddRubroButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */; };
@@ -69,6 +70,8 @@
 		FB0AB0D42C94F9F2003F94E7 /* AddEquipoPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipoPopoverView.swift; sourceTree = "<group>"; };
 		FB0AB0D62C94FA63003F94E7 /* AddEquipoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipoButton.swift; sourceTree = "<group>"; };
 		FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipoViewModel.swift; sourceTree = "<group>"; };
+		FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HacksViewModel.swift; sourceTree = "<group>"; };
+		FB2F606E2CA37C32004D2E55 /* HackApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = HackApp.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FB5CF67D2C8BD6A000835D7B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackForm.swift; sourceTree = "<group>"; };
 		FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRubroButton.swift; sourceTree = "<group>"; };
@@ -110,6 +113,7 @@
 		F86AC6BB2BF512A100BEAFCA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */,
 				FB8ACC0C2C9E42C6002479D5 /* LinkDataSource.swift */,
 				FBFC5E022C9B9452002813E4 /* JuezViewModel.swift */,
 				F86AC6BC2BF514C900BEAFCA /* HackViewModel.swift */,
@@ -254,6 +258,7 @@
 				FB7697FB2C89295500E37DDF /* Lato-Light.ttf */,
 				FB7697FC2C89295500E37DDF /* Lato-Regular.ttf */,
 				FBCBA3C92C8A6F01005548A0 /* FontSizeApp.swift */,
+				FB2F606E2CA37C32004D2E55 /* HackApp.xcodeproj */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -356,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBFC5E032C9B9452002813E4 /* JuezViewModel.swift in Sources */,
+				FB2F606D2CA37976004D2E55 /* HacksViewModel.swift in Sources */,
 				F81F3FDC2BE420C6007927D7 /* RateJudgeView.swift in Sources */,
 				F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */,
 				F8BD95702BE07131002E496B /* Rubro.swift in Sources */,

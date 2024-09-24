@@ -8,10 +8,7 @@
 import Foundation
 
 struct Juez: Identifiable {
-    let id: UUID
+    var id: UUID = UUID() 
     var nombre: String
-    var equipoIDs: [UUID] // Referencia a los equipos que evaluará el juez
-    var hackID: UUID?     // Referencia opcional al hackathon específico
 }
 
-//Hacer tabla de calificaciones
