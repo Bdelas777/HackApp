@@ -10,7 +10,7 @@ struct HacksListView: View {
     @ObservedObject var viewModel = HacksViewModel()
     
     var body: some View {
-        NavigationView {
+
             List(viewModel.hacks) { hack in
                 HStack {
                     VStack(alignment: .leading) {
@@ -27,7 +27,7 @@ struct HacksListView: View {
             .onAppear {
                 viewModel.fetchHacks()
             }
-        }
+        
     }
 }
 

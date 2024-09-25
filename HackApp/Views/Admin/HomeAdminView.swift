@@ -12,27 +12,57 @@ struct HomeAdminView: View {
     @State var isActivated: Bool = false
 
     var body: some View {
-     
+        NavigationStack {
             GeometryReader { geo in
                 ZStack {
-                    
-                    HacksListView()
-                    Button {
-                        isActivated = true
-                    } label: {
-                        Label("Nuevo Hackathon", systemImage: "plus")
-                            .font(.title)
-                            .bold()
-                            .padding()
+                    VStack {
+                        if hackData.hacks.isEmpty {
+                            if hackData.isLoading {
+                                Text("Cargando...")
+                                    .font(.largeTitle)
+                                    .padding()
+                            } else {
+                                Text("No hay hacks disponibles")
+                                    .font(.largeTitle)
+                                    .padding()
+                            }
+                        } else {
+                            List(hackData.hacks) { hack in
+                                NavigationLink(destination: HackView(hack: hack)) {
+                                    HackRow(hack: hack)
+                                }
+                            }
+                        }
+                        
+                        Spacer() // Pushes content above
                     }
-                    .buttonStyle(MainViewButtonStyle())
-                    .offset(x: geo.size.width / 3.8, y: geo.size.height / 2.5)
+                    .navigationTitle("Tus Hackatons")
+                    
+                    // Button positioned at bottom right
+                    VStack {
+                        Spacer() // Pushes the button to the bottom
+                        HStack {
+                            Spacer() // Pushes the button to the right
+                            Button {
+                                isActivated = true
+                            } label: {
+                                Label("Nuevo Hackathon", systemImage: "plus")
+                                    .font(.title)
+                                    .bold()
+                                    .padding()
+                            }
+                            .buttonStyle(MainViewButtonStyle())
+                            .padding()
+                        }
+                    }
                 }
             }
-            .navigationTitle("Tus Hackatons")
-        
-        .sheet(isPresented: $isActivated) {
-            AddHackView( listaHacks: hackData)
+            .sheet(isPresented: $isActivated) {
+                AddHackView(listaHacks: hackData)
+            }
+        }
+        .onAppear {
+            hackData.fetchHacks()
         }
     }
 }

@@ -11,8 +11,10 @@ import FirebaseFirestore
 class HacksViewModel: ObservableObject {
     @Published var hacks = [HackPrueba]()
     private var db = Firestore.firestore()
+    @Published var isLoading = false
     
     func fetchHacks() {
+        isLoading = true
         db.collection("hacks").getDocuments(source: .default) { (querySnapshot, error) in
             if let error = error {
                 print("Error al obtener los documentos: \(error)")
@@ -60,6 +62,7 @@ class HacksViewModel: ObservableObject {
                     
                 } ?? self.defaultHacks()  
             }
+            self.isLoading = false
         }
     }
 

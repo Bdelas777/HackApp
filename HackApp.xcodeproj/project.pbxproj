@@ -33,6 +33,8 @@
 		FB0AB0E12C94FF3D003F94E7 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0E02C94FF3D003F94E7 /* FirebaseAppCheck */; };
 		FB0AB0E32C94FF3D003F94E7 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = FB0AB0E22C94FF3D003F94E7 /* FirebaseAppDistribution-Beta */; };
 		FB2F606D2CA37976004D2E55 /* HacksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */; };
+		FB2F60732CA3838B004D2E55 /* HackRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2F60722CA38386004D2E55 /* HackRow.swift */; };
+		FB2F60762CA38449004D2E55 /* HackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2F60752CA38445004D2E55 /* HackView.swift */; };
 		FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CF67D2C8BD6A000835D7B /* HomeView.swift */; };
 		FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */; };
 		FB701F912C93C5CD00EF83E4 /* AddRubroButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */; };
@@ -72,6 +74,8 @@
 		FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipoViewModel.swift; sourceTree = "<group>"; };
 		FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HacksViewModel.swift; sourceTree = "<group>"; };
 		FB2F606E2CA37C32004D2E55 /* HackApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = HackApp.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FB2F60722CA38386004D2E55 /* HackRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackRow.swift; sourceTree = "<group>"; };
+		FB2F60752CA38445004D2E55 /* HackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackView.swift; sourceTree = "<group>"; };
 		FB5CF67D2C8BD6A000835D7B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackForm.swift; sourceTree = "<group>"; };
 		FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRubroButton.swift; sourceTree = "<group>"; };
@@ -186,9 +190,18 @@
 			path = SupportingElements;
 			sourceTree = "<group>";
 		};
+		FB2F60712CA38377004D2E55 /* GetHack */ = {
+			isa = PBXGroup;
+			children = (
+				FB2F60722CA38386004D2E55 /* HackRow.swift */,
+			);
+			path = GetHack;
+			sourceTree = "<group>";
+		};
 		FB3169142C8923610021A389 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				FB2F60712CA38377004D2E55 /* GetHack */,
 				FB701F8B2C93BE6A00EF83E4 /* AddHack */,
 				FBCBA3C62C8A69C3005548A0 /* Buttons */,
 			);
@@ -209,6 +222,7 @@
 		FB3169172C8923F30021A389 /* Admin */ = {
 			isa = PBXGroup;
 			children = (
+				FB2F60752CA38445004D2E55 /* HackView.swift */,
 				FB8ACC0E2C9E42F0002479D5 /* HackListView.swift */,
 				F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */,
 				F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */,
@@ -379,6 +393,7 @@
 				F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */,
 				FB8ACC0F2C9E42F5002479D5 /* HackListView.swift in Sources */,
 				FB0AB0D72C94FA63003F94E7 /* AddEquipoButton.swift in Sources */,
+				FB2F60732CA3838B004D2E55 /* HackRow.swift in Sources */,
 				F8C2E1B12BD0456E00B470F0 /* HomeAdminView.swift in Sources */,
 				FB0AB0D92C94FAA7003F94E7 /* EquipoViewModel.swift in Sources */,
 				F86AC6BD2BF514C900BEAFCA /* HackViewModel.swift in Sources */,
@@ -386,6 +401,7 @@
 				F8BD95742BE0717F002E496B /* Evaluacion.swift in Sources */,
 				FB701F912C93C5CD00EF83E4 /* AddRubroButton.swift in Sources */,
 				F87E76CE2C08F6FA00CEF999 /* RubroViewModel.swift in Sources */,
+				FB2F60762CA38449004D2E55 /* HackView.swift in Sources */,
 				FBFC5E012C9B93F6002813E4 /* AddJuezButton.swift in Sources */,
 				FB701F932C93C62100EF83E4 /* AddRubroPopoverView.swift in Sources */,
 				F8B0CAC62BC6F22D00CB8497 /* HackApp.swift in Sources */,

@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "933764C4-5AA3-4631-815B-03031DFAD37F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HackApp/HackApp.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "HackApp"
-            landmarkType = "14">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "D84D90EF-DF0F-4584-BA85-EE5B4335339D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -34,36 +18,6 @@
             endingLineNumber = "36"
             landmarkName = "previews"
             landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "D84D90EF-DF0F-4584-BA85-EE5B4335339D - be3d40467d676c92"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "HackApp.HacksListView.body.getter : some"
-                  moduleName = "HackApp.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/alumno/Desktop/HackApp/HackApp/Views/Admin/HackListView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "31"
-                  endingLineNumber = "31">
-               </Location>
-               <Location
-                  uuid = "D84D90EF-DF0F-4584-BA85-EE5B4335339D - eb62e885a3de882c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static HackApp.HacksListView_Previews.previews.getter : some"
-                  moduleName = "HackApp.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/alumno/Desktop/HackApp/HackApp/Views/Admin/HackListView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "36"
-                  endingLineNumber = "36">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

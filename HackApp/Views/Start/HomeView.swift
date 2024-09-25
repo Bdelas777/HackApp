@@ -29,6 +29,7 @@ struct HomeView: View {
             .padding()
             .background(Color.white)
             .navigationTitle("Inicio")
+            .edgesIgnoringSafeArea(.all) 
         }
     }
 }
