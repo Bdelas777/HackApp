@@ -23,7 +23,7 @@ struct HomeView: View {
                     title: "Juez",
                     iconName: "person.crop.circle.fill.badge.checkmark",
                     hint: "Botón de juez",
-                    destination: JudgeHomeView()
+                    destination: JudgesView()
                 )
             }
             .padding()

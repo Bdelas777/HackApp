@@ -10,7 +10,5 @@ import Foundation
 class HackViewModel : ObservableObject{
     @Published var hackList = [Hack]()
     
-//    init (hack : [Hack]){
-//        self.hackList = hackList
-//    }
+
 }

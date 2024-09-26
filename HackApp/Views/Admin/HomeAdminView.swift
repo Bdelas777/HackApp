@@ -34,16 +34,15 @@ struct HomeAdminView: View {
                             }
                         }
                         
-                        Spacer() // Pushes content above
+                        Spacer()
                     }
                     .navigationTitle("Tus Hackatons")
                     
-                    // Button positioned at bottom right
+                
                     VStack {
-                        Spacer() // Pushes the button to the bottom
+                        Spacer()
                         HStack {
-                            Spacer() // Pushes the button to the right
-                            Button {
+                            Spacer();                             Button {
                                 isActivated = true
                             } label: {
                                 Label("Nuevo Hackathon", systemImage: "plus")

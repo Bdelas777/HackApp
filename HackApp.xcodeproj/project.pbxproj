@@ -42,6 +42,8 @@
 		FB8ACC0B2C9E4254002479D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB8ACC0A2C9E4254002479D5 /* GoogleService-Info.plist */; };
 		FB8ACC0D2C9E42CB002479D5 /* LinkDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8ACC0C2C9E42C6002479D5 /* LinkDataSource.swift */; };
 		FB8ACC0F2C9E42F5002479D5 /* HackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8ACC0E2C9E42F0002479D5 /* HackListView.swift */; };
+		FB9733C82CA4CD2900A7BE6F /* JudgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9733C72CA4CD2400A7BE6F /* JudgesView.swift */; };
+		FB9733CD2CA4D55D00A7BE6F /* HackInputModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9733CC2CA4D55D00A7BE6F /* HackInputModal.swift */; };
 		FBCBA3C82C8A69EB005548A0 /* StartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBA3C72C8A69EB005548A0 /* StartButton.swift */; };
 		FBCBA3CA2C8A6F01005548A0 /* FontSizeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBA3C92C8A6F01005548A0 /* FontSizeApp.swift */; };
 		FBFC5DFF2C9B93E3002813E4 /* AddJuezPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFC5DFE2C9B93E3002813E4 /* AddJuezPopoverView.swift */; };
@@ -90,6 +92,8 @@
 		FB8ACC0A2C9E4254002479D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FB8ACC0C2C9E42C6002479D5 /* LinkDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkDataSource.swift; sourceTree = "<group>"; };
 		FB8ACC0E2C9E42F0002479D5 /* HackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackListView.swift; sourceTree = "<group>"; };
+		FB9733C72CA4CD2400A7BE6F /* JudgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgesView.swift; sourceTree = "<group>"; };
+		FB9733CC2CA4D55D00A7BE6F /* HackInputModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackInputModal.swift; sourceTree = "<group>"; };
 		FBCBA3C72C8A69EB005548A0 /* StartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartButton.swift; sourceTree = "<group>"; };
 		FBCBA3C92C8A6F01005548A0 /* FontSizeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSizeApp.swift; sourceTree = "<group>"; };
 		FBFC5DFE2C9B93E3002813E4 /* AddJuezPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJuezPopoverView.swift; sourceTree = "<group>"; };
@@ -118,7 +122,6 @@
 			isa = PBXGroup;
 			children = (
 				FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */,
-				FB8ACC0C2C9E42C6002479D5 /* LinkDataSource.swift */,
 				FBFC5E022C9B9452002813E4 /* JuezViewModel.swift */,
 				F86AC6BC2BF514C900BEAFCA /* HackViewModel.swift */,
 				F87E76CD2C08F6FA00CEF999 /* RubroViewModel.swift */,
@@ -178,6 +181,7 @@
 				F8BD956D2BE0711C002E496B /* Juez.swift */,
 				F8BD956F2BE07131002E496B /* Rubro.swift */,
 				F8BD95712BE0713B002E496B /* Hack.swift */,
+				FB8ACC0C2C9E42C6002479D5 /* LinkDataSource.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -201,6 +205,7 @@
 		FB3169142C8923610021A389 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				FB9733C92CA4D41200A7BE6F /* Modal */,
 				FB2F60712CA38377004D2E55 /* GetHack */,
 				FB701F8B2C93BE6A00EF83E4 /* AddHack */,
 				FBCBA3C62C8A69C3005548A0 /* Buttons */,
@@ -234,6 +239,7 @@
 		FB3169182C8923FD0021A389 /* Judge */ = {
 			isa = PBXGroup;
 			children = (
+				FB9733C72CA4CD2400A7BE6F /* JudgesView.swift */,
 				F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */,
 				F81F3FDB2BE420C6007927D7 /* RateJudgeView.swift */,
 			);
@@ -275,6 +281,19 @@
 				FB2F606E2CA37C32004D2E55 /* HackApp.xcodeproj */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		FB9733C52CA4C79100A7BE6F /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FB9733C92CA4D41200A7BE6F /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				FB9733CC2CA4D55D00A7BE6F /* HackInputModal.swift */,
+			);
+			path = Modal;
 			sourceTree = "<group>";
 		};
 		FBCBA3C62C8A69C3005548A0 /* Buttons */ = {
@@ -349,6 +368,12 @@
 			);
 			productRefGroup = F8B0CAC32BC6F22D00CB8497 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FB9733C52CA4C79100A7BE6F /* Products */;
+					ProjectRef = FB2F606E2CA37C32004D2E55 /* HackApp.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				F8B0CAC12BC6F22D00CB8497 /* HackApp */,
@@ -376,6 +401,8 @@
 			files = (
 				FBFC5E032C9B9452002813E4 /* JuezViewModel.swift in Sources */,
 				FB2F606D2CA37976004D2E55 /* HacksViewModel.swift in Sources */,
+				FB9733C82CA4CD2900A7BE6F /* JudgesView.swift in Sources */,
+				FB9733CD2CA4D55D00A7BE6F /* HackInputModal.swift in Sources */,
 				F81F3FDC2BE420C6007927D7 /* RateJudgeView.swift in Sources */,
 				F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */,
 				F8BD95702BE07131002E496B /* Rubro.swift in Sources */,

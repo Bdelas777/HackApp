@@ -11,6 +11,6 @@ struct Evaluacion: Identifiable {
     let id: UUID
     var idEquipo: UUID
     var idJuez: UUID
-    var valoresRubros: [UUID: Double] // Diccionario que asocia un rubro con su valoración
+    var valoresRubros: [UUID: Double] 
 }
 
