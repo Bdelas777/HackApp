@@ -4,13 +4,12 @@
 //
 //  Created by Alumno on 25/09/24.
 //
-
 import SwiftUI
 
 struct JudgesView: View {
     @State private var showModal = true // Show modal by default
     @State private var hackNameInput = ""
-    @State private var selectedHack: HackPrueba?
+    @State private var selectedJudges: [String: [String: Int]]?
     @State private var errorMessage: String?
 
     @ObservedObject var viewModel = HacksViewModel()
@@ -29,7 +28,7 @@ struct JudgesView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
 
                     Button(action: {
-                        fetchHack()
+                        fetchJudges()
                     }) {
                         Text("Buscar Jueces")
                     }
@@ -39,11 +38,11 @@ struct JudgesView: View {
                         Text(errorMessage)
                             .foregroundColor(.red)
                             .padding()
-                    } else if let hack = selectedHack {
-                        Text("Hack encontrado: \(hack.nombre)")
+                    } else if let judges = selectedJudges {
+                        Text("Jueces encontrados:")
                             .padding()
                         
-                        List(hack.jueces.keys.sorted(), id: \.self) { judge in
+                        List(judges.keys.sorted(), id: \.self) { judge in
                             Text(judge)
                         }
                     } else {
@@ -59,14 +58,24 @@ struct JudgesView: View {
         }
     }
 
-    private func fetchHack() {
-        if let hack = viewModel.hacks.first(where: { $0.nombre.lowercased() == hackNameInput.lowercased() }) {
-            selectedHack = hack
-            print(hack)
-            errorMessage = nil
-        } else {
-            selectedHack = nil
-            errorMessage = "No existe un hack con ese nombre."
+    private func fetchJudges() {
+        viewModel.getJudges(for: hackNameInput.lowercased()) { result in
+            switch result {
+            case .success(let judges):
+                selectedJudges = judges
+                errorMessage = nil
+                print("Jueces encontrados: \(judges)")
+            case .failure(let error):
+                selectedJudges = nil
+                errorMessage = "Error al obtener los jueces: \(error.localizedDescription)"
+            }
         }
     }
 }
+
+struct JudgesView_Previews: PreviewProvider {
+    static var previews: some View {
+        JudgesView()
+    }
+}
+

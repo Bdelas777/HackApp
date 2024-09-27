@@ -121,11 +121,11 @@
 		F86AC6BB2BF512A100BEAFCA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */,
 				FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */,
 				FBFC5E022C9B9452002813E4 /* JuezViewModel.swift */,
 				F86AC6BC2BF514C900BEAFCA /* HackViewModel.swift */,
 				F87E76CD2C08F6FA00CEF999 /* RubroViewModel.swift */,
-				FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -579,7 +579,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Hackapp;
+				PRODUCT_BUNDLE_IDENTIFIER = hackapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -610,7 +610,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Hackapp;
+				PRODUCT_BUNDLE_IDENTIFIER = hackapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

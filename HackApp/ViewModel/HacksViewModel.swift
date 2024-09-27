@@ -18,21 +18,13 @@ class HacksViewModel: ObservableObject {
         db.collection("hacks").getDocuments(source: .default) { (querySnapshot, error) in
             if let error = error {
                 print("Error al obtener los documentos: \(error)")
-                
-                // Datos por defecto en caso de error
                 self.hacks = self.defaultHacks()
-                
             } else {
                 self.hacks = querySnapshot?.documents.compactMap { document in
                     let data = document.data()
-                    print(data)
                     
                     let equipos = data["Equipos"] as? [String] ?? []
-                    
-                    // Manejo seguro de jueces
                     let jueces = data["Jueces"] as? [String: [String: Int]?] ?? [:]
-                    
-                    // Conversión de rubros de String a Double
                     let rubrosData = data["Rubros"] as? [String: Any] ?? [:]
                     let rubros = rubrosData.compactMapValues { value -> Double? in
                         if let doubleValue = value as? Double {
@@ -46,8 +38,8 @@ class HacksViewModel: ObservableObject {
                     let estaActivo = data["estaActivo"] as? Bool ?? false
                     let nombre = data["nombre"] as? String ?? ""
                     let tiempoPitch = data["tiempoPitch"] as? Double ?? 0.0
-                    let descripcion = data["descripcion"] as? String ?? "" // Asegúrate de que este campo exista
-                    let fecha = data["fecha"] as? Timestamp ?? Timestamp() // Manejar fecha como Timestamp
+                    let descripcion = data["descripcion"] as? String ?? ""
+                    let fecha = data["fecha"] as? Timestamp ?? Timestamp()
 
                     return HackPrueba(
                         descripcion: descripcion,
@@ -60,14 +52,36 @@ class HacksViewModel: ObservableObject {
                         Fecha: fecha.dateValue()
                     )
                     
-                } ?? self.defaultHacks()  
+                } ?? self.defaultHacks()
             }
             self.isLoading = false
         }
     }
 
+    func getJudges(for hackName: String, completion: @escaping (Result<[String: [String: Int]], Error>) -> Void) {
+        db.collection("hacks").whereField("nombre", isEqualTo: hackName.lowercased()).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents, !documents.isEmpty else {
+                completion(.success([:]))
+                return
+            }
+            
+            // Assuming there is only one hack with the given name
+            let data = documents.first?.data()
+            if let jueces = data?["jueces"] as? [String: [String: Int]] {
+                completion(.success(jueces))
+            } else {
+                completion(.success([:])) // Return empty if no judges found
+            }
+        }
+    }
+
     
-    // Función para generar datos por defecto
+    // Function to generate default hacks
     func defaultHacks() -> [HackPrueba] {
         return [
             HackPrueba(
@@ -92,7 +106,7 @@ class HacksViewModel: ObservableObject {
             )
         ]
     }
-    
+
     func addHackPrueba(hack: HackPrueba, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
             let _ = try db.collection("hacks").addDocument(from: hack) { error in
@@ -106,5 +120,7 @@ class HacksViewModel: ObservableObject {
             completion(.failure(error))
         }
     }
-
+    
 }
+
+
