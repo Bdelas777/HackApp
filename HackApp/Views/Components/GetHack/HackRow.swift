@@ -12,7 +12,12 @@ struct HackRow: View {
 
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 4) { 
+            VStack(alignment: .leading, spacing: 4) {
+                Text(hack.clave)
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
                 Text(hack.nombre)
                     .font(.headline)
                     .fontWeight(.semibold)
@@ -46,9 +51,10 @@ struct HackRow: View {
 
 #Preview {
     HackRow(hack: HackPrueba(
+        clave: "Hack",
         descripcion: "Descripción del hack",
         equipos: ["Equipo A", "Equipo B"],
-        jueces: [:],
+        jueces: [],
         rubros: [:],
         estaActivo: true,
         nombre: "Hackathon Ejemplo",

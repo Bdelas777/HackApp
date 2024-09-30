@@ -9,10 +9,12 @@
 import SwiftUI
 
 struct AddHackView: View {
+    @State var clave: String = ""
     @State var nombre: String = ""
     @State var descripcion: String = ""
     @State var numJueces: Int = 1
     @State var date: Date = Date.now
+    
     @State var tiempoPitch: Double = 0.0
     @StateObject var listaRubros = RubroViewModel()
     @StateObject var listaEquipos = EquipoViewModel()
@@ -23,17 +25,19 @@ struct AddHackView: View {
     
     private var isFormValid: Bool {
         !nombre.isEmpty &&
+        !clave.isEmpty &&
         !descripcion.isEmpty &&
         tiempoPitch > 0 &&
+        !listaEquipos.equipoList.isEmpty &&
+        !listaJueces.juezList.isEmpty &&
         !listaRubros.rubroList.isEmpty
     }
     
     var body: some View {
         VStack {
             AddHackForm(
-                nombre: $nombre,
+                nombre: $nombre, clave: $clave,
                 descripcion: $descripcion,
-                numJueces: $numJueces,
                 date: $date,
                 tiempoPitch: $tiempoPitch,
                 listaRubros: listaRubros,
@@ -43,26 +47,24 @@ struct AddHackView: View {
             )
             Button {
                 let nuevoHack = HackPrueba(
-                    descripcion: descripcion,
-                    equipos: listaEquipos.equipoList.map { $0.nombre }, // Map equipo names to array
-                    jueces: listaJueces.juezList.reduce(into: [String: [String: Int]]()) { result, juez in
-                        result[juez.nombre] = [:]
-                    },
+                    clave: clave, descripcion: descripcion,
+                    equipos: listaEquipos.equipoList.map { $0.nombre },
+                    jueces: listaJueces.juezList.map { $0.nombre },
                     rubros: listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
                     estaActivo: true,
                     nombre: nombre,
                     tiempoPitch: tiempoPitch,
-                    Fecha: date // Ensure 'Fecha' matches your HackPrueba model
+                    Fecha: date
                 )
                 
-                // Call the addHackPrueba function to save to Firestore
+               
                 listaHacks.addHackPrueba(hack: nuevoHack) { result in
                     switch result {
                     case .success:
-                        presentationMode.wrappedValue.dismiss() // Dismiss if successful
+                        presentationMode.wrappedValue.dismiss()
                     case .failure(let error):
                         print("Error adding hack: \(error.localizedDescription)")
-                        showingAlert = true // Show alert if there's an error
+                        showingAlert = true
                     }
                 }
             } label: {

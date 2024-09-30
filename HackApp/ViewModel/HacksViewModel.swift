@@ -22,9 +22,8 @@ class HacksViewModel: ObservableObject {
             } else {
                 self.hacks = querySnapshot?.documents.compactMap { document in
                     let data = document.data()
-                    
                     let equipos = data["Equipos"] as? [String] ?? []
-                    let jueces = data["Jueces"] as? [String: [String: Int]?] ?? [:]
+                    let jueces = data["Jueces"] as? [String] ?? []
                     let rubrosData = data["Rubros"] as? [String: Any] ?? [:]
                     let rubros = rubrosData.compactMapValues { value -> Double? in
                         if let doubleValue = value as? Double {
@@ -40,9 +39,10 @@ class HacksViewModel: ObservableObject {
                     let tiempoPitch = data["tiempoPitch"] as? Double ?? 0.0
                     let descripcion = data["descripcion"] as? String ?? ""
                     let fecha = data["fecha"] as? Timestamp ?? Timestamp()
+                    let clave = data["clave"] as? String ?? ""
 
                     return HackPrueba(
-                        descripcion: descripcion,
+                        clave: clave, descripcion: descripcion,
                         equipos: equipos,
                         jueces: jueces,
                         rubros: rubros,
@@ -85,9 +85,10 @@ class HacksViewModel: ObservableObject {
     func defaultHacks() -> [HackPrueba] {
         return [
             HackPrueba(
+                clave: "HACK1",
                 descripcion: "Descripción del Hackathon 1",
                 equipos: ["Equipo A", "Equipo B"],
-                jueces: ["Juez1": ["Criterio1": 8, "Criterio2": 7], "Juez2": ["Criterio1": 9, "Criterio2": 8]],
+                jueces: ["Juez1", "Juez2"],
                 rubros: ["Rubro1": 0.75, "Rubro2": 0.85],
                 estaActivo: true,
                 nombre: "Hackathon Ejemplo 1",
@@ -95,9 +96,10 @@ class HacksViewModel: ObservableObject {
                 Fecha: Date()
             ),
             HackPrueba(
+                clave: "HACK2",
                 descripcion: "Descripción del Hackathon 2",
                 equipos: ["Equipo X", "Equipo Y"],
-                jueces: ["Juez3": ["Criterio1": 6, "Criterio2": 7], "Juez4": ["Criterio1": 8, "Criterio2": 9]],
+                jueces: ["Juez3", "Juez4"],
                 rubros: ["Rubro3": 0.65, "Rubro4": 0.90],
                 estaActivo: false,
                 nombre: "Hackathon Ejemplo 2",

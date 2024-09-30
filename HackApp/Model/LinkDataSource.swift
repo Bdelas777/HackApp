@@ -9,13 +9,15 @@ import FirebaseFirestore
 
 struct HackPrueba: Identifiable, Encodable{
     var id = UUID().uuidString
+    var clave: String
     var descripcion: String
     var equipos: [String]
-    var jueces: [String: [String: Int]?]
+    var jueces: [String]
     var rubros: [String: Double]
     var estaActivo: Bool
     var nombre: String
     var tiempoPitch: Double
     var Fecha: Date
+    var calificaciones: [String:[String:[Int]]]?
 }
 

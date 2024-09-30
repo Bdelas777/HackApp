@@ -12,6 +12,10 @@ struct HackView: View {
 
     var body: some View {
         VStack {
+            Text(hack.clave)
+                .font(.largeTitle)
+                .padding()
+            
             Text(hack.nombre)
                 .font(.largeTitle)
                 .padding()
@@ -32,5 +36,5 @@ struct HackView: View {
 }
 
 #Preview {
-    HackView(hack: HackPrueba(id: "Ejemplo Hack", descripcion: "Descripción del hack",   equipos: [], jueces: [:], rubros: [:], estaActivo: true, nombre: "Ejemplo", tiempoPitch: 29, Fecha: Date()))
+    HackView(hack: HackPrueba(id: "Ejemplo Hack",clave: "Hack", descripcion: "Descripción del hack",   equipos: [], jueces: [], rubros: [:], estaActivo: true, nombre: "Ejemplo", tiempoPitch: 29, Fecha: Date()))
 }

@@ -8,8 +8,8 @@ import SwiftUI
 
 struct AddHackForm: View {
     @Binding var nombre: String
+    @Binding var clave: String
     @Binding var descripcion: String
-    @Binding var numJueces: Int
     @Binding var date: Date
     @Binding var tiempoPitch: Double
     @ObservedObject var listaRubros: RubroViewModel
@@ -29,6 +29,9 @@ struct AddHackForm: View {
             Section(header: Text("Nombre del Hackathon")) {
                 TextField("Nombre del hack", text: $nombre)
             }
+            Section(header: Text("Clave del Hackathon")) {
+                TextField("Clave del hack", text: $clave)
+            }
             Section(header: Text("Descripción del Hackathon")) {
                 TextField("Descripción del hack", text: $descripcion)
             }
@@ -39,7 +42,7 @@ struct AddHackForm: View {
                 TextField("Tiempo de pitch (minutos)", value: $tiempoPitch, formatter: NumberFormatter())
                     .keyboardType(.decimalPad)
             }
-            Section(header: Text("Rubros")) {
+            Section(header: Text("Rúbrica")) {
                 AddRubroButton(showingAddRubroPopover: $showingAddRubroPopover,
                                listaRubros: listaRubros,
                                rubroNombre: $rubroNombre,
