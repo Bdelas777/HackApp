@@ -8,8 +8,8 @@ import SwiftUI
 
 struct JudgesView: View {
     @State private var showModal = false
-    @State private var hackNameInput = ""
-    @State private var selectedJudges: [String: [String: Int]]?
+    @State private var hackClaveInput = ""
+    @State private var selectedJudges: [String]?
     @State private var errorMessage: String?
     @State private var hasSearched = false
     @ObservedObject var viewModel = HacksViewModel()
@@ -21,8 +21,8 @@ struct JudgesView: View {
                     Text("Escoge tu nombre:")
                         .font(.title)
                         .padding()
-                    List(judges.keys.sorted(), id: \.self) { judge in
-                        NavigationLink(destination: JudgeHomeView()){
+                    List(judges.sorted(), id: \.self) { judge in
+                        NavigationLink(destination: JudgeHomeView(hackClaveInput: hackClaveInput)){
                             Text(judge)
                                 .font(.title2)
                                 .padding()
@@ -52,7 +52,7 @@ struct JudgesView: View {
                 }
                 .popover(isPresented: $showModal) {
                     VStack(spacing: 20) {
-                        TextField("Ingrese el nombre del Hack", text: $hackNameInput)
+                        TextField("Ingrese la clave del Hack", text: $hackClaveInput)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
 
@@ -81,7 +81,7 @@ struct JudgesView: View {
     }
 
     private func fetchJudges() {
-        viewModel.getJudges(for: hackNameInput.lowercased()) { result in
+        viewModel.getJudges(for: hackClaveInput) { result in
             switch result {
             case .success(let judges):
                 if judges.isEmpty {

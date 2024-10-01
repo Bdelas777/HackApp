@@ -58,30 +58,54 @@ class HacksViewModel: ObservableObject {
         }
     }
 
-    func getJudges(for hackName: String, completion: @escaping (Result<[String: [String: Int]], Error>) -> Void) {
-        db.collection("hacks").whereField("nombre", isEqualTo: hackName.lowercased()).getDocuments { (querySnapshot, error) in
+    func getJudges(for hackClave: String, completion: @escaping (Result<[String], Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
+          
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
-                completion(.success([:]))
+                print("No se encontraron documentos para la clave: \(hackClave)")
+                completion(.success([]))
                 return
             }
             
-            // Assuming there is only one hack with the given name
             let data = documents.first?.data()
-            if let jueces = data?["jueces"] as? [String: [String: Int]] {
+            
+            if let jueces = data?["jueces"] as? [String] {
+                print(jueces)
                 completion(.success(jueces))
             } else {
-                completion(.success([:])) // Return empty if no judges found
+                completion(.success([]))
+            }
+        }
+    }
+    
+    func getEquipos(for hackEquipo: String, completion: @escaping (Result<[String], Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackEquipo).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+          
+            guard let documents = querySnapshot?.documents, !documents.isEmpty else {
+                print("No se encontraron documentos para la clave: \(hackEquipo)")
+                completion(.success([]))
+                return
+            }
+            
+            let data = documents.first?.data()
+            
+            if let equipos = data?["equipos"] as? [String] {
+                print(equipos)
+                completion(.success(equipos))
+            } else {
+                completion(.success([]))
             }
         }
     }
 
-    
-    // Function to generate default hacks
     func defaultHacks() -> [HackPrueba] {
         return [
             HackPrueba(
