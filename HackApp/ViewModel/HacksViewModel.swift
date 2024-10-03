@@ -106,6 +106,35 @@ class HacksViewModel: ObservableObject {
         }
     }
     
+    func saveCalificaciones(for hackClave: String, calificaciones: [String: [String: [Int]]], completion: @escaping (Result<Void, Error>) -> Void) {
+        // Fetch the document that matches the hackClave
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents, let document = documents.first else {
+                completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
+                return
+            }
+
+            // Update the document with the new calificaciones structure
+            let documentRef = document.reference
+            documentRef.updateData([
+                "calificaciones": calificaciones
+            ]) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        }
+    }
+
+
+    
     func fetchRubros(for hackClave: String, completion: @escaping (Result<[String: Double], Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -169,7 +198,10 @@ class HacksViewModel: ObservableObject {
 
     func addHackPrueba(hack: HackPrueba, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            let _ = try db.collection("hacks").addDocument(from: hack) { error in
+            var hackWithCalificaciones = hack
+            hackWithCalificaciones.calificaciones = [:]
+            
+            let _ = try db.collection("hacks").addDocument(from: hackWithCalificaciones) { error in
                 if let error = error {
                     completion(.failure(error))
                 } else {
@@ -180,6 +212,8 @@ class HacksViewModel: ObservableObject {
             completion(.failure(error))
         }
     }
+
+    
     
 }
 

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		F81F3FDA2BE2EFE2007927D7 /* JudgeHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */; };
-		F81F3FDC2BE420C6007927D7 /* RateJudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81F3FDB2BE420C6007927D7 /* RateJudgeView.swift */; };
 		F86AC6BD2BF514C900BEAFCA /* HackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86AC6BC2BF514C900BEAFCA /* HackViewModel.swift */; };
 		F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */; };
 		F87E76CE2C08F6FA00CEF999 /* RubroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E76CD2C08F6FA00CEF999 /* RubroViewModel.swift */; };
@@ -53,7 +52,6 @@
 
 /* Begin PBXFileReference section */
 		F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeHomeView.swift; sourceTree = "<group>"; };
-		F81F3FDB2BE420C6007927D7 /* RateJudgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateJudgeView.swift; sourceTree = "<group>"; };
 		F86AC6BC2BF514C900BEAFCA /* HackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackViewModel.swift; sourceTree = "<group>"; };
 		F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackView.swift; sourceTree = "<group>"; };
 		F87E76CD2C08F6FA00CEF999 /* RubroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubroViewModel.swift; sourceTree = "<group>"; };
@@ -238,7 +236,6 @@
 				FBB6DB142CAE0D4B00EB9122 /* GradeView.swift */,
 				FB9733C72CA4CD2400A7BE6F /* JudgesView.swift */,
 				F81F3FD92BE2EFE2007927D7 /* JudgeHomeView.swift */,
-				F81F3FDB2BE420C6007927D7 /* RateJudgeView.swift */,
 			);
 			path = Judge;
 			sourceTree = "<group>";
@@ -391,7 +388,6 @@
 				FBFC5E032C9B9452002813E4 /* JuezViewModel.swift in Sources */,
 				FB2F606D2CA37976004D2E55 /* HacksViewModel.swift in Sources */,
 				FB9733C82CA4CD2900A7BE6F /* JudgesView.swift in Sources */,
-				F81F3FDC2BE420C6007927D7 /* RateJudgeView.swift in Sources */,
 				F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */,
 				F8BD95702BE07131002E496B /* Rubro.swift in Sources */,
 				FB0AB0D52C94F9F2003F94E7 /* AddEquipoPopoverView.swift in Sources */,

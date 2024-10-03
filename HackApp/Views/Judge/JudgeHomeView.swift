@@ -17,17 +17,16 @@ struct JudgeHomeView: View {
         NavigationStack{
             GeometryReader{ geo in
                 ZStack{
-                    List{
-                        ForEach(selectedEquipos ?? dummyData, id: \.self){data in
-                            NavigationLink(destination: GradeView(hackClaveInput: hackClaveInput)){
-                                Text(data)
-                                    .font(.title)
-                                    .fontWeight(.medium)
-                                    .padding()
-                            }
-                        }
-                    }
-                    .listRowSpacing(10)
+                    List {
+                        ForEach(selectedEquipos ?? [], id: \.self) { equipo in
+                                                NavigationLink(destination: GradeView(hackClaveInput: hackClaveInput, selectedEquipo: equipo)) {
+                                                    Text(equipo)
+                                                        .font(.title)
+                                                        .fontWeight(.medium)
+                                                        .padding()
+                                                }
+                                            }
+                                        }                    .listRowSpacing(10)
                 }
             }
             .navigationTitle("Equipos de \(nombreHack)")

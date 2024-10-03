@@ -9,8 +9,10 @@ import SwiftUI
 
 struct GradeView: View {
     let hackClaveInput: String
-    @State private var rubros: [String: String] = [:] 
+    let selectedEquipo: String // New property to hold the selected equipo
+    @State private var rubros: [String: String] = [:]
     @ObservedObject var viewModel = HacksViewModel()
+    @State private var calificaciones: [String: [String: [Int]]] = [:]
 
     var body: some View {
         VStack {
@@ -23,8 +25,11 @@ struct GradeView: View {
                     HStack {
                         Text(key)
                         TextField("Calificación", text: Binding(
-                            get: { rubros[key] ?? "" },
-                            set: { rubros[key] = $0 }
+                            get: { calificaciones[selectedEquipo]?[key]?.map(String.init).joined(separator: ", ") ?? "" },
+                            set: { input in
+                                let scores = input.split(separator: ",").compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
+                                calificaciones[selectedEquipo, default: [:]][key] = scores
+                            }
                         ))
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.decimalPad)
@@ -33,9 +38,8 @@ struct GradeView: View {
                     .padding()
                 }
             }
-            
+
             Button(action: {
-                // Lógica para calificar
                 submitCalificaciones()
             }) {
                 Text("Calificar")
@@ -49,6 +53,7 @@ struct GradeView: View {
         }
         .onAppear {
             fetchRubros()
+            initializeCalificaciones() // Initialize calificaciones when the view appears
         }
     }
 
@@ -56,22 +61,34 @@ struct GradeView: View {
         viewModel.fetchRubros(for: hackClaveInput) { result in
             switch result {
             case .success(let rubrosData):
-                print("Datos de rubros obtenidos: \(rubrosData)") //
-                self.rubros = rubrosData.mapValues {
-                    String($0)
-                }
-                print("Rubros después de la asignación: \(self.rubros)")
+                self.rubros = rubrosData.mapValues { String($0) }
             case .failure(let error):
                 print("Error al obtener rubros: \(error)")
             }
         }
     }
 
+    private func initializeCalificaciones() {
+        calificaciones[selectedEquipo] = [:]
+        for rubro in rubros.keys {
+            calificaciones[selectedEquipo]?[rubro] = []
+        }
+    }
+
     private func submitCalificaciones() {
-        print("Calificaciones enviadas: \(rubros)")
+        let rubrosData = calificaciones
+        
+        viewModel.saveCalificaciones(for: hackClaveInput, calificaciones: rubrosData) { result in
+            switch result {
+            case .success:
+                print("Calificaciones guardadas exitosamente.")
+            case .failure(let error):
+                print("Error al guardar calificaciones: \(error)")
+            }
+        }
     }
 }
 
 #Preview {
-    GradeView(hackClaveInput: "HACK24")
+    GradeView(hackClaveInput: "HACK24", selectedEquipo: "Equipo 1")
 }
