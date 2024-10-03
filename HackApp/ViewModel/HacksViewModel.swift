@@ -105,6 +105,40 @@ class HacksViewModel: ObservableObject {
             }
         }
     }
+    
+    func fetchRubros(for hackClave: String, completion: @escaping (Result<[String: Double], Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents, !documents.isEmpty else {
+                print("No se encontraron documentos para la clave: \(hackClave)")
+                completion(.success([:])) // Devuelve un diccionario vacío si no se encuentran rubros
+                return
+            }
+            
+            let data = documents.first?.data()
+            
+            // Extraer los rubros
+            if let rubrosData = data?["rubros"] as? [String: Any] {
+                let rubros = rubrosData.compactMapValues { value -> Double? in
+                    if let doubleValue = value as? Double {
+                        return doubleValue
+                    } else if let stringValue = value as? String, let convertedValue = Double(stringValue) {
+                        return convertedValue
+                    }
+                    return nil
+                }
+                completion(.success(rubros))
+            } else {
+                completion(.success([:])) // Devuelve un diccionario vacío si no se encuentran rubros
+            }
+        }
+    }
+
+
 
     func defaultHacks() -> [HackPrueba] {
         return [
