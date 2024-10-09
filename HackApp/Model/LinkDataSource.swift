@@ -18,6 +18,6 @@ struct HackPrueba: Identifiable, Encodable{
     var nombre: String
     var tiempoPitch: Double
     var Fecha: Date
-    var calificaciones: [String:[String:[Int]]]?
+    var calificaciones: [String: [String: [String: Double]]]?
 }
 

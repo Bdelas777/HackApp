@@ -4,15 +4,16 @@
 //
 //  Created by Alumno on 02/10/24.
 //
-
 import SwiftUI
 
 struct GradeView: View {
     let hackClaveInput: String
-    let selectedEquipo: String // New property to hold the selected equipo
+    let selectedEquipo: String
+    let nombreJuez: String
     @State private var rubros: [String: String] = [:]
     @ObservedObject var viewModel = HacksViewModel()
-    @State private var calificaciones: [String: [String: [Int]]] = [:]
+    @State private var calificaciones: [String: [String: [String: Double]]] = [:]
+
 
     var body: some View {
         VStack {
@@ -25,10 +26,16 @@ struct GradeView: View {
                     HStack {
                         Text(key)
                         TextField("Calificación", text: Binding(
-                            get: { calificaciones[selectedEquipo]?[key]?.map(String.init).joined(separator: ", ") ?? "" },
+                            get: { calificaciones[selectedEquipo]?[nombreJuez]?[key]?.description ?? "" },
                             set: { input in
-                                let scores = input.split(separator: ",").compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
-                                calificaciones[selectedEquipo, default: [:]][key] = scores
+                                let score = Double(input.trimmingCharacters(in: .whitespaces)) ?? 0.0
+                                if calificaciones[selectedEquipo] == nil {
+                                    calificaciones[selectedEquipo] = [:]
+                                }
+                                if calificaciones[selectedEquipo]?[nombreJuez] == nil {
+                                    calificaciones[selectedEquipo]?[nombreJuez] = [:]
+                                }
+                                calificaciones[selectedEquipo]?[nombreJuez]?[key] = score
                             }
                         ))
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -53,11 +60,12 @@ struct GradeView: View {
         }
         .onAppear {
             fetchRubros()
-            initializeCalificaciones() // Initialize calificaciones when the view appears
+            initializeCalificaciones()
         }
     }
 
     private func fetchRubros() {
+        print(nombreJuez,"Este es su nombre")
         viewModel.fetchRubros(for: hackClaveInput) { result in
             switch result {
             case .success(let rubrosData):
@@ -71,12 +79,13 @@ struct GradeView: View {
     private func initializeCalificaciones() {
         calificaciones[selectedEquipo] = [:]
         for rubro in rubros.keys {
-            calificaciones[selectedEquipo]?[rubro] = []
+            calificaciones[selectedEquipo]?[nombreJuez] = [:]
         }
     }
 
     private func submitCalificaciones() {
-        let rubrosData = calificaciones
+       
+        let rubrosData: [String: [String: [String: Double]]?] = calificaciones
         
         viewModel.saveCalificaciones(for: hackClaveInput, calificaciones: rubrosData) { result in
             switch result {
@@ -90,5 +99,5 @@ struct GradeView: View {
 }
 
 #Preview {
-    GradeView(hackClaveInput: "HACK24", selectedEquipo: "Equipo 1")
+    GradeView(hackClaveInput: "HACK24", selectedEquipo: "Equipo 1", nombreJuez: "NombreJuez")
 }

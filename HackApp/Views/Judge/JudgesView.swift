@@ -1,19 +1,14 @@
-//
-//  JudgesView.swift
-//  HackApp
-//
-//  Created by Alumno on 25/09/24.
-//
 import SwiftUI
 
 struct JudgesView: View {
     @State private var showModal = false
     @State private var hackClaveInput = ""
     @State private var selectedJudges: [String]?
+    @State private var selectedJudge: String = "Selecciona un juez" // Valor predeterminado
     @State private var errorMessage: String?
     @State private var hasSearched = false
     @ObservedObject var viewModel = HacksViewModel()
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -22,12 +17,27 @@ struct JudgesView: View {
                         .font(.title)
                         .padding()
                     List(judges.sorted(), id: \.self) { judge in
-                        NavigationLink(destination: JudgeHomeView(hackClaveInput: hackClaveInput)){
+                        Button(action: {
+                            selectedJudge = judge // Guardar el juez seleccionado
+                        }) {
                             Text(judge)
                                 .font(.title2)
                                 .padding()
                         }
                     }
+
+                    // Navegación siempre disponible pero deshabilitada si no se seleccionó un juez
+                    NavigationLink(destination: JudgeHomeView(hackClaveInput: hackClaveInput, selectedJudge: selectedJudge)) {
+                        Text("Continuar como \(selectedJudge)")
+                            .font(.title2)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(selectedJudge == "Selecciona un juez" ? Color.gray : Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .disabled(selectedJudge == "Selecciona un juez") // Desactivar si no hay selección
+                    .padding()
                 } else if hasSearched {
                     Text(errorMessage ?? "No se encontró ese hack.")
                         .foregroundColor(.red)
@@ -40,7 +50,7 @@ struct JudgesView: View {
                 }
 
                 Spacer()
-                
+
                 Button {
                     showModal.toggle()
                 } label: {
@@ -100,7 +110,6 @@ struct JudgesView: View {
         }
     }
 }
-
 
 struct JudgesView_Previews: PreviewProvider {
     static var previews: some View {
