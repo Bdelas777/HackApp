@@ -228,8 +228,6 @@ class HacksViewModel: ObservableObject {
             completion(.failure(error))
         }
     }
-
-    
     
 }
 

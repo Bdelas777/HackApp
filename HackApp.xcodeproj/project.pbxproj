@@ -23,6 +23,7 @@
 		F8C2E1B12BD0456E00B470F0 /* HomeAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */; };
 		F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */; };
 		F8C2E1B62BD962F800B470F0 /* TeamAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */; };
+		FB012BD12CB747E600D5CF7A /* SimplePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB012BD02CB747E600D5CF7A /* SimplePage.swift */; };
 		FB0AB0D52C94F9F2003F94E7 /* AddEquipoPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0AB0D42C94F9F2003F94E7 /* AddEquipoPopoverView.swift */; };
 		FB0AB0D72C94FA63003F94E7 /* AddEquipoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0AB0D62C94FA63003F94E7 /* AddEquipoButton.swift */; };
 		FB0AB0D92C94FAA7003F94E7 /* EquipoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */; };
@@ -68,6 +69,7 @@
 		F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAdminView.swift; sourceTree = "<group>"; };
 		F8C2E1B32BD2D94400B470F0 /* MainViewButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewButtonStyle.swift; sourceTree = "<group>"; };
 		F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAdminView.swift; sourceTree = "<group>"; };
+		FB012BD02CB747E600D5CF7A /* SimplePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePage.swift; sourceTree = "<group>"; };
 		FB0AB0D42C94F9F2003F94E7 /* AddEquipoPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipoPopoverView.swift; sourceTree = "<group>"; };
 		FB0AB0D62C94FA63003F94E7 /* AddEquipoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipoButton.swift; sourceTree = "<group>"; };
 		FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipoViewModel.swift; sourceTree = "<group>"; };
@@ -153,7 +155,6 @@
 				F8BD956A2BE070A3002E496B /* Model */,
 				F8B0CAC52BC6F22D00CB8497 /* HackApp.swift */,
 				FB8ACC0A2C9E4254002479D5 /* GoogleService-Info.plist */,
-				F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */,
 				F8C2E1B22BD2D91D00B470F0 /* SupportingElements */,
 				F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */,
 				F8B0CACB2BC6F22F00CB8497 /* Preview Content */,
@@ -226,6 +227,8 @@
 				F86AC6BE2BF51F2100BEAFCA /* AddHackView.swift */,
 				F8C2E1B52BD962F800B470F0 /* TeamAdminView.swift */,
 				F8C2E1B02BD0456E00B470F0 /* HomeAdminView.swift */,
+				F8B0CAC72BC6F22D00CB8497 /* ContentView.swift */,
+				FB012BD02CB747E600D5CF7A /* SimplePage.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				FBFC5E032C9B9452002813E4 /* JuezViewModel.swift in Sources */,
 				FB2F606D2CA37976004D2E55 /* HacksViewModel.swift in Sources */,
 				FB9733C82CA4CD2900A7BE6F /* JudgesView.swift in Sources */,
+				FB012BD12CB747E600D5CF7A /* SimplePage.swift in Sources */,
 				F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */,
 				F8BD95702BE07131002E496B /* Rubro.swift in Sources */,
 				FB0AB0D52C94F9F2003F94E7 /* AddEquipoPopoverView.swift in Sources */,

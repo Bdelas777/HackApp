@@ -4,7 +4,7 @@ struct JudgesView: View {
     @State private var showModal = false
     @State private var hackClaveInput = ""
     @State private var selectedJudges: [String]?
-    @State private var selectedJudge: String = "Selecciona un juez" // Valor predeterminado
+    @State private var selectedJudge: String = "Selecciona un juez"
     @State private var errorMessage: String?
     @State private var hasSearched = false
     @ObservedObject var viewModel = HacksViewModel()
@@ -18,15 +18,13 @@ struct JudgesView: View {
                         .padding()
                     List(judges.sorted(), id: \.self) { judge in
                         Button(action: {
-                            selectedJudge = judge // Guardar el juez seleccionado
+                            selectedJudge = judge
                         }) {
                             Text(judge)
                                 .font(.title2)
                                 .padding()
                         }
                     }
-
-                    // Navegación siempre disponible pero deshabilitada si no se seleccionó un juez
                     NavigationLink(destination: JudgeHomeView(hackClaveInput: hackClaveInput, selectedJudge: selectedJudge)) {
                         Text("Continuar como \(selectedJudge)")
                             .font(.title2)
