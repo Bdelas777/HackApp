@@ -4,7 +4,6 @@
 //
 //  Created by Alumno on 24/09/24.
 //
-
 import SwiftUI
 
 struct HackView: View {
@@ -12,55 +11,58 @@ struct HackView: View {
     @State private var selectedEquipos: [String]?
     @ObservedObject var viewModel = HacksViewModel()
 
+    @State private var selectedEquipo: String?
+
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                               Text("Clave:")
-                                   .font(.headline)
-                               Text(hack.clave)
-                                   .font(.title2)
-                                   .padding(.bottom)
+                Text("Clave:")
+                    .font(.headline)
+                Text(hack.clave)
+                    .font(.title2)
+                    .padding(.bottom)
 
-                               Text("Nombre:")
-                                   .font(.headline)
-                               Text(hack.nombre)
-                                   .font(.title2)
-                                   .padding(.bottom)
+                Text("Nombre:")
+                    .font(.headline)
+                Text(hack.nombre)
+                    .font(.title2)
+                    .padding(.bottom)
 
-                               Text("Descripción:")
-                                   .font(.headline)
-                               Text(hack.descripcion)
-                                   .font(.body)
-                                   .padding(.bottom)
+                Text("Descripción:")
+                    .font(.headline)
+                Text(hack.descripcion)
+                    .font(.body)
+                    .padding(.bottom)
 
-                               Text("Fecha:")
-                                   .font(.headline)
-                               Text("\(hack.Fecha, style: .date)")
-                                   .font(.title2)
-                                   .padding(.bottom)
+                Text("Fecha:")
+                    .font(.headline)
+                Text("\(hack.Fecha, style: .date)")
+                    .font(.title2)
+                    .padding(.bottom)
 
-                               Text("Estado:")
-                                   .font(.headline)
-                               Text(hack.estaActivo ? "Activo" : "Inactivo")
-                                   .font(.title2)
-                                   .foregroundColor(hack.estaActivo ? .green : .red)
-                           }
-                           .padding()
-                           .background(Color.white)
-                           .cornerRadius(12)
-                           .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
-                           .padding()
+                Text("Estado:")
+                    .font(.headline)
+                Text(hack.estaActivo ? "Activo" : "Inactivo")
+                    .font(.title2)
+                    .foregroundColor(hack.estaActivo ? .green : .red)
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(12)
+            .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
+            .padding()
+            
             Divider()
 
             Text("Equipos")
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                                    .padding()
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding()
 
             List {
                 if let equipos = selectedEquipos, !equipos.isEmpty {
                     ForEach(equipos, id: \.self) { equipo in
-                        NavigationLink(destination: SimplePage()) {
+                        NavigationLink(destination: SimplePage(hack: hack, equipoSeleccionado: equipo)) { 
                             Text(equipo)
                                 .font(.title2)
                                 .fontWeight(.medium)
