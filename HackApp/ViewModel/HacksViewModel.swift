@@ -235,8 +235,6 @@ class HacksViewModel: ObservableObject {
         }
     }
 
-    
-    
 
     func addHackPrueba(hack: HackPrueba, completion: @escaping (Result<Void, Error>) -> Void) {
         do {

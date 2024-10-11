@@ -13,22 +13,32 @@ struct GradeView: View {
     @State private var rubros: [String: String] = [:]
     @ObservedObject var viewModel = HacksViewModel()
     @State private var calificaciones: [String: [String: [String: Double]]] = [:]
-
+    
+    @State private var showAlert = false
+    @State private var alertMessage = ""
 
     var body: some View {
         VStack {
-            VStack {
-                Text("Rubros de evaluación")
-                    .font(.headline)
-                    .padding()
+            Text("Rubros de evaluación")
+                .font(.headline)
+                .padding()
 
-                ForEach(rubros.keys.sorted(), id: \.self) { key in
-                    HStack {
-                        Text(key)
-                        TextField("Calificación", text: Binding(
-                            get: { calificaciones[selectedEquipo]?[nombreJuez]?[key]?.description ?? "" },
-                            set: { input in
-                                let score = Double(input.trimmingCharacters(in: .whitespaces)) ?? 0.0
+            ForEach(rubros.keys.sorted(), id: \.self) { key in
+                HStack {
+                    Text(key)
+                        .frame(width: 150, alignment: .leading)
+                    
+                    TextField("Calificación", text: Binding(
+                        get: {
+                            let score = calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 0.0
+                            return score == 0 ? "" : String(score)
+                        },
+                        set: { input in
+                            let score = Double(input.trimmingCharacters(in: .whitespaces)) ?? 0.0
+                            if score < 0 || score > 100 {
+                                alertMessage = "La calificación debe estar entre 0 y 100."
+                                showAlert = true
+                            } else {
                                 if calificaciones[selectedEquipo] == nil {
                                     calificaciones[selectedEquipo] = [:]
                                 }
@@ -37,13 +47,13 @@ struct GradeView: View {
                                 }
                                 calificaciones[selectedEquipo]?[nombreJuez]?[key] = score
                             }
-                        ))
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .keyboardType(.decimalPad)
-                        .frame(width: 100)
-                    }
-                    .padding()
+                        }
+                    ))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .keyboardType(.decimalPad)
+                    .frame(width: 100)
                 }
+                .padding(.vertical, 8)
             }
 
             Button(action: {
@@ -52,11 +62,17 @@ struct GradeView: View {
                 Text("Calificar")
                     .font(.headline)
                     .padding()
+                    .frame(maxWidth: .infinity)
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }
-            .padding()
+            .padding(.top)
+
+        }
+        .padding()
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("Aceptar")))
         }
         .onAppear {
             fetchRubros()
@@ -65,7 +81,6 @@ struct GradeView: View {
     }
 
     private func fetchRubros() {
-        print(nombreJuez,"Este es su nombre")
         viewModel.fetchRubros(for: hackClaveInput) { result in
             switch result {
             case .success(let rubrosData):
@@ -84,7 +99,6 @@ struct GradeView: View {
     }
 
     private func submitCalificaciones() {
-       
         let rubrosData: [String: [String: [String: Double]]?] = calificaciones
         
         viewModel.saveCalificaciones(for: hackClaveInput, calificaciones: rubrosData) { result in
