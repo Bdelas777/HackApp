@@ -211,6 +211,32 @@ class HacksViewModel: ObservableObject {
             )
         ]
     }
+    
+    func getCalificaciones(for teamName: String, hackClave: String, completion: @escaping (Result<[String: [String: Double]], Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents, let document = documents.first else {
+                completion(.success([:])) // No se encontró el hack
+                return
+            }
+            
+            let data = document.data()
+            
+            if let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] {
+                let teamCalificaciones = calificaciones[teamName] ?? [:]
+                completion(.success(teamCalificaciones))
+            } else {
+                completion(.success([:]))
+            }
+        }
+    }
+
+    
+    
 
     func addHackPrueba(hack: HackPrueba, completion: @escaping (Result<Void, Error>) -> Void) {
         do {

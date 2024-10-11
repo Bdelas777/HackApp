@@ -62,7 +62,7 @@ struct HackView: View {
             List {
                 if let equipos = selectedEquipos, !equipos.isEmpty {
                     ForEach(equipos, id: \.self) { equipo in
-                        NavigationLink(destination: SimplePage(hack: hack, equipoSeleccionado: equipo)) { 
+                        NavigationLink(destination: TeamView(hack: hack, equipoSeleccionado: equipo)) {
                             Text(equipo)
                                 .font(.title2)
                                 .fontWeight(.medium)
