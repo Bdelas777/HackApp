@@ -19,6 +19,7 @@ struct TeamView: View {
     @State private var totalScore: Double = 0.0
     @State private var rubros: [String: Double] = [:]
     @State private var totalJudges: Int = 0
+
     var body: some View {
         VStack {
             Text(equipoSeleccionado)
@@ -27,36 +28,39 @@ struct TeamView: View {
 
             if isLoading {
                 ProgressView("Cargando calificaciones...")
+                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                    .padding()
             } else {
                 if calificaciones.isEmpty {
-                   
                     TimerView(tiempoPitch: Int(hack.tiempoPitch))
                 } else {
                     Text("Calificaciones:")
                         .font(.headline)
                         .padding()
-                    
+
                     List {
                         ForEach(calificaciones.keys.sorted(), id: \.self) { juez in
-                            Section(header: Text(juez)) {
+                            Section(header: Text(juez).font(.subheadline).foregroundColor(.gray)) {
                                 ForEach(calificaciones[juez]?.keys.sorted() ?? [], id: \.self) { rubro in
                                     let calificacion = calificaciones[juez]?[rubro] ?? 0.0
                                     let pesoRubro = rubros[rubro] ?? 0.0
-                                    
                                     let valorFinal = calculateFinalScore(calificacion: calificacion, peso: pesoRubro)
 
-                                    Text("\(rubro): \(calificacion) Valor del rubro: \(pesoRubro) % (Valor Final: \(valorFinal ))")
+                                    VStack(alignment: .leading) {
+                                        Text("\(rubro): \(String(format: "%.2f", calificacion))")
+                                            .foregroundColor(.black)
+                                        Text("Peso: \(String(format: "%.2f", pesoRubro))% | Valor Final: \(String(format: "%.2f", valorFinal))")
+                                            .font(.footnote)
+                                            .foregroundColor(.gray)
+                                    }
                                 }
                             }
                         }
-                        
                     }
-                   
 
-                    Text("Puntuación General: \(totalJudges > 0 ? totalScore / Double(totalJudges) : 0.0, specifier: "%.2f")")
+                    Text("Puntuación General: \(totalJudges > 0 ? String(format: "%.2f", totalScore / Double(totalJudges)) : "0.00")")
                         .font(.headline)
                         .padding()
-
                 }
             }
         }
@@ -91,7 +95,6 @@ struct TeamView: View {
             switch result {
             case .success(let rubrosData):
                 self.rubros = rubrosData.mapValues { Double($0) }
-                
             case .failure(let error):
                 print("Error al obtener rubros: \(error)")
             }
@@ -104,15 +107,13 @@ struct TeamView: View {
             case .success(let calificaciones):
                 self.calificaciones = calificaciones
                 totalJudges = calificaciones.keys.count
-                print(totalJudges, "Jueces")
-                accumulateScores() // Llama aquí para calcular el total
+                accumulateScores()
             case .failure(let error):
                 print("Error al obtener calificaciones: \(error.localizedDescription)")
             }
             self.isLoading = false
         }
     }
-
 }
 
 #Preview {
@@ -131,5 +132,5 @@ struct TeamView: View {
             "P": ["A": ["rubro": 9]],
             "Q": ["B": ["rubro": 78]]
         ]
-    ),  equipoSeleccionado: "Equipo 1")
+    ), equipoSeleccionado: "Equipo 1")
 }
