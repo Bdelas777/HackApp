@@ -13,46 +13,55 @@ struct HomeAdminView: View {
 
     var body: some View {
         NavigationStack {
-            GeometryReader { geo in
-                ZStack {
-                    VStack {
-                        if hackData.hacks.isEmpty {
-                            if hackData.isLoading {
-                                Text("Cargando...")
-                                    .font(.largeTitle)
-                                    .padding()
-                            } else {
-                                Text("No hay hacks disponibles")
-                                    .font(.largeTitle)
-                                    .padding()
-                            }
+            ZStack {
+                Color(.systemGray6) // Background color
+                    .ignoresSafeArea()
+
+                VStack {
+                    if hackData.hacks.isEmpty {
+                        if hackData.isLoading {
+                            ProgressView("Cargando...")
+                                .font(.largeTitle)
+                                .padding()
                         } else {
-                            List(hackData.hacks) { hack in
-                                NavigationLink(destination: HackView(hack: hack)) {
-                                    HackRow(hack: hack)
-                                }
-                            }
+                            Text("No hay hacks disponibles")
+                                .font(.largeTitle)
+                                .padding()
+                                .foregroundColor(.gray)
                         }
-                        
-                        Spacer()
-                    }
-                    .navigationTitle("Tus Hackatons")
-                    
-                
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Spacer();                             Button {
-                                isActivated = true
-                            } label: {
-                                Label("Nuevo Hackathon", systemImage: "plus")
-                                    .font(.title)
-                                    .bold()
+                    } else {
+                        List(hackData.hacks) { hack in
+                            NavigationLink(destination: HackView(hack: hack)) {
+                                HackRow(hack: hack)
                                     .padding()
+                                    .background(Color.white)
+                                    .cornerRadius(8)
+                                    .shadow(radius: 3)
                             }
-                            .buttonStyle(MainViewButtonStyle())
-                            .padding()
+                            .buttonStyle(PlainButtonStyle())
                         }
+                        .listStyle(PlainListStyle())                    }
+
+                    Spacer()
+                }
+                .navigationTitle("Tus Hackatons")
+                .padding(.bottom, 20)
+
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button {
+                            isActivated = true
+                        }  label: {
+                            Label("Nuevo Hackathon", systemImage: "plus")
+                                .font(.title)
+                                .bold()
+                                .padding()
+                        }
+                        .buttonStyle(MainViewButtonStyle())
+                        .padding()
+                    
                     }
                 }
             }
