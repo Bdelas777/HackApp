@@ -4,7 +4,6 @@
 //
 //  Created by Alumno on 24/09/24.
 //
-
 import SwiftUI
 
 struct HackView: View {

@@ -16,8 +16,9 @@ struct TeamView: View {
     @State private var timer: Timer?
     @State private var isRunning = false
     @State private var finalScores: [String: Double] = [:]
-    @State private var generalScore: Double = 0.0
+    @State private var totalScore: Double = 0.0
     @State private var rubros: [String: Double] = [:]
+    @State private var totalJudges: Int = 0
     var body: some View {
         VStack {
             Text(equipoSeleccionado)
@@ -45,17 +46,17 @@ struct TeamView: View {
                                     let valorFinal = calculateFinalScore(calificacion: calificacion, peso: pesoRubro)
 
                                     Text("\(rubro): \(calificacion) Valor del rubro: \(pesoRubro) % (Valor Final: \(valorFinal ))")
-                                    
-                                    
-                                    
                                 }
                             }
                         }
+                        
                     }
-                   // calculateGeneralScore()
-                    //Text("Puntuación General: \(generalScore, specifier: "%.2f")")
-                        //                    .font(.headline)
-                         //                   .padding()
+                   
+
+                    Text("Puntuación General: \(totalJudges > 0 ? totalScore / Double(totalJudges) : 0.0, specifier: "%.2f")")
+                        .font(.headline)
+                        .padding()
+
                 }
             }
         }
@@ -68,21 +69,29 @@ struct TeamView: View {
     }
     
     private func calculateFinalScore(calificacion: Double, peso: Double) -> Double {
-            return (calificacion * peso) / 100.0
-        }
+        return (calificacion * peso) / 100.0
+    }
 
-        private func calculateGeneralScore() {
-            //let totalJudges = finalScores.count
-            //let totalScore = finalScores.values.reduce(0, +)
-            //generalScore = totalJudges > 0 ? totalScore / Double(totalJudges) : 0.0
+    private func accumulateScores() {
+        totalScore = 0.0
+        for juez in calificaciones.keys {
+            if let rubrosDelJuez = calificaciones[juez] {
+                for rubro in rubrosDelJuez.keys {
+                    let calificacion = rubrosDelJuez[rubro] ?? 0.0
+                    let pesoRubro = rubros[rubro] ?? 0.0
+                    let valorFinal = calculateFinalScore(calificacion: calificacion, peso: pesoRubro)
+                    totalScore += valorFinal
+                }
+            }
         }
-    
+    }
+
     private func fetchRubros() {
         viewModel.fetchRubros(for: hack.clave) { result in
             switch result {
             case .success(let rubrosData):
                 self.rubros = rubrosData.mapValues { Double($0) }
-                print(rubros)
+                
             case .failure(let error):
                 print("Error al obtener rubros: \(error)")
             }
@@ -90,17 +99,20 @@ struct TeamView: View {
     }
     
     private func fetchCalificaciones() {
-        let viewModel = HacksViewModel()
         viewModel.getCalificaciones(for: equipoSeleccionado, hackClave: hack.clave) { result in
             switch result {
             case .success(let calificaciones):
                 self.calificaciones = calificaciones
+                totalJudges = calificaciones.keys.count
+                print(totalJudges, "Jueces")
+                accumulateScores() // Llama aquí para calcular el total
             case .failure(let error):
                 print("Error al obtener calificaciones: \(error.localizedDescription)")
             }
             self.isLoading = false
         }
     }
+
 }
 
 #Preview {
