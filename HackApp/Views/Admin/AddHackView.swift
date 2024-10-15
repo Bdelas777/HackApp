@@ -58,7 +58,7 @@ struct AddHackView: View {
                 )
                 
                
-                listaHacks.addHackPrueba(hack: nuevoHack) { result in
+                listaHacks.addHack(hack: nuevoHack) { result in
                     switch result {
                     case .success:
                         presentationMode.wrappedValue.dismiss()

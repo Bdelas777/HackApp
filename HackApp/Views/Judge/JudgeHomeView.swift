@@ -20,7 +20,7 @@ struct JudgeHomeView: View {
                 ZStack {
                     List {
                         ForEach(selectedEquipos ?? [], id: \.self) { equipo in
-                            NavigationLink(destination: GradeView(hackClaveInput: hackClaveInput, selectedEquipo: equipo, nombreJuez: selectedJudge ?? "")) {
+                            NavigationLink(destination: GradeView(hackClaveInput: hackClaveInput, selectedEquipo: equipo, nombreJuez: selectedJudge)) {
                                 Text(equipo)
                                     .font(.title)
                                     .fontWeight(.medium)
