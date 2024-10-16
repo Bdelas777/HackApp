@@ -303,7 +303,50 @@ class HacksViewModel: ObservableObject {
         }
     }
 
+    func fetchAndCalculateScores(for equipo: String, hackClave: String, completion: @escaping (Result<Double, Error>) -> Void) {
+            // Primero, obtenemos las calificaciones
+            getCalificaciones(for: equipo, hackClave: hackClave) { result in
+                switch result {
+                case .success(let calificaciones):
+                    // Ahora obtenemos los rubros
+                    self.fetchRubros(for: hackClave) { rubrosResult in
+                        switch rubrosResult {
+                        case .success(let rubros):
+                            // Acumulamos la puntuación total
+                            let totalScore = self.accumulateScores(calificaciones: calificaciones, rubros: rubros,equipo: equipo, hackClave: hackClave)
+                            completion(.success(totalScore))
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
 
+    private func accumulateScores(calificaciones: [String: [String: Double]], rubros: [String: Double], equipo: String, hackClave: String) -> Double {
+            var totalScore: Double = 0.0
+            var totalJudges: Int = 0
+
+            for juez in calificaciones.keys {
+                if let rubrosDelJuez = calificaciones[juez] {
+                    for rubro in rubrosDelJuez.keys {
+                        let calificacion = rubrosDelJuez[rubro] ?? 0.0
+                        let pesoRubro = rubros[rubro] ?? 0.0
+                        let valorFinal = (calificacion * pesoRubro) / 100.0
+                        totalScore += valorFinal
+                    }
+                    totalJudges += 1
+                }
+            }
+            
+            // Guardar el puntaje final
+            let finalScore = totalJudges > 0 ? totalScore / Double(totalJudges) : 0.0
+            updateOrSaveCalificaciones(for: equipo, with: finalScore, hackClave: hackClave) { _ in }
+            
+            return finalScore
+        }
 
 
 }

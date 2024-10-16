@@ -11,8 +11,6 @@ struct HackView: View {
     @State private var selectedEquipos: [String]?
     @ObservedObject var viewModel = HacksViewModel()
 
-    @State private var selectedEquipo: String?
-
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -88,8 +86,27 @@ struct HackView: View {
             switch result {
             case .success(let equipos):
                 selectedEquipos = equipos.isEmpty ? nil : equipos
+                // Calcular puntajes para cada equipo
+                if let equipos = selectedEquipos {
+                    for equipo in equipos {
+                        fetchAndCalculateScores(for: equipo, hackClave: hack.clave)
+                    }
+                }
             case .failure:
                 selectedEquipos = nil
+            }
+        }
+    }
+
+    private func fetchAndCalculateScores(for equipo: String, hackClave: String) {
+        viewModel.fetchAndCalculateScores(for: equipo, hackClave: hackClave) { result in
+            switch result {
+            case .success(let totalScore):
+                print("Puntuación total para \(equipo): \(totalScore)")
+                // Puedes actualizar la UI o mostrar un mensaje si lo deseas
+            case .failure(let error):
+                print("Error al calcular la puntuación: \(error)")
+                // Manejar el error si es necesario
             }
         }
     }

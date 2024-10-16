@@ -88,7 +88,6 @@ struct TeamView: View {
                 }
             }
         }
-        saveFinalScore()
     }
 
     private func fetchRubros() {
@@ -101,19 +100,6 @@ struct TeamView: View {
             }
         }
     }
-    
-    private func saveFinalScore() {
-        let finalScore = totalScore / Double(totalJudges)
-        viewModel.updateOrSaveCalificaciones(for: equipoSeleccionado, with: finalScore, hackClave: hack.clave) { result in
-            switch result {
-            case .success:
-                print("Calificación guardada con éxito.")
-            case .failure(let error):
-                print("Error al guardar calificación: \(error.localizedDescription)")
-            }
-        }
-    }
-
     
     private func fetchCalificaciones() {
         viewModel.getCalificaciones(for: equipoSeleccionado, hackClave: hack.clave) { result in
