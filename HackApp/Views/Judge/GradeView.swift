@@ -19,25 +19,27 @@ struct GradeView: View {
     @State private var alertMessage = ""
     @State private var alreadyRated = false
     
-    // Para manejar el enfoque del teclado
     @FocusState private var focusedField: String?
 
     var body: some View {
         VStack {
             Text("Rubros de evaluación")
-                .font(.headline)
-                .padding()
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding(.top)
 
             if alreadyRated {
                 Text("Ya has calificado este equipo.")
-                    .font(.subheadline)
+                    .font(.title3)
                     .foregroundColor(.green)
                     .padding()
             } else {
                 ForEach(rubros.keys.sorted(), id: \.self) { key in
                     HStack {
                         Text(key)
-                            .frame(width: 150, alignment: .leading)
+                            .frame(width: 200, alignment: .leading) // Ampliar el ancho
+                            .font(.headline)
+                            .font(.system(size: 20)) // Aumentar el tamaño de la fuente
                         
                         TextField("Calificación", text: Binding(
                             get: {
@@ -62,10 +64,11 @@ struct GradeView: View {
                         ))
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.decimalPad)
-                        .frame(width: 100)
-                        .focused($focusedField, equals: key) // Establecer el campo enfocado
+                        .frame(width: 120) // Aumentar el ancho del cuadro
+                        .font(.system(size: 20)) // Aumentar el tamaño de la fuente
+                        .focused($focusedField, equals: key)
                     }
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 12) // Aumentar el padding vertical
                 }
 
                 Button(action: {
@@ -78,11 +81,16 @@ struct GradeView: View {
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(8)
+                        .font(.system(size: 20)) // Aumentar el tamaño de la fuente
+                        .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
                 }
                 .padding(.top)
             }
         }
         .padding()
+        .background(Color(UIColor.systemGray6)) // Fondo suave
+        .cornerRadius(12)
+        .shadow(radius: 5)
         .alert(isPresented: $showAlert) {
             Alert(
                 title: Text(alreadyRated ? "Éxito" : "Error"),

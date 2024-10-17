@@ -5,7 +5,6 @@
 //  Created by Alumno on 15/10/24.
 //
 
-
 import SwiftUI
 import Charts
 
@@ -13,17 +12,21 @@ struct ResultsView: View {
     var hack: HackPrueba
     @ObservedObject var viewModel = HacksViewModel()
     
-    @State private var scores: [String: Double] = [:] // Para almacenar los puntajes de los equipos
+    @State private var scores: [String: Double] = [:]
     @State private var topTeams: [(team: String, score: Double)] = []
     
     var body: some View {
         VStack {
             Text("Resultados del Hackathon")
                 .font(.largeTitle)
+                .fontWeight(.bold)
                 .padding()
-            
+                .foregroundColor(.primary)
+
             if topTeams.isEmpty {
                 Text("No hay resultados disponibles.")
+                    .font(.headline)
+                    .foregroundColor(.gray)
                     .padding()
             } else {
                 Chart(topTeams, id: \.team) { team in
@@ -35,39 +38,47 @@ struct ResultsView: View {
                 }
                 .frame(height: 300)
                 .padding()
+                .background(Color.white)
+                .cornerRadius(12)
+                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
                 
                 Text("Mejores Equipos")
                     .font(.title2)
-                    .padding()
-                
+                    .fontWeight(.bold)
+                    .padding(.top)
+
                 ForEach(topTeams.prefix(3), id: \.team) { team in
                     HStack {
                         Text(team.team)
                             .fontWeight(.bold)
+                            .foregroundColor(.primary)
                         Spacer()
                         Text("\(String(format: "%.2f", team.score)) / 100")
                             .fontWeight(.bold)
+                            .foregroundColor(.accentColor)
                     }
                     .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                    .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+                    .padding(.horizontal)
                 }
             }
         }
+        .padding()
+        .background(Color(UIColor.systemGroupedBackground))
         .onAppear {
             fetchScores()
         }
     }
     
-   private func fetchScores() {
+    private func fetchScores() {
         viewModel.getScores(for: hack.clave) { result in
             switch result {
             case .success(let scores):
-                // Asegúrate de que `scores` contenga todos los equipos
                 self.scores = scores
-                
-                // Mapea los puntajes a tuplas y ordena
                 self.topTeams = scores.map { (team: $0.key, score: $0.value) }
                     .sorted(by: { $0.score > $1.score })
-                
             case .failure(let error):
                 print("Error al obtener los puntajes: \(error)")
             }
