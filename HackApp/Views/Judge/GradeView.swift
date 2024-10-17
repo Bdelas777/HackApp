@@ -10,6 +10,7 @@ struct GradeView: View {
     let hackClaveInput: String
     let selectedEquipo: String
     let nombreJuez: String
+    
     @State private var rubros: [String: String] = [:]
     @ObservedObject var viewModel = HacksViewModel()
     @State private var calificaciones: [String: [String: [String: Double]]] = [:]
@@ -17,6 +18,9 @@ struct GradeView: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var alreadyRated = false
+    
+    // Para manejar el enfoque del teclado
+    @FocusState private var focusedField: String?
 
     var body: some View {
         VStack {
@@ -59,6 +63,7 @@ struct GradeView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.decimalPad)
                         .frame(width: 100)
+                        .focused($focusedField, equals: key) // Establecer el campo enfocado
                     }
                     .padding(.vertical, 8)
                 }
@@ -105,7 +110,7 @@ struct GradeView: View {
 
     private func initializeCalificaciones() {
         calificaciones[selectedEquipo] = [:]
-        for rubro in rubros.keys {
+        for _ in rubros.keys {
             calificaciones[selectedEquipo]?[nombreJuez] = [:]
         }
     }
@@ -114,13 +119,12 @@ struct GradeView: View {
         viewModel.getCalificacionesJuez(for: selectedEquipo, judgeName: nombreJuez, hackClave: hackClaveInput) { result in
             switch result {
             case .success(let calif):
-                alreadyRated = calif != nil // Verifica si hay calificaciones para el juez
+                alreadyRated = calif != nil
             case .failure(let error):
                 print("Error al verificar calificaciones: \(error)")
             }
         }
     }
-
 
     private func submitCalificaciones() {
         let rubrosData: [String: [String: [String: Double]]?] = calificaciones

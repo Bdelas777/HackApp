@@ -4,6 +4,7 @@
 //
 //  Created by Alumno on 24/09/24.
 //
+
 import SwiftUI
 
 struct HackView: View {
@@ -56,6 +57,17 @@ struct HackView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding()
+            
+            NavigationLink(destination: ResultsView(hack: hack)) {
+                Text("Ver Resultados")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            .padding()
 
             List {
                 if let equipos = selectedEquipos, !equipos.isEmpty {
@@ -86,7 +98,6 @@ struct HackView: View {
             switch result {
             case .success(let equipos):
                 selectedEquipos = equipos.isEmpty ? nil : equipos
-                // Calcular puntajes para cada equipo
                 if let equipos = selectedEquipos {
                     for equipo in equipos {
                         fetchAndCalculateScores(for: equipo, hackClave: hack.clave)

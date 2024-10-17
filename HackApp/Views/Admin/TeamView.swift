@@ -34,9 +34,7 @@ struct TeamView: View {
                 if calificaciones.isEmpty {
                     TimerView(tiempoPitch: Int(hack.tiempoPitch))
                 } else {
-                    Text("Calificaciones:")
-                        .font(.headline)
-                        .padding()
+                  
 
                     List {
                         ForEach(calificaciones.keys.sorted(), id: \.self) { juez in

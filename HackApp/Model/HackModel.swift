@@ -7,7 +7,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct HackPrueba: Identifiable, Encodable{
+struct HackPrueba: Identifiable, Encodable {
     var id = UUID().uuidString
     var clave: String
     var descripcion: String
@@ -19,6 +19,7 @@ struct HackPrueba: Identifiable, Encodable{
     var tiempoPitch: Double
     var Fecha: Date
     var calificaciones: [String: [String: [String: Double]]]?
-    var finalScores: [String : Double]?
+    var finalScores: [String: Double]?
 }
+
 

@@ -1,10 +1,3 @@
-//
-//  HacksViewModel.swift
-//  HackApp
-//
-//  Created by Alumno on 24/09/24.
-//
-
 import Foundation
 import FirebaseFirestore
 
@@ -12,6 +5,7 @@ class HacksViewModel: ObservableObject {
     @Published var hacks = [HackPrueba]()
     private var db = Firestore.firestore()
     @Published var isLoading = false
+    @Published var totalScores: [String: Double] = [:]
     
     func fetchHacks() {
         isLoading = true
@@ -40,8 +34,10 @@ class HacksViewModel: ObservableObject {
                     let descripcion = data["descripcion"] as? String ?? ""
                     let fecha = data["fecha"] as? Timestamp ?? Timestamp()
                     let clave = data["clave"] as? String ?? ""
-                    
+
                     let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
+
+                   
                     let finalScores = data["finalScores"] as? [String: Double] ?? [:]
 
                     return HackPrueba(
@@ -55,13 +51,14 @@ class HacksViewModel: ObservableObject {
                         tiempoPitch: tiempoPitch,
                         Fecha: fecha.dateValue(),
                         calificaciones: calificaciones,
-                        finalScores: finalScores
+                        finalScores: finalScores // Asignar correctamente
                     )
                 } ?? self.defaultHacks()
             }
             self.isLoading = false
         }
     }
+
 
     func getJudges(for hackClave: String, completion: @escaping (Result<[String], Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
@@ -217,7 +214,7 @@ class HacksViewModel: ObservableObject {
             }
             
             guard let documents = querySnapshot?.documents, let document = documents.first else {
-                completion(.success([:])) // No se encontró el hack
+                completion(.success([:]))
                 return
             }
             
@@ -236,8 +233,14 @@ class HacksViewModel: ObservableObject {
         do {
             var hackWithCalificaciones = hack
             hackWithCalificaciones.calificaciones = [:]
-            hackWithCalificaciones.finalScores = [:]
             
+            // Crear el diccionario de finalScores con los equipos y su puntaje inicial
+            var finalScores: [String: Double] = [:]
+            for equipo in hack.equipos {
+                finalScores[equipo] = 0.0
+            }
+            hackWithCalificaciones.finalScores = finalScores
+
             let _ = try db.collection("hacks").addDocument(from: hackWithCalificaciones) { error in
                 if let error = error {
                     completion(.failure(error))
@@ -249,6 +252,8 @@ class HacksViewModel: ObservableObject {
             completion(.failure(error))
         }
     }
+
+
     
     func getCalificacionesJuez(for teamName: String, judgeName: String, hackClave: String, completion: @escaping (Result<[String: Double]?, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
@@ -273,7 +278,14 @@ class HacksViewModel: ObservableObject {
         }
     }
 
+    
     func updateOrSaveCalificaciones(for equipo: String, with finalScore: Double, hackClave: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        // Solo actualizar si finalScore es mayor que 0
+        guard finalScore > 0 else {
+            completion(.success(())) // No se realiza ninguna actualización, pero se considera exitoso
+            return
+        }
+        
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
@@ -286,14 +298,9 @@ class HacksViewModel: ObservableObject {
             }
 
             let documentRef = document.reference
-            var existingData = document.data()
-            var existingCalificaciones = existingData["finalScores"] as? [String: Double] ?? [:]
-
-            // Update the score for the specified team
-            existingCalificaciones[equipo] = finalScore
-
-            // Update the document with the new calificaciones structure
-            documentRef.updateData(["finalScores": existingCalificaciones]) { error in
+            
+            // Update only the score for the specified team
+            documentRef.updateData(["finalScores.\(equipo)": finalScore]) { error in
                 if let error = error {
                     completion(.failure(error))
                 } else {
@@ -303,50 +310,77 @@ class HacksViewModel: ObservableObject {
         }
     }
 
+
+
+
     func fetchAndCalculateScores(for equipo: String, hackClave: String, completion: @escaping (Result<Double, Error>) -> Void) {
-            // Primero, obtenemos las calificaciones
-            getCalificaciones(for: equipo, hackClave: hackClave) { result in
-                switch result {
-                case .success(let calificaciones):
-                    // Ahora obtenemos los rubros
-                    self.fetchRubros(for: hackClave) { rubrosResult in
-                        switch rubrosResult {
-                        case .success(let rubros):
-                            // Acumulamos la puntuación total
-                            let totalScore = self.accumulateScores(calificaciones: calificaciones, rubros: rubros,equipo: equipo, hackClave: hackClave)
-                            completion(.success(totalScore))
-                        case .failure(let error):
-                            completion(.failure(error))
+                // Primero, obtenemos las calificaciones
+                getCalificaciones(for: equipo, hackClave: hackClave) { result in
+                    switch result {
+                    case .success(let calificaciones):
+                        // Ahora obtenemos los rubros
+                        self.fetchRubros(for: hackClave) { rubrosResult in
+                            switch rubrosResult {
+                            case .success(let rubros):
+                                // Acumulamos la puntuación total
+                                let totalScore = self.accumulateScores(calificaciones: calificaciones, rubros: rubros,equipo: equipo, hackClave: hackClave)
+                                completion(.success(totalScore))
+                            case .failure(let error):
+                                completion(.failure(error))
+                            }
                         }
+                    case .failure(let error):
+                        completion(.failure(error))
                     }
-                case .failure(let error):
-                    completion(.failure(error))
                 }
             }
-        }
 
-    private func accumulateScores(calificaciones: [String: [String: Double]], rubros: [String: Double], equipo: String, hackClave: String) -> Double {
-            var totalScore: Double = 0.0
-            var totalJudges: Int = 0
+        private func accumulateScores(calificaciones: [String: [String: Double]], rubros: [String: Double], equipo: String, hackClave: String) -> Double {
+                var totalScore: Double = 0.0
+                var totalJudges: Int = 0
 
-            for juez in calificaciones.keys {
-                if let rubrosDelJuez = calificaciones[juez] {
-                    for rubro in rubrosDelJuez.keys {
-                        let calificacion = rubrosDelJuez[rubro] ?? 0.0
-                        let pesoRubro = rubros[rubro] ?? 0.0
-                        let valorFinal = (calificacion * pesoRubro) / 100.0
-                        totalScore += valorFinal
+                for juez in calificaciones.keys {
+                    if let rubrosDelJuez = calificaciones[juez] {
+                        for rubro in rubrosDelJuez.keys {
+                            let calificacion = rubrosDelJuez[rubro] ?? 0.0
+                            let pesoRubro = rubros[rubro] ?? 0.0
+                            let valorFinal = (calificacion * pesoRubro) / 100.0
+                            totalScore += valorFinal
+                        }
+                        totalJudges += 1
                     }
-                    totalJudges += 1
                 }
+            
+                let finalScore = totalJudges > 0 ? totalScore / Double(totalJudges) : 0.0
+                updateOrSaveCalificaciones(for: equipo, with: finalScore, hackClave: hackClave) { _ in }
+                
+                return finalScore
+            }
+
+    func getScores(for hackClave: String, completion: @escaping (Result<[String: Double], Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
             }
             
-            // Guardar el puntaje final
-            let finalScore = totalJudges > 0 ? totalScore / Double(totalJudges) : 0.0
-            updateOrSaveCalificaciones(for: equipo, with: finalScore, hackClave: hackClave) { _ in }
+            guard let documents = querySnapshot?.documents, let document = documents.first else {
+                completion(.success([:]))
+                return
+            }
             
-            return finalScore
+            let data = document.data()
+            
+            if let finalScores = data["finalScores"] as? [String: Double] {
+                completion(.success(finalScores))
+            } else {
+                completion(.success([:]))
+            }
         }
+    }
 
 
-}
+    }
+
+        
+   
