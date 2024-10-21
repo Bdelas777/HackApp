@@ -10,16 +10,17 @@ struct HackView: View {
     var hack: HackPrueba
     @State private var selectedEquipos: [String]?
     @ObservedObject var viewModel = HacksViewModel()
-
+    
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                
-
                 infoSection(title: "Clave:", content: hack.clave)
                 infoSection(title: "Nombre:", content: hack.nombre)
                 infoSection(title: "Descripción:", content: hack.descripcion)
-                infoSection(title: "Fecha:", content: formattedDate(hack.FechaStart))
+                infoSection(title: "Fecha Inicio:", content: formattedDate(hack.FechaStart))
+                infoSection(title: "Fecha Fin:", content: formattedDate(hack.FechaEnd))
+                infoSection(title: "Estes el valor del rubro:", content: String(hack.valorRubro))
                 infoSection(title: "Estado:", content: hack.estaActivo ? "Activo" : "Inactivo", isStatus: true)
             }
             .padding()
@@ -105,7 +106,7 @@ struct HackView: View {
                 selectedEquipos = equipos.isEmpty ? nil : equipos
                 if let equipos = selectedEquipos {
                     for equipo in equipos {
-                        fetchAndCalculateScores(for: equipo, hackClave: hack.clave)
+                        fetchAndCalculateScores(for: equipo, hackClave: hack.clave, valorRubro: hack.valorRubro)
                     }
                 }
             case .failure:
@@ -114,8 +115,8 @@ struct HackView: View {
         }
     }
 
-    private func fetchAndCalculateScores(for equipo: String, hackClave: String) {
-        viewModel.fetchAndCalculateScores(for: equipo, hackClave: hackClave) { result in
+    private func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int) { // Asegúrate de incluir valorRubro como parámetro
+        viewModel.fetchAndCalculateScores(for: equipo, hackClave: hackClave, valorRubro: valorRubro) { result in
             switch result {
             case .success(let totalScore):
                 print("Puntuación total para \(equipo): \(totalScore)")

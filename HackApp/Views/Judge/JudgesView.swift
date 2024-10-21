@@ -34,7 +34,7 @@ struct JudgesView: View {
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
-                    .disabled(selectedJudge == "Selecciona un juez") // Desactivar si no hay selección
+                    .disabled(selectedJudge == "Selecciona un juez")
                     .padding()
                 } else if hasSearched {
                     Text(errorMessage ?? "No se encontró ese hack.")

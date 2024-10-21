@@ -42,9 +42,9 @@ class HacksViewModel: ObservableObject {
                     let nombre = data["nombre"] as? String ?? ""
                     let tiempoPitch = data["tiempoPitch"] as? Double ?? 0.0
                     let descripcion = data["descripcion"] as? String ?? ""
-                    let fechastart = data["fechastart"] as? Timestamp ?? Timestamp()
-                    let fechaend = data["fechaend"] as? Timestamp ?? Timestamp()
-                    let valorrubro = data["valorrubro"] as? Int ?? 0
+                    let fechastart = data["FechaStart"] as? Timestamp ?? Timestamp()
+                    let fechaend = data["Fechaend"] as? Timestamp ?? Timestamp()
+                    let valorrubro = data["valorRubro"] as? Int ?? 0
                     let clave = data["clave"] as? String ?? ""
                     let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
                     let finalScores = data["finalScores"] as? [String: Double] ?? [:]
@@ -366,8 +366,9 @@ class HacksViewModel: ObservableObject {
     ///   - equipo: Nombre del equipo.
     ///   - hackClave: Clave del hackathon.
     ///   - completion: Closure que devuelve el puntaje total o un error.
-    func fetchAndCalculateScores(for equipo: String, hackClave: String, completion: @escaping (Result<Double, Error>) -> Void) {
+    func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int, completion: @escaping (Result<Double, Error>) -> Void) {
         // Primero, obtenemos las calificaciones
+        print(valorRubro, "este es el valor del rubro")
         getCalificaciones(for: equipo, hackClave: hackClave) { result in
             switch result {
             case .success(let calificaciones):
@@ -376,7 +377,7 @@ class HacksViewModel: ObservableObject {
                     switch rubrosResult {
                     case .success(let rubros):
                         // Acumulamos la puntuación total
-                        let totalScore = self.accumulateScores(calificaciones: calificaciones, rubros: rubros, equipo: equipo, hackClave: hackClave)
+                        let totalScore = self.accumulateScores(calificaciones: calificaciones, rubros: rubros, equipo: equipo, hackClave: hackClave, valorRubro: valorRubro)
                         completion(.success(totalScore))
                     case .failure(let error):
                         completion(.failure(error))
@@ -395,7 +396,7 @@ class HacksViewModel: ObservableObject {
     ///   - equipo: Nombre del equipo.
     ///   - hackClave: Clave del hackathon.
     /// - Returns: Puntaje total acumulado.
-    private func accumulateScores(calificaciones: [String: [String: Double]], rubros: [String: Double], equipo: String, hackClave: String) -> Double {
+    private func accumulateScores(calificaciones: [String: [String: Double]], rubros: [String: Double], equipo: String, hackClave: String, valorRubro: Int) -> Double {
         var totalScore: Double = 0.0
         var totalJudges: Int = 0
 
@@ -404,7 +405,7 @@ class HacksViewModel: ObservableObject {
                 for rubro in rubrosDelJuez.keys {
                     let calificacion = rubrosDelJuez[rubro] ?? 0.0
                     let pesoRubro = rubros[rubro] ?? 0.0
-                    let valorFinal = (calificacion * pesoRubro) / 100.0
+                    let valorFinal = (calificacion * pesoRubro) / Double(valorRubro)
                     totalScore += valorFinal
                 }
                 totalJudges += 1
@@ -416,6 +417,32 @@ class HacksViewModel: ObservableObject {
         
         return finalScore
     }
+    
+    /// Obtiene el valor del rubro para un hackathon específico.
+    /// - Parameters:
+    ///   - hackClave: Clave del hackathon.
+    ///   - completion: Closure que devuelve un resultado con el valor del rubro o un error.
+    func getValorRubro(for hackClave: String, completion: @escaping (Result<Double, Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents, let document = documents.first else {
+                completion(.success(0.0)) // Valor por defecto si no se encuentra
+                return
+            }
+            
+            let data = document.data()
+            if let valorRubro = data["valorRubro"] as? Int {
+                completion(.success(Double(valorRubro))) // Convertir Int a Double
+            } else {
+                completion(.success(0.0)) // Valor por defecto si no se encuentra el valor
+            }
+        }
+    }
+
 
     /// Obtiene las puntuaciones finales de todos los equipos en un hackathon específico.
     /// - Parameters:

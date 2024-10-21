@@ -43,7 +43,6 @@ struct AddHackForm: View {
             Section(header: Text("Fecha de fin del Hackathon")) {
                 DatePicker("Selecciona la fecha fin", selection: $dateEnd)
             }
-            
 
             Section(header: Text("Duración del pitch (minutos)")) {
                 TextField("Tiempo de pitch (minutos)", value: $tiempoPitch, formatter: NumberFormatter())
