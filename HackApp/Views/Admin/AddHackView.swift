@@ -14,7 +14,8 @@ struct AddHackView: View {
     @State var descripcion: String = ""
     @State var numJueces: Int = 1
     @State var date: Date = Date.now
-    
+    @State var dateEnd: Date = Date.now
+    @State var valorRubro: String = ""
     @State var tiempoPitch: Double = 0.0
     @StateObject var listaRubros = RubroViewModel()
     @StateObject var listaEquipos = EquipoViewModel()
@@ -39,6 +40,8 @@ struct AddHackView: View {
                 nombre: $nombre, clave: $clave,
                 descripcion: $descripcion,
                 date: $date,
+                dateEnd: $dateEnd,
+                valorRubro: $valorRubro,
                 tiempoPitch: $tiempoPitch,
                 listaRubros: listaRubros,
                 listaEquipos: listaEquipos,
@@ -46,17 +49,23 @@ struct AddHackView: View {
                 showingAlert: $showingAlert
             )
             Button {
+                let valorRubroInt = Int(valorRubro) ?? 0 
+
                 let nuevoHack = HackPrueba(
-                    clave: clave, descripcion: descripcion,
+                    clave: clave,
+                    descripcion: descripcion,
                     equipos: listaEquipos.equipoList.map { $0.nombre },
                     jueces: listaJueces.juezList.map { $0.nombre },
                     rubros: listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
                     estaActivo: true,
                     nombre: nombre,
                     tiempoPitch: tiempoPitch,
-                    Fecha: date
+                    FechaStart: date,
+                    FechaEnd: dateEnd,
+                    valorRubro: valorRubroInt // Use the converted integer
                 )
-                
+
+
                
                 listaHacks.addHack(hack: nuevoHack) { result in
                     switch result {

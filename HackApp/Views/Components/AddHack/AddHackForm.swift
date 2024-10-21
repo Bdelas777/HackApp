@@ -11,6 +11,8 @@ struct AddHackForm: View {
     @Binding var clave: String
     @Binding var descripcion: String
     @Binding var date: Date
+    @Binding var dateEnd: Date
+    @Binding var valorRubro: String
     @Binding var tiempoPitch: Double
     @ObservedObject var listaRubros: RubroViewModel
     @ObservedObject var listaEquipos: EquipoViewModel
@@ -35,13 +37,24 @@ struct AddHackForm: View {
             Section(header: Text("Descripción del Hackathon")) {
                 TextField("Descripción del hack", text: $descripcion)
             }
-            Section(header: Text("Fecha de tu Hackathon")) {
-                DatePicker("Selecciona la fecha", selection: $date)
+            Section(header: Text("Fecha de inicio del Hackathon")) {
+                DatePicker("Selecciona la fecha inicio", selection: $date)
             }
+            Section(header: Text("Fecha de fin del Hackathon")) {
+                DatePicker("Selecciona la fecha fin", selection: $dateEnd)
+            }
+            
+
             Section(header: Text("Duración del pitch (minutos)")) {
                 TextField("Tiempo de pitch (minutos)", value: $tiempoPitch, formatter: NumberFormatter())
                     .keyboardType(.decimalPad)
             }
+            
+            Section(header: Text("Valor máximo de los rubros del Hackathon")) {
+                TextField("Valor máximo de los rubros", text: $valorRubro)
+                                .keyboardType(.numberPad)
+            }
+            
             Section(header: Text("Rúbrica")) {
                 AddRubroButton(showingAddRubroPopover: $showingAddRubroPopover,
                                listaRubros: listaRubros,

@@ -27,7 +27,7 @@ struct HackRow: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
 
-                Text(hack.Fecha, style: .date)
+                Text(hack.FechaStart, style: .date)
                     .font(.footnote)
                     .foregroundColor(.gray)
 
@@ -59,6 +59,8 @@ struct HackRow: View {
         estaActivo: true,
         nombre: "Hackathon Ejemplo",
         tiempoPitch: 5.0,
-        Fecha: Date()
+        FechaStart: Date(),
+        FechaEnd: Date(),
+        valorRubro: 5
     ))
 }

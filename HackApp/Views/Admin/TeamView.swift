@@ -125,7 +125,9 @@ struct TeamView: View {
         estaActivo: true,
         nombre: "Ejemplo",
         tiempoPitch: 9,
-        Fecha: Date(),
+        FechaStart: Date(),
+        FechaEnd: Date(),
+        valorRubro: 5,
         calificaciones: [
             "P": ["A": ["rubro": 9]],
             "Q": ["B": ["rubro": 78]]

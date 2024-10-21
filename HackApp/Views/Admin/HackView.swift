@@ -19,7 +19,7 @@ struct HackView: View {
                 infoSection(title: "Clave:", content: hack.clave)
                 infoSection(title: "Nombre:", content: hack.nombre)
                 infoSection(title: "Descripción:", content: hack.descripcion)
-                infoSection(title: "Fecha:", content: formattedDate(hack.Fecha))
+                infoSection(title: "Fecha:", content: formattedDate(hack.FechaStart))
                 infoSection(title: "Estado:", content: hack.estaActivo ? "Activo" : "Inactivo", isStatus: true)
             }
             .padding()
@@ -137,6 +137,8 @@ struct HackView: View {
         estaActivo: true,
         nombre: "Ejemplo",
         tiempoPitch: 29,
-        Fecha: Date()
+        FechaStart: Date(),
+        FechaEnd: Date(),
+        valorRubro: 5
     ))
 }

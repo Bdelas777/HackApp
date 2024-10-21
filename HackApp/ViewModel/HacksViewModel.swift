@@ -42,7 +42,9 @@ class HacksViewModel: ObservableObject {
                     let nombre = data["nombre"] as? String ?? ""
                     let tiempoPitch = data["tiempoPitch"] as? Double ?? 0.0
                     let descripcion = data["descripcion"] as? String ?? ""
-                    let fecha = data["fecha"] as? Timestamp ?? Timestamp()
+                    let fechastart = data["fechastart"] as? Timestamp ?? Timestamp()
+                    let fechaend = data["fechaend"] as? Timestamp ?? Timestamp()
+                    let valorrubro = data["valorrubro"] as? Int ?? 0
                     let clave = data["clave"] as? String ?? ""
                     let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
                     let finalScores = data["finalScores"] as? [String: Double] ?? [:]
@@ -56,7 +58,9 @@ class HacksViewModel: ObservableObject {
                         estaActivo: estaActivo,
                         nombre: nombre,
                         tiempoPitch: tiempoPitch,
-                        Fecha: fecha.dateValue(),
+                        FechaStart: fechastart.dateValue(),
+                        FechaEnd: fechaend.dateValue(),
+                        valorRubro: valorrubro,
                         calificaciones: calificaciones,
                         finalScores: finalScores
                     )
@@ -215,7 +219,9 @@ class HacksViewModel: ObservableObject {
                 estaActivo: true,
                 nombre: "Hackathon Ejemplo 1",
                 tiempoPitch: 5.0,
-                Fecha: Date()
+                FechaStart: Date(),
+                FechaEnd: Date(),
+                valorRubro: 5
             ),
             HackPrueba(
                 clave: "HACK2",
@@ -226,7 +232,9 @@ class HacksViewModel: ObservableObject {
                 estaActivo: false,
                 nombre: "Hackathon Ejemplo 2",
                 tiempoPitch: 7.0,
-                Fecha: Date()
+                FechaStart: Date(),
+                FechaEnd: Date(),
+                valorRubro: 5
             )
         ]
     }

@@ -37,8 +37,14 @@ struct HackPrueba: Identifiable, Encodable {
     /// Tiempo asignado para la presentación del proyecto en minutos.
     var tiempoPitch: Double
     
-    /// Fecha en la que se lleva a cabo el hackathon.
-    var Fecha: Date
+    /// Fecha   de inicio en la que se lleva a cabo el hackathon.
+    var FechaStart: Date
+    
+    /// Fecha   de termina  en la que se lleva a cabo el hackathon.
+    var FechaEnd: Date
+    
+    /// Maximo valor del rubro
+    var valorRubro: Int
     
     /// Diccionario que almacena las calificaciones dadas por los jueces a los equipos.
     /// La estructura es: [equipo: [juez: [rubros: puntaje]]]
