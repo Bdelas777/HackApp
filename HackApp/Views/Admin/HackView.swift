@@ -10,18 +10,53 @@ struct HackView: View {
     var hack: HackPrueba
     @State private var selectedEquipos: [String]?
     @ObservedObject var viewModel = HacksViewModel()
+    @State private var showingAlert = false
     
-    
+    // Variables de estado para los campos editables
+    @State private var nombre: String
+    @State private var descripcion: String
+    @State private var clave: String
+    @State private var valorRubro: Int
+    @State private var tiempoPitch: Double
+    @State private var fechaStart: Date
+    @State private var fechaEnd: Date
+
+    init(hack: HackPrueba) {
+        self.hack = hack
+        _nombre = State(initialValue: hack.nombre)
+        _descripcion = State(initialValue: hack.descripcion)
+        _clave = State(initialValue: hack.clave)
+        _valorRubro = State(initialValue: hack.valorRubro)
+        _tiempoPitch = State(initialValue: hack.tiempoPitch)
+        _fechaStart = State(initialValue: hack.FechaStart)
+        _fechaEnd = State(initialValue: hack.FechaEnd)
+    }
+
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                infoSection(title: "Clave:", content: hack.clave)
-                infoSection(title: "Nombre:", content: hack.nombre)
-                infoSection(title: "Descripción:", content: hack.descripcion)
-                infoSection(title: "Fecha Inicio:", content: formattedDate(hack.FechaStart))
-                infoSection(title: "Fecha Fin:", content: formattedDate(hack.FechaEnd))
-                infoSection(title: "Estes el valor del rubro:", content: String(hack.valorRubro))
-                infoSection(title: "Estado:", content: hack.estaActivo ? "Activo" : "Inactivo", isStatus: true)
+                // Campos editables
+                infoField(title: "Clave:", text: $clave)
+                infoField(title: "Nombre:", text: $nombre)
+                infoField(title: "Descripción:", text: $descripcion)
+                dateField(title: "Fecha Inicio:", date: $fechaStart)
+                dateField(title: "Fecha Fin:", date: $fechaEnd)
+                infoField(title: "Valor Rubro:", value: $valorRubro)
+                infoField(title: "Tiempo Pitch:", value: $tiempoPitch)
+
+                // Botón para guardar cambios
+                Button(action: saveChanges) {
+                    Text("Guardar Cambios")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
+                }
+                .padding(.top)
             }
             .padding()
             .background(Color.white)
@@ -30,25 +65,51 @@ struct HackView: View {
             .padding()
 
             Divider()
-
-            VStack {
-                Text("Equipos")
+            
+            NavigationLink(destination: ResultsView(hack: hack)) {
+                Text("Ver Resultados")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .padding(.bottom)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                    .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
+            }
+            .padding(.horizontal)
 
-                NavigationLink(destination: ResultsView(hack: hack)) {
-                    Text("Ver Resultados")
+            VStack {
+                // Botón para cerrar el hack
+                Button(action: {
+                    showingAlert = true
+                }) {
+                    Text("Cerrar Hack")
                         .font(.title2)
                         .fontWeight(.bold)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.blue)
+                        .background(Color.red)
                         .foregroundColor(.white)
                         .cornerRadius(8)
-                        .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
+                        .shadow(color: Color.red.opacity(0.3), radius: 4, x: 0, y: 2)
                 }
                 .padding(.horizontal)
+                .alert(isPresented: $showingAlert) {
+                    Alert(
+                        title: Text("Confirmar Cierre"),
+                        message: Text("¿Estás seguro de que quieres cerrar el hack?"),
+                        primaryButton: .cancel(),
+                        secondaryButton: .default(Text("Confirmar")) {
+                            closeHack()
+                        }
+                    )
+                }
+
+                Text("Equipos")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding(.bottom)
 
                 List {
                     if let equipos = selectedEquipos, !equipos.isEmpty {
@@ -78,25 +139,86 @@ struct HackView: View {
             fetchEquipos()
         }
     }
+    
+    private func saveChanges() {
+        let updatedHack = HackPrueba(
+            clave: clave,
+            descripcion: descripcion,
+            equipos: hack.equipos,
+            jueces: hack.jueces,
+            rubros: hack.rubros,
+            estaActivo: hack.estaActivo,
+            nombre: nombre,
+            tiempoPitch: tiempoPitch,
+            FechaStart: fechaStart,
+            FechaEnd: fechaEnd,
+            valorRubro: valorRubro,
+            calificaciones: hack.calificaciones,
+            finalScores: hack.finalScores
+        )
+        
+        // Pasa hack.clave como segundo argumento
+        viewModel.updateHack(hack: updatedHack, hackClave: hack.clave) { success in
+            if success {
+                print("Hack actualizado exitosamente.")
+            } else {
+                print("Error al actualizar el hack.")
+            }
+        }
+    }
 
-    private func infoSection(title: String, content: String, isStatus: Bool = false) -> some View {
+    private func closeHack() {
+        viewModel.updateHackStatus(hackClave: hack.clave, isActive: false) { success in
+            if success {
+                print("Hack cerrado exitosamente.")
+            } else {
+                print("Error al cerrar el hack.")
+            }
+        }
+    }
+
+    private func infoField(title: String, text: Binding<String>) -> some View {
         VStack(alignment: .leading) {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.secondary)
-            Text(content)
-                .font(.title2)
-                .fontWeight(isStatus ? .bold : .regular)
-                .foregroundColor(isStatus && content == "Activo" ? .green : (isStatus ? .red : .primary))
+            TextField(title, text: text)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(.bottom, 5)
         }
-        .padding(.bottom, 5)
+    }
+    
+    private func infoField(title: String, value: Binding<Int>) -> some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.secondary)
+            TextField(title, value: value, formatter: NumberFormatter())
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(.bottom, 5)
+        }
     }
 
-    private func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        return formatter.string(from: date)
+    private func infoField(title: String, value: Binding<Double>) -> some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.secondary)
+            TextField(title, value: value, formatter: NumberFormatter())
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(.bottom, 5)
+        }
+    }
+    
+    private func dateField(title: String, date: Binding<Date>) -> some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.secondary)
+            DatePicker("", selection: date, displayedComponents: .date)
+                .labelsHidden()
+                .padding(.bottom, 5)
+        }
     }
 
     private func fetchEquipos() {
@@ -115,7 +237,7 @@ struct HackView: View {
         }
     }
 
-    private func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int) { // Asegúrate de incluir valorRubro como parámetro
+    private func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int) {
         viewModel.fetchAndCalculateScores(for: equipo, hackClave: hackClave, valorRubro: valorRubro) { result in
             switch result {
             case .success(let totalScore):

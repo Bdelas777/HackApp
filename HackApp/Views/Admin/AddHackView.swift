@@ -71,6 +71,7 @@ struct AddHackView: View {
                     switch result {
                     case .success:
                         presentationMode.wrappedValue.dismiss()
+                        listaHacks.fetchHacks()
                     case .failure(let error):
                         print("Error adding hack: \(error.localizedDescription)")
                         showingAlert = true

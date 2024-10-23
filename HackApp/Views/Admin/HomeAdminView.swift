@@ -14,9 +14,7 @@ struct HomeAdminView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(.systemGray6) // Background color
-                    .ignoresSafeArea()
-
+            
                 VStack {
                     if hackData.hacks.isEmpty {
                         if hackData.isLoading {

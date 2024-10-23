@@ -35,12 +35,26 @@ struct ResultsView: View {
                         y: .value("Puntuación", team.score)
                     )
                     .foregroundStyle(by: .value("Equipo", team.team))
+                    .annotation(position: .top) {
+                        Text(String(format: "%.1f", team.score))
+                            .font(.caption)
+                            .foregroundColor(.black)
+                            .padding(2)
+                            .background(Color.white)
+                            .cornerRadius(5)
+                            .shadow(color: Color.black.opacity(0.1), radius: 1, x: 0, y: 1)
+                    }
                 }
                 .frame(height: 300)
                 .padding()
                 .background(Color.white)
                 .cornerRadius(12)
                 .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
+                .chartXAxisLabel("Equipos")
+                .chartYAxisLabel("Puntuación")
+                .chartYAxis {
+                    AxisMarks(position: .leading)
+                }
                 
                 Text("Mejores Equipos")
                     .font(.title2)
@@ -53,7 +67,7 @@ struct ResultsView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.primary)
                         Spacer()
-                        Text("\(String(format: "%.2f", team.score)) / 100")
+                        Text("\(String(format: "%.2f", team.score)) / \(hack.valorRubro)")
                             .fontWeight(.bold)
                             .foregroundColor(.accentColor)
                     }

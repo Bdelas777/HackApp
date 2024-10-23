@@ -406,6 +406,7 @@ class HacksViewModel: ObservableObject {
                     let calificacion = rubrosDelJuez[rubro] ?? 0.0
                     let pesoRubro = rubros[rubro] ?? 0.0
                     let valorFinal = (calificacion * pesoRubro) / Double(valorRubro)
+                    
                     totalScore += valorFinal
                 }
                 totalJudges += 1
@@ -418,6 +419,77 @@ class HacksViewModel: ObservableObject {
         return finalScore
     }
     
+    func updateHack(hack: HackPrueba, hackClave: String, completion: @escaping (Bool) -> Void) {
+        let hackData: [String: Any] = [
+            "nombre": hack.nombre,
+            "descripcion": hack.descripcion,
+            "clave": hack.clave,
+            "valorRubro": hack.valorRubro,
+            "tiempoPitch": hack.tiempoPitch,
+            "FechaStart": Timestamp(date: hack.FechaStart),
+            "FechaEnd": Timestamp(date: hack.FechaEnd)
+        ]
+        
+        print("Buscando hack con clave: \(hackClave)")
+
+        // Usar hackClave para buscar el documento
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error al obtener el documento: \(error)")
+                completion(false)
+                return
+            }
+            
+            // Asegúrate de que hay documentos
+            guard let documents = querySnapshot?.documents, !documents.isEmpty else {
+                print("No se encontró ningún documento con la clave: \(hackClave)")
+                completion(false)
+                return
+            }
+
+            // Asumimos que solo hay un documento que coincide con la clave
+            let documentID = documents[0].documentID
+            
+            // Actualiza el documento usando su ID
+            self.db.collection("hacks").document(documentID).updateData(hackData) { error in
+                if let error = error {
+                    print("Error al actualizar el hack: \(error)")
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            }
+        }
+    }
+
+
+    
+    
+    func updateHackStatus(hackClave: String, isActive: Bool, completion: @escaping (Bool) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error al obtener el documento: \(error)")
+                completion(false)
+                return
+            }
+            
+            guard let document = querySnapshot?.documents.first else {
+                print("No se encontró documento para la clave: \(hackClave)")
+                completion(false)
+                return
+            }
+            
+            document.reference.updateData(["estaActivo": isActive]) { error in
+                if let error = error {
+                    print("Error al actualizar el estado: \(error)")
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            }
+        }
+        
+    }
     /// Obtiene el valor del rubro para un hackathon específico.
     /// - Parameters:
     ///   - hackClave: Clave del hackathon.

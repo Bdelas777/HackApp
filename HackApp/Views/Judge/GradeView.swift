@@ -34,7 +34,7 @@ struct GradeView: View {
                                 .font(.system(size: 20))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            Text("\(Int(calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 1.0))")
+                            Text("\(calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 1.0, specifier: "%.1f")")
                                 .font(.headline)
                                 .frame(width: 50)
                         }
@@ -50,7 +50,7 @@ struct GradeView: View {
                                         let score = min(max(newValue, 1), valorRubro)
                                         calificaciones[selectedEquipo, default: [:]][nombreJuez, default: [:]][key] = score
                                     }
-                                ), in: 1...valorRubro)
+                                ), in: 1...valorRubro, step: 0.5) // Permitir movimiento en 0.5
                                 .accentColor(.blue)
                                 .padding(.horizontal)
                                 .background(RoundedRectangle(cornerRadius: 8).fill(Color(UIColor.systemGray5)))
@@ -71,7 +71,7 @@ struct GradeView: View {
                             }
 
                             // Etiqueta de valor del slider
-                            Text("Valor actual: \(Int(calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 1.0))")
+                            Text("Valor actual: \(calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 1.0, specifier: "%.1f")")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                                 .padding(.top, 4)
