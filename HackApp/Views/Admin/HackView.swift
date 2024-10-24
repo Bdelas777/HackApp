@@ -6,13 +6,23 @@
 //
 import SwiftUI
 
+enum AlertType: Identifiable {
+    case closeHack
+    case invalidDate
+
+    var id: Int {
+        switch self {
+        case .closeHack: return 1
+        case .invalidDate: return 2
+        }
+    }
+}
+
 struct HackView: View {
     var hack: HackPrueba
     @State private var selectedEquipos: [String]?
     @ObservedObject var viewModel = HacksViewModel()
-    @State private var showingAlert = false
-    
-    // Variables de estado para los campos editables
+    @State private var alertType: AlertType? = nil
     @State private var nombre: String
     @State private var descripcion: String
     @State private var clave: String
@@ -63,9 +73,24 @@ struct HackView: View {
             .cornerRadius(12)
             .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
             .padding()
+            
+            Button(action: {
+                alertType = .closeHack
+            }) {
+                Text("Cerrar Hack")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                    .shadow(color: Color.red.opacity(0.3), radius: 4, x: 0, y: 2)
+            }
+            .padding(.horizontal)
 
             Divider()
-            
+
             NavigationLink(destination: ResultsView(hack: hack)) {
                 Text("Ver Resultados")
                     .font(.title2)
@@ -80,32 +105,6 @@ struct HackView: View {
             .padding(.horizontal)
 
             VStack {
-                // Botón para cerrar el hack
-                Button(action: {
-                    showingAlert = true
-                }) {
-                    Text("Cerrar Hack")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.red)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                        .shadow(color: Color.red.opacity(0.3), radius: 4, x: 0, y: 2)
-                }
-                .padding(.horizontal)
-                .alert(isPresented: $showingAlert) {
-                    Alert(
-                        title: Text("Confirmar Cierre"),
-                        message: Text("¿Estás seguro de que quieres cerrar el hack?"),
-                        primaryButton: .cancel(),
-                        secondaryButton: .default(Text("Confirmar")) {
-                            closeHack()
-                        }
-                    )
-                }
-
                 Text("Equipos")
                     .font(.title2)
                     .fontWeight(.bold)
@@ -137,10 +136,38 @@ struct HackView: View {
         .navigationTitle("Detalles del Hackathon")
         .onAppear {
             fetchEquipos()
+            checkHackStatus()
+        }
+        .alert(item: $alertType) { type in
+            switch type {
+            case .closeHack:
+                return Alert(
+                    title: Text("Cerrar hack"),
+                    message: Text("¿Estás seguro de que quieres cerrar el hack?"),
+                    primaryButton: .cancel(),
+                    secondaryButton: .default(Text("Confirmar")) {
+                        closeHack()
+                        fetchEquipos()
+                        
+                    }
+                )
+            case .invalidDate:
+                return Alert(
+                    title: Text("Fecha Invalida"),
+                    message: Text("La fecha de inicio no puede ser menor a la fecha de fin."),
+                    dismissButton: .default(Text("Aceptar"))
+                )
+            }
         }
     }
-    
+
     private func saveChanges() {
+        // Validar fechas
+        if fechaStart >= fechaEnd {
+            alertType = .invalidDate
+            return
+        }
+
         let updatedHack = HackPrueba(
             clave: clave,
             descripcion: descripcion,
@@ -157,7 +184,6 @@ struct HackView: View {
             finalScores: hack.finalScores
         )
         
-        // Pasa hack.clave como segundo argumento
         viewModel.updateHack(hack: updatedHack, hackClave: hack.clave) { success in
             if success {
                 print("Hack actualizado exitosamente.")
@@ -174,6 +200,13 @@ struct HackView: View {
             } else {
                 print("Error al cerrar el hack.")
             }
+        }
+    }
+
+    private func checkHackStatus() {
+        print(hack.estaActivo, "Esto es lo que dice")
+        if hack.estaActivo && hack.FechaEnd < Date() {
+            alertType = .closeHack
         }
     }
 
@@ -215,7 +248,7 @@ struct HackView: View {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.secondary)
-            DatePicker("", selection: date, displayedComponents: .date)
+            DatePicker("", selection: date)
                 .labelsHidden()
                 .padding(.bottom, 5)
         }

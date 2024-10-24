@@ -30,6 +30,10 @@ struct HackRow: View {
                 Text(hack.FechaStart, style: .date)
                     .font(.footnote)
                     .foregroundColor(.gray)
+                
+                Text(hack.FechaEnd , style: .date)
+                    .font(.footnote)
+                    .foregroundColor(.gray)
 
                 Text(hack.estaActivo ? "Activo" : "Inactivo")
                     .font(.footnote)

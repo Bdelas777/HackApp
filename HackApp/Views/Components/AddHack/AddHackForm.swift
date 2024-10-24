@@ -51,7 +51,7 @@ struct AddHackForm: View {
             
             Section(header: Text("Valor máximo de los rubros del Hackathon")) {
                 TextField("Valor máximo de los rubros", text: $valorRubro)
-                                .keyboardType(.numberPad)
+                    .keyboardType(.numberPad)
             }
             
             Section(header: Text("Rúbrica")) {

@@ -21,7 +21,6 @@ class HacksViewModel: ObservableObject {
         isLoading = true
         db.collection("hacks").getDocuments(source: .default) { (querySnapshot, error) in
             if let error = error {
-                print("Error al obtener los documentos: \(error)")
                 self.hacks = self.defaultHacks()
             } else {
                 self.hacks = querySnapshot?.documents.compactMap { document in
@@ -43,7 +42,7 @@ class HacksViewModel: ObservableObject {
                     let tiempoPitch = data["tiempoPitch"] as? Double ?? 0.0
                     let descripcion = data["descripcion"] as? String ?? ""
                     let fechastart = data["FechaStart"] as? Timestamp ?? Timestamp()
-                    let fechaend = data["Fechaend"] as? Timestamp ?? Timestamp()
+                    let fechaend = data["FechaEnd"] as? Timestamp ?? Timestamp()
                     let valorrubro = data["valorRubro"] as? Int ?? 0
                     let clave = data["clave"] as? String ?? ""
                     let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
@@ -82,7 +81,6 @@ class HacksViewModel: ObservableObject {
             }
           
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
-                print("No se encontraron documentos para la clave: \(hackClave)")
                 completion(.success([]))
                 return
             }
@@ -90,7 +88,6 @@ class HacksViewModel: ObservableObject {
             let data = documents.first?.data()
             
             if let jueces = data?["jueces"] as? [String] {
-                print(jueces)
                 completion(.success(jueces))
             } else {
                 completion(.success([]))
@@ -110,7 +107,6 @@ class HacksViewModel: ObservableObject {
             }
           
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
-                print("No se encontraron documentos para la clave: \(hackEquipo)")
                 completion(.success([]))
                 return
             }
@@ -118,7 +114,6 @@ class HacksViewModel: ObservableObject {
             let data = documents.first?.data()
             
             if let equipos = data?["equipos"] as? [String] {
-                print(equipos)
                 completion(.success(equipos))
             } else {
                 completion(.success([]))
@@ -183,7 +178,6 @@ class HacksViewModel: ObservableObject {
             }
             
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
-                print("No se encontraron documentos para la clave: \(hackClave)")
                 completion(.success([:]))
                 return
             }
@@ -367,8 +361,6 @@ class HacksViewModel: ObservableObject {
     ///   - hackClave: Clave del hackathon.
     ///   - completion: Closure que devuelve el puntaje total o un error.
     func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int, completion: @escaping (Result<Double, Error>) -> Void) {
-        // Primero, obtenemos las calificaciones
-        print(valorRubro, "este es el valor del rubro")
         getCalificaciones(for: equipo, hackClave: hackClave) { result in
             switch result {
             case .success(let calificaciones):
@@ -430,30 +422,22 @@ class HacksViewModel: ObservableObject {
             "FechaEnd": Timestamp(date: hack.FechaEnd)
         ]
         
-        print("Buscando hack con clave: \(hackClave)")
-
-        // Usar hackClave para buscar el documento
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
-                print("Error al obtener el documento: \(error)")
                 completion(false)
                 return
             }
             
-            // Asegúrate de que hay documentos
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
-                print("No se encontró ningún documento con la clave: \(hackClave)")
                 completion(false)
                 return
             }
 
-            // Asumimos que solo hay un documento que coincide con la clave
             let documentID = documents[0].documentID
             
             // Actualiza el documento usando su ID
             self.db.collection("hacks").document(documentID).updateData(hackData) { error in
                 if let error = error {
-                    print("Error al actualizar el hack: \(error)")
                     completion(false)
                 } else {
                     completion(true)
@@ -462,26 +446,20 @@ class HacksViewModel: ObservableObject {
         }
     }
 
-
-    
-    
     func updateHackStatus(hackClave: String, isActive: Bool, completion: @escaping (Bool) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
-                print("Error al obtener el documento: \(error)")
                 completion(false)
                 return
             }
             
             guard let document = querySnapshot?.documents.first else {
-                print("No se encontró documento para la clave: \(hackClave)")
                 completion(false)
                 return
             }
             
             document.reference.updateData(["estaActivo": isActive]) { error in
                 if let error = error {
-                    print("Error al actualizar el estado: \(error)")
                     completion(false)
                 } else {
                     completion(true)
