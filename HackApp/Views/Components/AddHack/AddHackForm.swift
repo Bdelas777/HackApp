@@ -13,7 +13,7 @@ struct AddHackForm: View {
     @Binding var date: Date
     @Binding var dateEnd: Date
     @Binding var valorRubro: String
-    @Binding var tiempoPitch: Double
+    @Binding var tiempoPitch: String
     @ObservedObject var listaRubros: RubroViewModel
     @ObservedObject var listaEquipos: EquipoViewModel
     @ObservedObject var listaJueces: JuezViewModel
@@ -44,9 +44,10 @@ struct AddHackForm: View {
                 DatePicker("Selecciona la fecha fin", selection: $dateEnd)
             }
 
+            
             Section(header: Text("Duración del pitch (minutos)")) {
-                TextField("Tiempo de pitch (minutos)", value: $tiempoPitch, formatter: NumberFormatter())
-                    .keyboardType(.decimalPad)
+                TextField("Valor máximo de los rubros", text: $tiempoPitch)
+                    .keyboardType(.numberPad)
             }
             
             Section(header: Text("Valor máximo de los rubros del Hackathon")) {

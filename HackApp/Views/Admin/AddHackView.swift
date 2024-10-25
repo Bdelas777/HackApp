@@ -1,11 +1,3 @@
-
-//
-//  AddHackView.swift
-//  HackApp
-//
-//  Created by Alumno on 19/09/24.
-//
-
 import SwiftUI
 
 struct AddHackView: View {
@@ -15,7 +7,7 @@ struct AddHackView: View {
     @State var date: Date = Date()
     @State var dateEnd: Date = Date()
     @State var valorRubro: String = ""
-    @State var tiempoPitch: Double = 0.0
+    @State var tiempoPitch: String = ""
     @StateObject var listaRubros = RubroViewModel()
     @StateObject var listaEquipos = EquipoViewModel()
     @StateObject var listaJueces = JuezViewModel()
@@ -51,17 +43,58 @@ struct AddHackView: View {
     }
     
     private func validateAndSave() {
-        // Validar fechas
+        // Validar campos obligatorios
+        if nombre.isEmpty {
+            alertMessage = "El nombre es obligatorio."
+            showingAlert = true
+            return
+        }
+        
+        if clave.isEmpty {
+            alertMessage = "La clave es obligatoria."
+            showingAlert = true
+            return
+        }
+        
         if date >= dateEnd {
             alertMessage = "La fecha de inicio no puede ser posterior a la fecha de fin."
             showingAlert = true
             return
         }
         
-        // Validar suma de valores de rubros
+        if tiempoPitch.isEmpty{
+            alertMessage = "El valor máximo de los rubros es obligatorio."
+            showingAlert = true
+            return
+        }
+        
+        if valorRubro.isEmpty {
+            alertMessage = "El valor máximo de los rubros es obligatorio."
+            showingAlert = true
+            return
+        }
+        
+        if listaRubros.rubroList.isEmpty {
+            alertMessage = "Debe agregar al menos un rubro."
+            showingAlert = true
+            return
+        }
+        
         let totalRubroValue = listaRubros.rubroList.reduce(0) { $0 + $1.valor }
         if totalRubroValue < 100 {
             alertMessage = "La suma de los valores de los rubros debe ser al menos 100."
+            showingAlert = true
+            return
+        }
+        
+        if listaEquipos.equipoList.isEmpty {
+            alertMessage = "Debe agregar al menos un equipo."
+            showingAlert = true
+            return
+        }
+
+        if listaJueces.juezList.isEmpty {
+            alertMessage = "Debe agregar al menos un juez."
             showingAlert = true
             return
         }
@@ -75,7 +108,7 @@ struct AddHackView: View {
             rubros: listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
             estaActivo: true,
             nombre: nombre,
-            tiempoPitch: tiempoPitch,
+            tiempoPitch: Double(tiempoPitch) ?? 0.0,
             FechaStart: date,
             FechaEnd: dateEnd,
             valorRubro: Int(valorRubro) ?? 0
@@ -94,8 +127,6 @@ struct AddHackView: View {
     }
 }
 
-
 #Preview {
     AddHackView(listaHacks: HacksViewModel())
 }
-

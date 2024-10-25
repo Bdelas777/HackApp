@@ -64,6 +64,7 @@ class HacksViewModel: ObservableObject {
                         finalScores: finalScores
                     )
                 } ?? self.defaultHacks()
+                self.hacks.sort { $0.FechaEnd > $1.FechaEnd }
             }
             self.isLoading = false
         }
