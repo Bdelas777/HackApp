@@ -50,7 +50,7 @@ struct GradeView: View {
                                         let score = min(max(newValue, 1), valorRubro)
                                         calificaciones[selectedEquipo, default: [:]][nombreJuez, default: [:]][key] = score
                                     }
-                                ), in: 1...valorRubro, step: 0.5) // Permitir movimiento en 0.5
+                                ), in: 1...valorRubro, step: 1)
                                 .accentColor(.blue)
                                 .padding(.horizontal)
                                 .background(RoundedRectangle(cornerRadius: 8).fill(Color(UIColor.systemGray5)))

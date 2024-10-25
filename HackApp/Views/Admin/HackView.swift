@@ -298,3 +298,4 @@ struct HackView: View {
         valorRubro: 5
     ))
 }
+

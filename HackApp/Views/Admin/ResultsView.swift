@@ -31,8 +31,8 @@ struct ResultsView: View {
             } else {
                 Chart(topTeams, id: \.team) { team in
                     BarMark(
-                        x: .value("Equipo", team.team),
-                        y: .value("Puntuación", team.score)
+                        x: .value("Puntuación", team.score),
+                        y: .value("Equipo", team.team)
                     )
                     .foregroundStyle(by: .value("Equipo", team.team))
                     .annotation(position: .top) {
@@ -50,8 +50,8 @@ struct ResultsView: View {
                 .background(Color.white)
                 .cornerRadius(12)
                 .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
-                .chartXAxisLabel("Equipos")
-                .chartYAxisLabel("Puntuación")
+                .chartXAxisLabel("Puntuación")
+                .chartYAxisLabel("Equipos")
                 .chartYAxis {
                     AxisMarks(position: .leading)
                 }
