@@ -9,6 +9,8 @@ import SwiftUI
 struct HackRow: View {
     var hack: HackPrueba
     @State private var showDeleteConfirmation = false
+    @EnvironmentObject var viewModel: HacksViewModel
+
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -54,7 +56,15 @@ struct HackRow: View {
                 }
                 .confirmationDialog("¿Estás seguro de eliminar este hackathon?", isPresented: $showDeleteConfirmation) {
                     Button("Eliminar", role: .destructive) {
-                        // Aquí llamaría a la función de eliminación
+                        viewModel.deleteHack(withKey: hack.clave) { result in
+                            switch result {
+                            case .success:
+                                print("Hackathon eliminado exitosamente.")
+                                viewModel.fetchHacks()
+                            case .failure(let error):
+                                print("Error al eliminar hackathon: \(error.localizedDescription)")
+                            }
+                        }
                     }
                     Button("Cancelar", role: .cancel) {}
                 }
@@ -73,8 +83,7 @@ struct HackRow: View {
             alignment: .bottom
         )
     }
-
-    // Formateador de fecha
+    
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium

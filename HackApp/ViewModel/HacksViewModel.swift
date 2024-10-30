@@ -69,6 +69,33 @@ class HacksViewModel: ObservableObject {
             self.isLoading = false
         }
     }
+    
+    /// Elimina un hackathon dado su clave.
+    /// - Parameter hackClave: Clave del hackathon a eliminar.
+    /// - Parameter completion: Closure que devuelve un resultado de éxito o error.
+    func deleteHack(withKey hackClave: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let documents = querySnapshot?.documents, let document = documents.first else {
+                completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
+                return
+            }
+
+            // Eliminar el documento
+            document.reference.delete { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        }
+    }
+
 
     /// Obtiene la lista de jueces para un hackathon específico.
     /// - Parameters:

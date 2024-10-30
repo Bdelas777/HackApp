@@ -18,7 +18,7 @@ struct AddJuezButton: View {
             showingAddJuezPopover.toggle()
         } label: {
             Label("Añadir juez", systemImage: "plus")
-                .foregroundColor(.blue) // Adjust color as needed
+                .foregroundColor(.blue)
         }
         .popover(isPresented: $showingAddJuezPopover) {
             AddJuezPopoverView(
