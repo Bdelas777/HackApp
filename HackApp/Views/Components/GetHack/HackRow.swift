@@ -9,41 +9,63 @@ import SwiftUI
 
 struct HackRow: View {
     var hack: HackPrueba
+    @State private var showDeleteConfirmation = false
 
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(hack.clave)
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.primary)
+        VStack(alignment: .leading) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Clave: \(hack.clave)")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+
+                    Text("Nombre: \(hack.nombre)")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+
+                    Text("Descripción: \(hack.descripcion)")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+
+                    Text("Fecha de Inicio: \(hack.FechaStart, formatter: dateFormatter)")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+
+                    Text("Fecha de Fin: \(hack.FechaEnd, formatter: dateFormatter)")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+
+                    Text(hack.estaActivo ? "Estado: Activo" : "Estado: Inactivo")
+                        .font(.footnote)
+                        .foregroundColor(hack.estaActivo ? .green : .red)
+                        .bold()
+                }
+                Spacer()
                 
-                Text(hack.nombre)
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.primary)
-
-                Text(hack.descripcion)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-
-                Text(hack.FechaStart, style: .date)
-                    .font(.footnote)
-                    .foregroundColor(.gray)
-                
-                Text(hack.FechaEnd , style: .date)
-                    .font(.footnote)
-                    .foregroundColor(.gray)
-
-                Text(hack.estaActivo ? "Activo" : "Inactivo")
-                    .font(.footnote)
-                    .foregroundColor(hack.estaActivo ? .green : .red)
-                    .bold()
+                // Botón de eliminación
+                Button(action: {
+                    showDeleteConfirmation = true
+                }) {
+                    Image(systemName: "trash")
+                        .foregroundColor(.red)
+                        .padding(8)
+                        .background(Color.red.opacity(0.1), in: Circle())
+                }
+                .confirmationDialog("¿Estás seguro de eliminar este hackathon?", isPresented: $showDeleteConfirmation) {
+                    Button("Eliminar", role: .destructive) {
+                        // Llamar a la función de eliminación del ViewModel
+                        // Por ejemplo: hackData.deleteHack(hackClave: hack.clave)
+                    }
+                    Button("Cancelar", role: .cancel) {}
+                }
             }
-            Spacer()
+            .padding()
+            .background(hack.estaActivo ? Color.white : Color.gray.opacity(0.3)) // Fondo gris para hacks inactivos
+            .cornerRadius(8)
+            .shadow(radius: 3)
         }
-        .padding(.vertical, 10)
-        .padding(.horizontal)
+        .padding(.vertical, 5)
         .overlay(
             Divider()
                 .padding(.leading)
@@ -51,20 +73,27 @@ struct HackRow: View {
             alignment: .bottom
         )
     }
+
+    // Formateador de fecha
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
+    }
 }
 
 #Preview {
     HackRow(hack: HackPrueba(
-        clave: "Hack",
+        clave: "Hack001",
         descripcion: "Descripción del hack",
         equipos: ["Equipo A", "Equipo B"],
         jueces: [],
         rubros: [:],
-        estaActivo: true,
+        estaActivo: false,
         nombre: "Hackathon Ejemplo",
         tiempoPitch: 5.0,
         FechaStart: Date(),
-        FechaEnd: Date(),
+        FechaEnd: Date().addingTimeInterval(86400 * 5), // 5 días después
         valorRubro: 5
     ))
 }

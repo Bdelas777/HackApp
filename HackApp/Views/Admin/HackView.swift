@@ -30,6 +30,7 @@ struct HackView: View {
     @State private var tiempoPitch: Double
     @State private var fechaStart: Date
     @State private var fechaEnd: Date
+    @State private var statusMessage: String = ""
 
     init(hack: HackPrueba) {
         self.hack = hack
@@ -43,8 +44,8 @@ struct HackView: View {
     }
 
     var body: some View {
-        VStack {
-            VStack(alignment: .leading) {
+        VStack(spacing: 20) {
+            VStack(alignment: .leading, spacing: 15) {
                 // Campos editables
                 infoField(title: "Clave:", text: $clave)
                 infoField(title: "Nombre:", text: $nombre)
@@ -54,6 +55,12 @@ struct HackView: View {
                 infoField(title: "Valor Rubro:", value: $valorRubro)
                 infoField(title: "Tiempo Pitch:", value: $tiempoPitch)
 
+                // Mensaje de estado
+                Text(statusMessage)
+                    .font(.subheadline)
+                    .foregroundColor(.orange)
+                    .padding(.top, 10)
+
                 // Botón para guardar cambios
                 Button(action: saveChanges) {
                     Text("Guardar Cambios")
@@ -61,36 +68,20 @@ struct HackView: View {
                         .fontWeight(.bold)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.green)
+                        .background(hack.estaActivo ? Color.green : Color.gray)
                         .foregroundColor(.white)
-                        .cornerRadius(8)
+                        .cornerRadius(10)
                         .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
                 }
-                .padding(.top)
+                .disabled(!hack.estaActivo)
             }
             .padding()
             .background(Color.white)
             .cornerRadius(12)
             .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
             .padding()
-            
-            Button(action: {
-                alertType = .closeHack
-            }) {
-                Text("Cerrar Hack")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                    .shadow(color: Color.red.opacity(0.3), radius: 4, x: 0, y: 2)
-            }
-            .padding(.horizontal)
 
-            Divider()
-
+            // Navegación a resultados
             NavigationLink(destination: ResultsView(hack: hack)) {
                 Text("Ver Resultados")
                     .font(.title2)
@@ -99,39 +90,29 @@ struct HackView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color.blue)
                     .foregroundColor(.white)
-                    .cornerRadius(8)
+                    .cornerRadius(10)
                     .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
             }
             .padding(.horizontal)
-
-            VStack {
-                Text("Equipos")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.bottom)
-
-                List {
-                    if let equipos = selectedEquipos, !equipos.isEmpty {
-                        ForEach(equipos, id: \.self) { equipo in
-                            NavigationLink(destination: TeamView(hack: hack, equipoSeleccionado: equipo)) {
-                                Text(equipo)
-                                    .font(.title2)
-                                    .fontWeight(.medium)
-                                    .padding()
-                                    .background(Color(.systemGray6))
-                                    .cornerRadius(8)
-                                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
-                            }
-                        }
-                    } else {
-                        Text("No hay equipos disponibles.")
-                            .foregroundColor(.gray)
-                            .padding()
-                    }
+            .padding(.bottom, 20) // Espaciado al final
+            
+            // Botón para cerrar hack
+            HStack {
+                Spacer()
+                Button(action: {
+                    alertType = .closeHack
+                }) {
+                    Text("Cerrar Hack")
+                        .font(.headline)
+                        .padding()
+                        .frame(width: 130)
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .shadow(color: Color.red.opacity(0.3), radius: 2, x: 0, y: 2)
                 }
-                .listStyle(PlainListStyle())
+                .padding(.trailing, 20) // Espaciado al lado derecho
             }
-            .padding(.bottom)
         }
         .navigationTitle("Detalles del Hackathon")
         .onAppear {
@@ -148,7 +129,6 @@ struct HackView: View {
                     secondaryButton: .default(Text("Confirmar")) {
                         closeHack()
                         fetchEquipos()
-                        
                     }
                 )
             case .invalidDate:
@@ -183,12 +163,12 @@ struct HackView: View {
             calificaciones: hack.calificaciones,
             finalScores: hack.finalScores
         )
-        
+
         viewModel.updateHack(hack: updatedHack, hackClave: hack.clave) { success in
             if success {
-                print("Hack actualizado exitosamente.")
+                statusMessage = "Hack actualizado exitosamente."
             } else {
-                print("Error al actualizar el hack.")
+                statusMessage = "Error al actualizar el hack."
             }
         }
     }
@@ -196,15 +176,14 @@ struct HackView: View {
     private func closeHack() {
         viewModel.updateHackStatus(hackClave: hack.clave, isActive: false) { success in
             if success {
-                print("Hack cerrado exitosamente.")
+                statusMessage = "Hack cerrado exitosamente."
             } else {
-                print("Error al cerrar el hack.")
+                statusMessage = "Error al cerrar el hack."
             }
         }
     }
 
     private func checkHackStatus() {
-        print(hack.estaActivo, "Esto es lo que dice")
         if hack.estaActivo && hack.FechaEnd < Date() {
             alertType = .closeHack
         }
@@ -248,9 +227,11 @@ struct HackView: View {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.secondary)
-            DatePicker("", selection: date)
+            DatePicker("", selection: date, displayedComponents: .date)
                 .labelsHidden()
                 .padding(.bottom, 5)
+                .background(Color(.systemGray6), in: RoundedRectangle(cornerRadius: 8))
+                .padding(.horizontal, 5)
         }
     }
 
@@ -298,4 +279,3 @@ struct HackView: View {
         valorRubro: 5
     ))
 }
-

@@ -45,7 +45,7 @@ struct TeamView: View {
                                     let valorFinal = calculateFinalScore(calificacion: calificacion, peso: pesoRubro)
 
                                     VStack(alignment: .leading) {
-                                        Text("\(rubro): \(String(format: "%.2f", calificacion))")
+                                        Text("\(rubro): \(String(format: "%.2f", calificacion)) de \(hack.valorRubro )")
                                             .foregroundColor(.black)
                                         Text("Peso: \(String(format: "%.2f", pesoRubro))% | Valor Final: \(String(format: "%.2f", valorFinal))")
                                             .font(.footnote)
@@ -71,7 +71,7 @@ struct TeamView: View {
     }
     
     private func calculateFinalScore(calificacion: Double, peso: Double) -> Double {
-        return (calificacion * peso) / 100.0
+        return (calificacion * peso) / Double(hack.valorRubro)
     }
 
     private func accumulateScores() {

@@ -4,7 +4,6 @@
 //
 //  Created by Alumno on 15/10/24.
 //
-
 import SwiftUI
 import Charts
 
@@ -23,7 +22,8 @@ struct ResultsView: View {
                 .padding()
                 .foregroundColor(.primary)
 
-            if topTeams.isEmpty {
+            // Comprobar si hay equipos con puntuación mayor a 0
+            if topTeams.isEmpty || topTeams.allSatisfy({ $0.score <= 0 }) {
                 Text("No hay resultados disponibles.")
                     .font(.headline)
                     .foregroundColor(.gray)
@@ -61,21 +61,24 @@ struct ResultsView: View {
                     .fontWeight(.bold)
                     .padding(.top)
 
+                // Lista de los mejores equipos con enlaces de navegación
                 ForEach(topTeams.prefix(3), id: \.team) { team in
-                    HStack {
-                        Text(team.team)
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                        Spacer()
-                        Text("\(String(format: "%.2f", team.score)) / \(hack.valorRubro)")
-                            .fontWeight(.bold)
-                            .foregroundColor(.accentColor)
+                    NavigationLink(destination: TeamView(hack: hack, equipoSeleccionado: team.team)) {
+                        HStack {
+                            Text(team.team)
+                                .fontWeight(.bold)
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Text("\(String(format: "%.2f", team.score)) / 100")
+                                .fontWeight(.bold)
+                                .foregroundColor(.accentColor)
+                        }
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+                        .padding(.horizontal)
                     }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
-                    .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
-                    .padding(.horizontal)
                 }
             }
         }

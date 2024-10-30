@@ -14,7 +14,6 @@ struct HomeAdminView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-            
                 VStack {
                     if hackData.hacks.isEmpty {
                         if hackData.isLoading {
@@ -29,16 +28,12 @@ struct HomeAdminView: View {
                         }
                     } else {
                         List(hackData.hacks) { hack in
-                            NavigationLink(destination: HackView(hack: hack)) {
+                            NavigationLink(destination: HackView(hack: hack)) { // Asegúrate de envolver HackRow en NavigationLink
                                 HackRow(hack: hack)
-                                    .padding()
-                                    .background(Color.white)
-                                    .cornerRadius(8)
-                                    .shadow(radius: 3)
                             }
-                            .buttonStyle(PlainButtonStyle())
                         }
-                        .listStyle(PlainListStyle())                    }
+                        .listStyle(PlainListStyle())
+                    }
 
                     Spacer()
                 }
@@ -51,7 +46,7 @@ struct HomeAdminView: View {
                         Spacer()
                         Button {
                             isActivated = true
-                        }  label: {
+                        } label: {
                             Label("Nuevo Hackathon", systemImage: "plus")
                                 .font(.title)
                                 .bold()
@@ -59,7 +54,6 @@ struct HomeAdminView: View {
                         }
                         .buttonStyle(MainViewButtonStyle())
                         .padding()
-                    
                     }
                 }
             }

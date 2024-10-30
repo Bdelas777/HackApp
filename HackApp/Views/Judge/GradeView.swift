@@ -40,7 +40,6 @@ struct GradeView: View {
                         }
 
                         VStack {
-                            // Slider estilizado
                             VStack {
                                 Slider(value: Binding(
                                     get: {
@@ -56,26 +55,10 @@ struct GradeView: View {
                                 .background(RoundedRectangle(cornerRadius: 8).fill(Color(UIColor.systemGray5)))
                                 .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
                                 
-                                // Línea de referencia
-                                HStack {
-                                    ForEach(1..<Int(valorRubro) + 1, id: \.self) { value in
-                                        Spacer()
-                                        Text("\(value)")
-                                            .font(.caption)
-                                            .foregroundColor(.gray)
-                                        Spacer()
-                                    }
-                                }
-                                .padding(.horizontal)
-                                .padding(.top, -10)
+                               
                             }
 
-                            // Etiqueta de valor del slider
-                            Text("Valor actual: \(calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 1.0, specifier: "%.1f")")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                                .padding(.top, 4)
-                                .frame(maxWidth: .infinity, alignment: .center)
+                           
                         }
                     }
                     .padding(.vertical, 12)

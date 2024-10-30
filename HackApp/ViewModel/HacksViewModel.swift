@@ -407,6 +407,7 @@ class HacksViewModel: ObservableObject {
         }
         
         let finalScore = totalJudges > 0 ? totalScore / Double(totalJudges) : 0.0
+        print(finalScore, "Este es el Score final")
         updateOrSaveCalificaciones(for: equipo, with: finalScore, hackClave: hackClave) { _ in }
         
         return finalScore
@@ -481,15 +482,15 @@ class HacksViewModel: ObservableObject {
             }
             
             guard let documents = querySnapshot?.documents, let document = documents.first else {
-                completion(.success(0.0)) // Valor por defecto si no se encuentra
+                completion(.success(0.0))
                 return
             }
             
             let data = document.data()
             if let valorRubro = data["valorRubro"] as? Int {
-                completion(.success(Double(valorRubro))) // Convertir Int a Double
+                completion(.success(Double(valorRubro)))
             } else {
-                completion(.success(0.0)) // Valor por defecto si no se encuentra el valor
+                completion(.success(0.0))
             }
         }
     }
