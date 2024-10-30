@@ -61,25 +61,34 @@ struct ResultsView: View {
                     .fontWeight(.bold)
                     .padding(.top)
 
-                // Lista de los mejores equipos con enlaces de navegación
-                ForEach(topTeams.prefix(3), id: \.team) { team in
-                    NavigationLink(destination: TeamView(hack: hack, equipoSeleccionado: team.team)) {
-                        HStack {
-                            Text(team.team)
-                                .fontWeight(.bold)
-                                .foregroundColor(.primary)
-                            Spacer()
-                            Text("\(String(format: "%.2f", team.score)) / 100")
-                                .fontWeight(.bold)
-                                .foregroundColor(.accentColor)
+                // Grid de los mejores equipos
+                let columns = [
+                    GridItem(.flexible()),
+                    GridItem(.flexible()),
+                    GridItem(.flexible()),
+                    GridItem(.flexible())
+                ]
+                
+                LazyVGrid(columns: columns, spacing: 10) {
+                    ForEach(topTeams.prefix(12), id: \.team) { team in
+                        NavigationLink(destination: TeamView(hack: hack, equipoSeleccionado: team.team)) {
+                            HStack {
+                                Text(team.team)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.primary)
+                                Spacer()
+                                Text("\(String(format: "%.2f", team.score)) / 100")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.accentColor)
+                            }
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(8)
+                            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
                         }
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
-                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
-                        .padding(.horizontal)
                     }
                 }
+                .padding(.horizontal)
             }
         }
         .padding()

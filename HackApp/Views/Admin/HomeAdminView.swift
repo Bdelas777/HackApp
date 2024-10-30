@@ -27,12 +27,19 @@ struct HomeAdminView: View {
                                 .foregroundColor(.gray)
                         }
                     } else {
-                        List(hackData.hacks) { hack in
-                            NavigationLink(destination: HackView(hack: hack)) { // Asegúrate de envolver HackRow en NavigationLink
-                                HackRow(hack: hack)
+                        let columns = [
+                            GridItem(.flexible()),
+                            GridItem(.flexible())
+                        ]
+                        
+                        LazyVGrid(columns: columns, spacing: 10) {
+                            ForEach(hackData.hacks) { hack in
+                                NavigationLink(destination: HackView(hack: hack)) {
+                                    HackRow(hack: hack)
+                                }
                             }
                         }
-                        .listStyle(PlainListStyle())
+                        .padding()
                     }
 
                     Spacer()
@@ -66,6 +73,7 @@ struct HomeAdminView: View {
         }
     }
 }
+
 
 #Preview {
     HomeAdminView()

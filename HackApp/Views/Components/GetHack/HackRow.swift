@@ -4,7 +4,6 @@
 //
 //  Created by Alumno on 24/09/24.
 //
-
 import SwiftUI
 
 struct HackRow: View {
@@ -48,14 +47,14 @@ struct HackRow: View {
                     showDeleteConfirmation = true
                 }) {
                     Image(systemName: "trash")
+                        .font(.title3)
                         .foregroundColor(.red)
                         .padding(8)
                         .background(Color.red.opacity(0.1), in: Circle())
                 }
                 .confirmationDialog("¿Estás seguro de eliminar este hackathon?", isPresented: $showDeleteConfirmation) {
                     Button("Eliminar", role: .destructive) {
-                        // Llamar a la función de eliminación del ViewModel
-                        // Por ejemplo: hackData.deleteHack(hackClave: hack.clave)
+                        // Aquí llamaría a la función de eliminación
                     }
                     Button("Cancelar", role: .cancel) {}
                 }
@@ -64,6 +63,7 @@ struct HackRow: View {
             .background(hack.estaActivo ? Color.white : Color.gray.opacity(0.3)) // Fondo gris para hacks inactivos
             .cornerRadius(8)
             .shadow(radius: 3)
+            .frame(height: 200) // Establecer una altura fija para el HackRow
         }
         .padding(.vertical, 5)
         .overlay(
@@ -80,20 +80,4 @@ struct HackRow: View {
         formatter.dateStyle = .medium
         return formatter
     }
-}
-
-#Preview {
-    HackRow(hack: HackPrueba(
-        clave: "Hack001",
-        descripcion: "Descripción del hack",
-        equipos: ["Equipo A", "Equipo B"],
-        jueces: [],
-        rubros: [:],
-        estaActivo: false,
-        nombre: "Hackathon Ejemplo",
-        tiempoPitch: 5.0,
-        FechaStart: Date(),
-        FechaEnd: Date().addingTimeInterval(86400 * 5), // 5 días después
-        valorRubro: 5
-    ))
 }
