@@ -9,7 +9,6 @@ import SwiftUI
 enum AlertType: Identifiable {
     case closeHack
     case invalidDate
-
     var id: Int {
         switch self {
         case .closeHack: return 1

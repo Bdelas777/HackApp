@@ -100,28 +100,40 @@ struct AddHackView: View {
         }
         
         // Guardar hack
-        let nuevoHack = HackPrueba(
-            clave: clave,
-            descripcion: descripcion,
-            equipos: listaEquipos.equipoList.map { $0.nombre },
-            jueces: listaJueces.juezList.map { $0.nombre },
-            rubros: listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
-            estaActivo: true,
-            nombre: nombre,
-            tiempoPitch: Double(tiempoPitch) ?? 0.0,
-            FechaStart: date,
-            FechaEnd: dateEnd,
-            valorRubro: Int(valorRubro) ?? 0
-        )
-        
-        listaHacks.addHack(hack: nuevoHack) { result in
-            switch result {
-            case .success:
-                presentationMode.wrappedValue.dismiss()
-                listaHacks.fetchHacks()
-            case .failure(let error):
-                alertMessage = "Error al guardar el hack: \(error.localizedDescription)"
-                showingAlert = true
+        listaHacks.checkIfKeyExists(clave) { exists in
+              if exists {
+                  DispatchQueue.main.async { // Ensure UI updates are on the main thread
+                      alertMessage = "No se puede guardar porque ya existe un hack con esa clave."
+                      showingAlert = true
+                  }
+                  return
+              }
+              
+              // Proceed to save the hack if the key is unique
+              let nuevoHack = HackPrueba(
+                  clave: clave,
+                  descripcion: descripcion,
+                  equipos: listaEquipos.equipoList.map { $0.nombre },
+                  jueces: listaJueces.juezList.map { $0.nombre },
+                  rubros: listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
+                  estaActivo: true,
+                  nombre: nombre,
+                  tiempoPitch: Double(tiempoPitch) ?? 0.0,
+                  FechaStart: date,
+                  FechaEnd: dateEnd,
+                  valorRubro: Int(valorRubro) ?? 0
+              )
+              
+              // Save the new hack
+            listaHacks.addHack(hack: nuevoHack) { result in
+                switch result {
+                case .success:
+                    presentationMode.wrappedValue.dismiss()
+                    listaHacks.fetchHacks()
+                case .failure(let error):
+                    alertMessage = "Error al guardar el hack: \(error.localizedDescription)"
+                    showingAlert = true
+                }
             }
         }
     }

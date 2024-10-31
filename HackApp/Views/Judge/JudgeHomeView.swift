@@ -6,35 +6,37 @@
 //
 
 import SwiftUI
-
 struct JudgeHomeView: View {
     let hackClaveInput: String
     let selectedJudge: String
+    let nombreHack: String
+    let isActive: Bool
     @State private var selectedEquipos: [String]?
     @ObservedObject var viewModel = HacksViewModel()
-    let nombreHack = "HackMTY 2024"
     
     var body: some View {
         NavigationStack {
-            GeometryReader { geo in
-                ZStack {
-                    List {
-                        ForEach(selectedEquipos ?? [], id: \.self) { equipo in
-                            NavigationLink(destination: GradeView(hackClaveInput: hackClaveInput, selectedEquipo: equipo, nombreJuez: selectedJudge)) {
-                                Text(equipo)
-                                    .font(.title)
-                                    .fontWeight(.medium)
-                                    .padding()
-                            }
+            List {
+                if let equipos = selectedEquipos, !equipos.isEmpty {
+                    ForEach(equipos, id: \.self) { equipo in
+                        NavigationLink(destination: GradeView(hackClaveInput: hackClaveInput, selectedEquipo: equipo, nombreJuez: selectedJudge, isActive: isActive)) {
+                            Text(equipo)
+                                .font(.title)
+                                .fontWeight(.medium)
+                                .padding()
+                            
                         }
                     }
-                    .listRowSpacing(10)
+                } else {
+                    Text("No hay equipos disponibles.")
+                        .font(.title)
+                        .padding()
                 }
             }
             .navigationTitle("Equipos de \(nombreHack)")
-        }
-        .onAppear {
-            fetchEquipos()
+            .onAppear {
+                fetchEquipos()
+            }
         }
     }
 
@@ -42,20 +44,17 @@ struct JudgeHomeView: View {
         viewModel.getEquipos(for: hackClaveInput) { result in
             switch result {
             case .success(let equipos):
-                if equipos.isEmpty {
-                    selectedEquipos = nil
-                } else {
-                    selectedEquipos = equipos
-                }
+                selectedEquipos = equipos.isEmpty ? nil : equipos
             case .failure:
-                selectedEquipos = nil
+                selectedEquipos = nil // Manejo opcional de errores
             }
         }
     }
 }
 
+
 struct JudgeHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        JudgeHomeView(hackClaveInput: "HACK24", selectedJudge: "Juez1")
+        JudgeHomeView(hackClaveInput: "HACK24", selectedJudge: "Juez1", nombreHack:"ejemplo", isActive: false )
     }
 }

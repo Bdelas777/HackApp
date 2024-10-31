@@ -37,14 +37,9 @@ struct HackRow: View {
                         .font(.footnote)
                         .foregroundColor(.gray)
 
-                    Text(hack.estaActivo ? "Estado: Activo" : "Estado: Inactivo")
-                        .font(.footnote)
-                        .foregroundColor(hack.estaActivo ? .green : .red)
-                        .bold()
                 }
                 Spacer()
                 
-                // Botón de eliminación
                 Button(action: {
                     showDeleteConfirmation = true
                 }) {
@@ -70,10 +65,10 @@ struct HackRow: View {
                 }
             }
             .padding()
-            .background(hack.estaActivo ? Color.white : Color.gray.opacity(0.3)) // Fondo gris para hacks inactivos
+            .background(hack.estaActivo ? Color.white : Color.gray.opacity(0.38))
             .cornerRadius(8)
             .shadow(radius: 3)
-            .frame(height: 200) // Establecer una altura fija para el HackRow
+            .frame(height: 200) 
         }
         .padding(.vertical, 5)
         .overlay(

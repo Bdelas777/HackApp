@@ -8,12 +8,13 @@ struct JudgesView: View {
     @State private var errorMessage: String?
     @State private var hasSearched = false
     @ObservedObject var viewModel = HacksViewModel()
+    @StateObject var hackData = HacksViewModel()
 
     var body: some View {
         NavigationStack {
             VStack {
                 if let judges = selectedJudges {
-                    Text("Escoge tu nombre:")
+                    Text("Bienvenido a \(hackData.nombre), por favor escoge tu nombre:")
                         .font(.title)
                         .padding()
                     List(judges.sorted(), id: \.self) { judge in
@@ -25,7 +26,7 @@ struct JudgesView: View {
                                 .padding()
                         }
                     }
-                    NavigationLink(destination: JudgeHomeView(hackClaveInput: hackClaveInput, selectedJudge: selectedJudge)) {
+                    NavigationLink(destination: JudgeHomeView(hackClaveInput: hackClaveInput, selectedJudge: selectedJudge, nombreHack: hackData.nombre, isActive: hackData.isActive)) {
                         Text("Continuar como \(selectedJudge)")
                             .font(.title2)
                             .padding()
@@ -65,7 +66,7 @@ struct JudgesView: View {
                             .padding()
 
                         Button(action: {
-                            fetchJudges()
+                            fetchHackData()
                             showModal = false
                         }) {
                             Text("Buscar Jueces")
@@ -84,6 +85,21 @@ struct JudgesView: View {
             }
             .onAppear {
                 viewModel.fetchHacks()
+            }
+        }
+    }
+
+    private func fetchHackData() {
+        hackData.fetchHack(byKey: hackClaveInput) { result in
+            switch result {
+            case .success(let hack):
+                hackData.nombre = hack.nombre
+                hackData.isActive = hack.estaActivo
+                fetchJudges() // Llama a fetchJudges después de obtener el hack
+            case .failure:
+                selectedJudges = nil
+                errorMessage = "No se ha encontrado ese hack."
+                hasSearched = true
             }
         }
     }

@@ -12,34 +12,43 @@ struct GradeView: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var alreadyRated = false
+    let isActive: Bool
 
     var body: some View {
         VStack {
-            Text("Rubros de evaluación")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.top)
-
-            if alreadyRated {
-                Text("Ya has calificado este equipo.")
-                    .font(.title3)
-                    .foregroundColor(.green)
+            if !isActive {
+                Text("El hackathon ha cerrado. No se puede calificar.")
+                    .font(.title2)
+                    .foregroundColor(.red)
                     .padding()
+                    .background(Color.yellow.opacity(0.3))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
             } else {
-                ForEach(rubros.keys.sorted(), id: \.self) { key in
-                    VStack(spacing: 16) {
-                        HStack {
-                            Text(key)
-                                .font(.headline)
-                                .font(.system(size: 20))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Text("\(calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 1.0, specifier: "%.1f")")
-                                .font(.headline)
-                                .frame(width: 50)
-                        }
+                Text("Rubros de evaluación")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.top)
 
-                        VStack {
+                if alreadyRated {
+                    Text("Ya has calificado este equipo.")
+                        .font(.title3)
+                        .foregroundColor(.green)
+                        .padding()
+                } else {
+                    ForEach(rubros.keys.sorted(), id: \.self) { key in
+                        VStack(spacing: 16) {
+                            HStack {
+                                Text(key)
+                                    .font(.headline)
+                                    .font(.system(size: 20))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Text("\(calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 1.0, specifier: "%.1f")")
+                                    .font(.headline)
+                                    .frame(width: 50)
+                            }
+
                             VStack {
                                 Slider(value: Binding(
                                     get: {
@@ -54,30 +63,26 @@ struct GradeView: View {
                                 .padding(.horizontal)
                                 .background(RoundedRectangle(cornerRadius: 8).fill(Color(UIColor.systemGray5)))
                                 .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
-                                
-                               
                             }
-
-                           
                         }
+                        .padding(.vertical, 12)
                     }
-                    .padding(.vertical, 12)
-                }
 
-                Button(action: {
-                    submitCalificaciones()
-                }) {
-                    Text("Calificar")
-                        .font(.headline)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                        .font(.system(size: 20))
-                        .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
+                    Button(action: {
+                        submitCalificaciones()
+                    }) {
+                        Text("Calificar")
+                            .font(.headline)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                            .font(.system(size: 20))
+                            .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
+                    }
+                    .padding(.top)
                 }
-                .padding(.top)
             }
         }
         .padding()
@@ -159,5 +164,5 @@ struct GradeView: View {
 }
 
 #Preview {
-    GradeView(hackClaveInput: "HACK24", selectedEquipo: "Equipo 1", nombreJuez: "NombreJuez")
+    GradeView(hackClaveInput: "HACK24", selectedEquipo: "Equipo 1", nombreJuez: "NombreJuez", isActive: true)
 }

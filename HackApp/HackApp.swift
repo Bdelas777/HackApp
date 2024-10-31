@@ -18,13 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 @main
 struct HackApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject private var viewModel = HacksViewModel() // Move the viewModel declaration here
+    @StateObject private var viewModel = HacksViewModel() 
 
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                HomeView() // Make sure this is your main view
-                    .environmentObject(viewModel) // Provide the view model to the environment
+                HomeView()
+                    .environmentObject(viewModel)
             }
             .navigationViewStyle(StackNavigationViewStyle())
         }

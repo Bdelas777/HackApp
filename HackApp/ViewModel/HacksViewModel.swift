@@ -16,6 +16,68 @@ class HacksViewModel: ObservableObject {
     /// Diccionario que almacena las puntuaciones finales de los equipos.
     @Published var totalScores: [String: Double] = [:]
     
+    @Published var nombre: String = ""
+    @Published var isActive: Bool = false
+    
+    // Método para obtener el documento completo de un hackathon
+    func fetchHack(byKey hackClave: String, completion: @escaping (Result<HackPrueba, Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let documents = querySnapshot?.documents, let document = documents.first else {
+                completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
+                return
+            }
+
+            let data = document.data()
+            let equipos = data["Equipos"] as? [String] ?? []
+            let jueces = data["Jueces"] as? [String] ?? []
+            let rubrosData = data["Rubros"] as? [String: Any] ?? [:]
+            let rubros = rubrosData.compactMapValues { value -> Double? in
+                if let doubleValue = value as? Double {
+                    return doubleValue
+                } else if let stringValue = value as? String, let convertedValue = Double(stringValue) {
+                    return convertedValue
+                }
+                return nil
+            }
+
+            let estaActivo = data["estaActivo"] as? Bool ?? false
+            let nombre = data["nombre"] as? String ?? ""
+            let tiempoPitch = data["tiempoPitch"] as? Double ?? 0.0
+            let descripcion = data["descripcion"] as? String ?? ""
+            let fechastart = data["FechaStart"] as? Timestamp ?? Timestamp()
+            let fechaend = data["FechaEnd"] as? Timestamp ?? Timestamp()
+            let valorrubro = data["valorRubro"] as? Int ?? 0
+            let clave = data["clave"] as? String ?? ""
+            let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
+            let finalScores = data["finalScores"] as? [String: Double] ?? [:]
+
+            let hack = HackPrueba(
+                clave: clave,
+                descripcion: descripcion,
+                equipos: equipos,
+                jueces: jueces,
+                rubros: rubros,
+                estaActivo: estaActivo,
+                nombre: nombre,
+                tiempoPitch: tiempoPitch,
+                FechaStart: fechastart.dateValue(),
+                FechaEnd: fechaend.dateValue(),
+                valorRubro: valorrubro,
+                calificaciones: calificaciones,
+                finalScores: finalScores
+            )
+
+            completion(.success(hack))
+        }
+    }
+
+
+    
     /// Recupera los hackathons desde Firestore.
     func fetchHacks() {
         isLoading = true
@@ -148,6 +210,19 @@ class HacksViewModel: ObservableObject {
             }
         }
     }
+    
+    func checkIfKeyExists(_ clave: String, completion: @escaping (Bool) -> Void) {
+            db.collection("hacks").whereField("clave", isEqualTo: clave).getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error fetching documents: \(error)")
+                    completion(false)
+                    return
+                }
+
+                let exists = querySnapshot?.documents.count ?? 0 > 0
+                completion(exists)
+            }
+        }
     
     /// Guarda las calificaciones dadas por los jueces para un hackathon específico.
     /// - Parameters:
