@@ -54,13 +54,11 @@ struct HackView: View {
                 infoField(title: "Valor Rubro:", value: $valorRubro)
                 infoField(title: "Tiempo Pitch:", value: $tiempoPitch)
 
-                // Mensaje de estado
                 Text(statusMessage)
                     .font(.subheadline)
                     .foregroundColor(.orange)
                     .padding(.top, 10)
 
-                // Botón para guardar cambios
                 Button(action: saveChanges) {
                     Text("Guardar Cambios")
                         .font(.title2)
@@ -80,7 +78,6 @@ struct HackView: View {
             .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
             .padding()
 
-            // Navegación a resultados
             NavigationLink(destination: ResultsView(hack: hack)) {
                 Text("Ver Resultados")
                     .font(.title2)
@@ -93,9 +90,8 @@ struct HackView: View {
                     .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
             }
             .padding(.horizontal)
-            .padding(.bottom, 20) // Espaciado al final
+            .padding(.bottom, 20)
             
-            // Botón para cerrar hack
             HStack {
                 Spacer()
                 Button(action: {
@@ -110,7 +106,7 @@ struct HackView: View {
                         .cornerRadius(10)
                         .shadow(color: Color.red.opacity(0.3), radius: 2, x: 0, y: 2)
                 }
-                .padding(.trailing, 20) // Espaciado al lado derecho
+                .padding(.trailing, 20)
             }
         }
         .navigationTitle("Detalles del Hackathon")

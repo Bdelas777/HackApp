@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct JudgesView: View {
-    @State private var showModal = false
     @State private var hackClaveInput = ""
     @State private var selectedJudges: [String]?
     @State private var selectedJudge: String = "Selecciona un juez"
@@ -13,21 +12,56 @@ struct JudgesView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if let judges = selectedJudges {
-                    Text("Bienvenido a \(hackData.nombre), por favor escoge tu nombre:")
+                if hasSearched && selectedJudges == nil {
+                    // Mensaje de error si no se encontraron jueces
+                    Text(errorMessage ?? "No se encontró ese hack.")
+                        .foregroundColor(.red)
                         .font(.title)
                         .padding()
-                    List(judges.sorted(), id: \.self) { judge in
+                    Text("Por favor vuelve a ingresar la clave del hack:")
+                        .font(.title)
+                        .padding()
+
+                    TextField("Ingrese la clave del Hack", text: $hackClaveInput)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                        .autocorrectionDisabled(true)
+                        .onSubmit {
+                            fetchHackData()
+                        }
+
+                    Button(action: {
+                        fetchHackData()
+                    }) {
+                        Text("Buscar Jueces")
+                            .fontWeight(.bold)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+                } else if selectedJudges != nil {
+                    // Mensaje de bienvenida si se encontraron jueces
+                    Text("Bienvenido a \(hackData.nombre), por favor selecciona tu nombre:")
+                        .font(.title)
+                        .padding()
+
+                    List(selectedJudges!.sorted(), id: \.self) { judge in
                         Button(action: {
                             selectedJudge = judge
                         }) {
                             Text(judge)
                                 .font(.title2)
                                 .padding()
+                                .background(selectedJudge == judge ? Color.blue.opacity(0.2) : Color.clear) // Resaltar juez seleccionado
+                                .cornerRadius(8)
                         }
                     }
+
                     NavigationLink(destination: JudgeHomeView(hackClaveInput: hackClaveInput, selectedJudge: selectedJudge, nombreHack: hackData.nombre, isActive: hackData.isActive)) {
-                        Text("Continuar como \(selectedJudge)")
+                        Text("Presiona aquí, para comenzar a calificar")
                             .font(.title2)
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -37,51 +71,35 @@ struct JudgesView: View {
                     }
                     .disabled(selectedJudge == "Selecciona un juez")
                     .padding()
-                } else if hasSearched {
-                    Text(errorMessage ?? "No se encontró ese hack.")
-                        .foregroundColor(.red)
-                        .font(.title)
-                        .padding()
                 } else {
-                    Text("Realiza una búsqueda del hackathon.")
+                    // Mensaje para ingresar la clave del hack
+                    Text("Por favor ingresa la clave del hack:")
                         .font(.title)
                         .padding()
+
+                    TextField("Ingrese la clave del Hack", text: $hackClaveInput)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                        .autocorrectionDisabled(true)
+                        .onSubmit {
+                            fetchHackData()
+                        }
+
+                    Button(action: {
+                        fetchHackData()
+                    }) {
+                        Text("Buscar Jueces")
+                            .fontWeight(.bold)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding()
                 }
 
                 Spacer()
-
-                Button {
-                    showModal.toggle()
-                } label: {
-                    Label("Buscar Hackathon", systemImage: "search")
-                        .font(.title)
-                        .bold()
-                        .padding()
-                        .foregroundColor(.blue)
-                }
-                .popover(isPresented: $showModal) {
-                    VStack(spacing: 20) {
-                        TextField("Ingrese la clave del Hack", text: $hackClaveInput)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding()
-
-                        Button(action: {
-                            fetchHackData()
-                            showModal = false
-                        }) {
-                            Text("Buscar Jueces")
-                                .fontWeight(.bold)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
-                        }
-                        .padding()
-                    }
-                    .padding()
-                    .frame(width: 300)
-                }
             }
             .onAppear {
                 viewModel.fetchHacks()
@@ -95,7 +113,7 @@ struct JudgesView: View {
             case .success(let hack):
                 hackData.nombre = hack.nombre
                 hackData.isActive = hack.estaActivo
-                fetchJudges() // Llama a fetchJudges después de obtener el hack
+                fetchJudges()
             case .failure:
                 selectedJudges = nil
                 errorMessage = "No se ha encontrado ese hack."

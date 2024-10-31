@@ -33,6 +33,7 @@ struct AddHackForm: View {
             }
             Section(header: Text("Clave del Hackathon")) {
                 TextField("Clave del hack", text: $clave)
+                    .autocorrectionDisabled(true)
             }
             Section(header: Text("Descripción del Hackathon")) {
                 TextField("Descripción del hack", text: $descripcion)

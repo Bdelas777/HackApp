@@ -63,7 +63,13 @@ struct AddHackView: View {
         }
         
         if tiempoPitch.isEmpty{
-            alertMessage = "El valor máximo de los rubros es obligatorio."
+            alertMessage = "El tiempo de pitch es obligatorio."
+            showingAlert = true
+            return
+        }
+        
+        if let tiempo = Double(tiempoPitch), tiempo < 0 {
+            alertMessage = "El valor máximo del tiempo de pitch debe ser un número mayor a 0."
             showingAlert = true
             return
         }
@@ -73,6 +79,13 @@ struct AddHackView: View {
             showingAlert = true
             return
         }
+        
+        if let valor = Double(valorRubro), valor < 0 {
+            alertMessage = "El valor máximo de los rubros debe ser un número mayor a 0."
+            showingAlert = true
+            return
+        }
+        
         
         if listaRubros.rubroList.isEmpty {
             alertMessage = "Debe agregar al menos un rubro."
