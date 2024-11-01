@@ -22,7 +22,7 @@ struct GradeView: View {
                     .foregroundColor(.red)
                     .padding()
                     .background(Color.yellow.opacity(0.3))
-                    .cornerRadius(8)
+                    .cornerRadius(12)
                     .padding(.horizontal)
             } else {
                 Text("Rubros de evaluación de \(selectedEquipo)")
@@ -77,7 +77,7 @@ struct GradeView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color.blue)
                             .foregroundColor(.white)
-                            .cornerRadius(8)
+                            .cornerRadius(12)
                             .font(.system(size: 20))
                             .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
                     }
@@ -86,7 +86,7 @@ struct GradeView: View {
             }
         }
         .padding()
-        .background(Color(UIColor.systemGray6))
+        .background(Color(UIColor.systemGroupedBackground))
         .cornerRadius(12)
         .shadow(radius: 5)
         .alert(isPresented: $showAlert) {
