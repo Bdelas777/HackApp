@@ -13,7 +13,8 @@ struct ResultsView: View {
     
     @State private var scores: [String: Double] = [:]
     @State private var topTeams: [(team: String, score: Double)] = []
-    
+    @State private var isLoading: Bool = true // Loading state
+
     var body: some View {
         VStack {
             Text("Resultados del Hackathon")
@@ -21,9 +22,14 @@ struct ResultsView: View {
                 .fontWeight(.bold)
                 .padding()
                 .foregroundColor(.primary)
+                .background(Color(.systemGray5))
+                .cornerRadius(12)
+                .shadow(radius: 5)
 
-            // Comprobar si hay equipos con puntuación mayor a 0
-            if topTeams.isEmpty || topTeams.allSatisfy({ $0.score <= 0 }) {
+            if isLoading {
+                ProgressView("Cargando resultados...")
+                    .padding()
+            } else if topTeams.isEmpty || topTeams.allSatisfy({ $0.score <= 0 }) {
                 Text("No hay resultados disponibles.")
                     .font(.headline)
                     .foregroundColor(.gray)
@@ -39,17 +45,17 @@ struct ResultsView: View {
                         Text(String(format: "%.1f", team.score))
                             .font(.caption)
                             .foregroundColor(.black)
-                            .padding(2)
+                            .padding(5)
                             .background(Color.white)
                             .cornerRadius(5)
-                            .shadow(color: Color.black.opacity(0.1), radius: 1, x: 0, y: 1)
+                            .shadow(color: Color.black.opacity(0.1), radius: 1)
                     }
                 }
-                .frame(height: 300)
+                .frame(height: 500)
                 .padding()
                 .background(Color.white)
                 .cornerRadius(12)
-                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
+                .shadow(color: Color.black.opacity(0.1), radius: 8)
                 .chartXAxisLabel("Puntuación")
                 .chartYAxisLabel("Equipos")
                 .chartYAxis {
@@ -61,16 +67,11 @@ struct ResultsView: View {
                     .fontWeight(.bold)
                     .padding(.top)
 
-                // Grid de los mejores equipos
-                let columns = [
-                    GridItem(.flexible()),
-                    GridItem(.flexible()),
-                    GridItem(.flexible()),
-                    GridItem(.flexible())
-                ]
+                // Show more teams (e.g., top 20)
+                let columns = Array(repeating: GridItem(.flexible()), count: 4)
                 
                 LazyVGrid(columns: columns, spacing: 10) {
-                    ForEach(topTeams.prefix(12), id: \.team) { team in
+                    ForEach(topTeams.prefix(20), id: \.team) { team in // Show top 20 teams
                         NavigationLink(destination: TeamView(hack: hack, equipoSeleccionado: team.team)) {
                             HStack {
                                 Text(team.team)
@@ -83,8 +84,8 @@ struct ResultsView: View {
                             }
                             .padding()
                             .background(Color(.systemGray6))
-                            .cornerRadius(8)
-                            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+                            .cornerRadius(12)
+                            .shadow(color: Color.black.opacity(0.1), radius: 4)
                         }
                     }
                 }
@@ -100,6 +101,7 @@ struct ResultsView: View {
     
     private func fetchScores() {
         viewModel.getScores(for: hack.clave) { result in
+            isLoading = false
             switch result {
             case .success(let scores):
                 self.scores = scores

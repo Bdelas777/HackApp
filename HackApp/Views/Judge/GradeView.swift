@@ -25,7 +25,7 @@ struct GradeView: View {
                     .cornerRadius(8)
                     .padding(.horizontal)
             } else {
-                Text("Rubros de evaluación")
+                Text("Rubros de evaluación de \(selectedEquipo)")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding(.top)

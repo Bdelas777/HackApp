@@ -91,7 +91,6 @@ struct HackView: View {
             }
             .padding(.horizontal)
             .padding(.bottom, 20)
-            
             HStack {
                 Spacer()
                 Button(action: {
@@ -106,7 +105,7 @@ struct HackView: View {
                         .cornerRadius(10)
                         .shadow(color: Color.red.opacity(0.3), radius: 2, x: 0, y: 2)
                 }
-                .padding(.trailing, 20)
+                .padding(.trailing, 20) // Espaciado al lado derecho
             }
         }
         .navigationTitle("Detalles del Hackathon")
