@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeAdminView: View {
-    @StateObject var hackData = HacksViewModel()
+    @EnvironmentObject var hackData: HacksViewModel
     @State var isActivated: Bool = false
 
     var body: some View {
@@ -36,6 +36,8 @@ struct HomeAdminView: View {
                             ForEach(hackData.hacks) { hack in
                                 NavigationLink(destination: HackView(hack: hack)) {
                                     HackRow(hack: hack)
+                                        .environmentObject(hackData)
+
                                 }
                             }
                         }

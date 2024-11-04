@@ -11,43 +11,54 @@ struct HackRow: View {
     @State private var showDeleteConfirmation = false
     @EnvironmentObject var viewModel: HacksViewModel
 
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
+    }()
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Clave: \(hack.clave)")
-                        .font(.headline)
-                        .fontWeight(.semibold)
+                        .font(.subheadline)
+                        .fontWeight(.bold)
                         .foregroundColor(.primary)
 
                     Text("Nombre: \(hack.nombre)")
-                        .font(.headline)
-                        .foregroundColor(.primary)
+                        .font(.title2)
+                        .fontWeight(.semibold)
 
-                    Text("Descripción: \(hack.descripcion)")
-                        .font(.subheadline)
+                    Text("Descripción:")
+                        .font(.footnote)
                         .foregroundColor(.secondary)
-
-                    Text("Fecha de Inicio: \(hack.FechaStart, formatter: dateFormatter)")
+                    
+                    Text(hack.descripcion)
                         .font(.footnote)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2) // Limit to two lines for better spacing
 
-                    Text("Fecha de Fin: \(hack.FechaEnd, formatter: dateFormatter)")
-                        .font(.footnote)
-                        .foregroundColor(.gray)
+                    HStack {
+                        Text("Fecha de Inicio: \(hack.FechaStart, formatter: Self.dateFormatter)")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
 
+                        Spacer()
+
+                        Text("Fecha de Fin: \(hack.FechaEnd, formatter: Self.dateFormatter)")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
+                    }
                 }
                 Spacer()
-                
-                Button(action: {
-                    showDeleteConfirmation = true
-                }) {
+
+                Button(action: { showDeleteConfirmation = true }) {
                     Image(systemName: "trash")
-                        .font(.title3)
-                        .foregroundColor(.red)
-                        .padding(8)
-                        .background(Color.red.opacity(0.1), in: Circle())
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .padding(12)
+                        .background(Color.red, in: Circle())
                 }
                 .confirmationDialog("¿Estás seguro de eliminar este hackathon?", isPresented: $showDeleteConfirmation) {
                     Button("Eliminar", role: .destructive) {
@@ -65,23 +76,20 @@ struct HackRow: View {
                 }
             }
             .padding()
-            .background(hack.estaActivo ? Color.white : Color.gray.opacity(0.38))
-            .cornerRadius(8)
-            .shadow(radius: 3)
-            .frame(height: 200) 
+            .background(hack.estaActivo ? Color.white : Color.gray.opacity(0.15))
+            .cornerRadius(12)
+            .shadow(radius: 5)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+            )
         }
-        .padding(.vertical, 5)
+        .padding(.vertical, 10)
         .overlay(
             Divider()
                 .padding(.leading)
                 .padding(.trailing, 10),
             alignment: .bottom
         )
-    }
-    
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter
     }
 }
