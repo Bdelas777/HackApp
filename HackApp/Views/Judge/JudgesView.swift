@@ -13,6 +13,7 @@ struct JudgesView: View {
         NavigationStack {
             VStack {
                 if hasSearched && selectedJudges == nil {
+
                     Text(errorMessage ?? "No se encontró ese hack.")
                         .foregroundColor(.red)
                         .font(.title)
@@ -42,6 +43,7 @@ struct JudgesView: View {
                     }
                     .padding()
                 } else if selectedJudges != nil {
+                    // Mensaje de bienvenida si se encontraron jueces
                     Text("Bienvenido a \(hackData.nombre), por favor selecciona tu nombre:")
                         .font(.title)
                         .padding()
@@ -53,7 +55,7 @@ struct JudgesView: View {
                             Text(judge)
                                 .font(.title2)
                                 .padding()
-                                .background(selectedJudge == judge ? Color.blue.opacity(0.2) : Color.clear) 
+                                .background(selectedJudge == judge ? Color.blue.opacity(0.2) : Color.clear) // Resaltar juez seleccionado
                                 .cornerRadius(8)
                         }
                     }

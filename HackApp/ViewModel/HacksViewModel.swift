@@ -1,25 +1,54 @@
 import Foundation
 import FirebaseFirestore
 
-/// ViewModel para manejar la lógica de los hackathons.
-/// Esta clase es responsable de la interacción con Firestore y de mantener el estado de los hackathons.
 class HacksViewModel: ObservableObject {
-    /// Lista de hackathons cargados desde Firestore.
     @Published var hacks = [HackPrueba]()
-    
-    /// Instancia de Firestore para realizar consultas a la base de datos.
     private var db = Firestore.firestore()
-    
-    /// Estado de carga para indicar si los datos están siendo recuperados.
     @Published var isLoading = false
-    
-    /// Diccionario que almacena las puntuaciones finales de los equipos.
     @Published var totalScores: [String: Double] = [:]
-    
     @Published var nombre: String = ""
     @Published var isActive: Bool = false
-    
-    // Método para obtener el documento completo de un hackathon
+  
+    func fetchHackAndEvaluateTeams(for hackClave: String, selectedJudge: String, completion: @escaping (Result<[String: Bool], Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let documents = querySnapshot?.documents, let document = documents.first else {
+                completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
+                return
+            }
+
+            let data = document.data()
+
+            // Obtener los equipos y las calificaciones
+            let equipos = data["equipos"] as? [String] ?? [] // Asegurarse de que se obtienen los equipos correctamente
+            let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:] // Asegurarse de que se obtienen las calificaciones correctamente
+            print(calificaciones, "Calificaciones")
+            // Crear un diccionario para almacenar si un equipo ha sido calificado por el juez
+            var equiposEvaluados = [String: Bool]()
+         
+            // Recorremos los equipos y verificamos si el juez está presente en las calificaciones
+            for equipo in equipos {
+                
+                if let calificacionesEquipo = calificaciones[equipo], let _ = calificacionesEquipo[selectedJudge] {
+                    
+                    equiposEvaluados[equipo] = true // El juez ha calificado al equipo
+                } else {
+                    equiposEvaluados[equipo] = false // El juez no ha calificado al equipo
+                }
+            }
+
+            print(equiposEvaluados, "Equipos")
+            // Devolver el resultado con los equipos y si han sido evaluados o no
+            completion(.success(equiposEvaluados))
+        }
+    }
+
+
+
     func fetchHack(byKey hackClave: String, completion: @escaping (Result<HackPrueba, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -76,9 +105,6 @@ class HacksViewModel: ObservableObject {
         }
     }
 
-
-    
-    /// Recupera los hackathons desde Firestore.
     func fetchHacks() {
         isLoading = true
         db.collection("hacks").getDocuments(source: .default) { (querySnapshot, error) in
