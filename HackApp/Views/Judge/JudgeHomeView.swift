@@ -91,13 +91,7 @@ struct JudgeHomeView: View {
         }
     }
 
-    // Función para navegar a la vista de calificación del equipo
-    private func navigateToGradeView(_ equipo: String) {
-        // Aquí manejarías la navegación a la pantalla de calificación del equipo
-        // Este es un ejemplo básico de cómo podrías manejar la navegación:
-        // NavigationLink(destination: GradeView(hackClaveInput: hackClaveInput, selectedEquipo: equipo, nombreJuez: selectedJudge, isActive: isActive)) {}
-    }
-
+   
     private func fetchEquipos() {
         // Primero obtenemos los equipos para este hack
         viewModel.getEquipos(for: hackClaveInput) { result in
