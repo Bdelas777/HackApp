@@ -13,7 +13,7 @@ struct ResultsView: View {
     
     @State private var scores: [String: Double] = [:]
     @State private var topTeams: [(team: String, score: Double)] = []
-    @State private var isLoading: Bool = true // Loading state
+    @State private var isLoading: Bool = true
 
     var body: some View {
         VStack {
