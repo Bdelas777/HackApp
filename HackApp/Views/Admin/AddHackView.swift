@@ -74,6 +74,12 @@ struct AddHackView: View {
             return
         }
         
+        if !isNumeric(tiempoPitch) {
+                alertMessage = "El tiempo de pitch debe contener solo números."
+                showingAlert = true
+                return
+            }
+        
         if valorRubro.isEmpty {
             alertMessage = "El valor máximo de los rubros es obligatorio."
             showingAlert = true
@@ -85,6 +91,11 @@ struct AddHackView: View {
             showingAlert = true
             return
         }
+        if !isNumeric(valorRubro) {
+                alertMessage = "El valor de los rubros debe contener solo números."
+                showingAlert = true
+                return
+            }
         
         
         if listaRubros.rubroList.isEmpty {
@@ -112,17 +123,15 @@ struct AddHackView: View {
             return
         }
         
-        // Guardar hack
         listaHacks.checkIfKeyExists(clave) { exists in
               if exists {
-                  DispatchQueue.main.async { // Ensure UI updates are on the main thread
+                  DispatchQueue.main.async {
                       alertMessage = "No se puede guardar porque ya existe un hack con esa clave."
                       showingAlert = true
                   }
                   return
               }
               
-              // Proceed to save the hack if the key is unique
               let nuevoHack = HackPrueba(
                   clave: clave,
                   descripcion: descripcion,
@@ -137,7 +146,6 @@ struct AddHackView: View {
                   valorRubro: Int(valorRubro) ?? 0
               )
               
-              // Save the new hack
             listaHacks.addHack(hack: nuevoHack) { result in
                 switch result {
                 case .success:
@@ -150,6 +158,12 @@ struct AddHackView: View {
             }
         }
     }
+}
+
+private func isNumeric(_ str: String) -> Bool {
+    let numericCharacterSet = CharacterSet(charactersIn: "0123456789.")
+    let invertedCharacterSet = numericCharacterSet.inverted
+    return str.rangeOfCharacter(from: invertedCharacterSet) == nil
 }
 
 #Preview {
