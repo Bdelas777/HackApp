@@ -17,6 +17,7 @@ struct AddHackForm: View {
     @ObservedObject var listaRubros: RubroViewModel
     @ObservedObject var listaEquipos: EquipoViewModel
     @ObservedObject var listaJueces: JuezViewModel
+    @Binding var showingAlert: Bool
     @State private var showingAddRubroPopover = false
     @State private var showingAddEquipoPopover = false
     @State private var showingAddJuezPopover = false
@@ -24,9 +25,66 @@ struct AddHackForm: View {
     @State private var rubroValor: String = ""
     @State private var equipoNombre: String = ""
     @State private var juezNombre: String = ""
-    @Binding var showingAlert: Bool
-    
+    @State private var currentStep: Int = 0  // Paso actual
+    @State private var steps: [String] = ["Información Básica", "Fechas", "Rúbricas", "Equipos", "Jueces", "Revisión"]
+    private let totalSteps = 6
+    @State private var alertMessage: String = ""
+    @ObservedObject var listaHacks: HacksViewModel
+    @Environment(\.presentationMode) var presentationMode
+
     var body: some View {
+        VStack {
+            // Barra de progreso
+            ProgressBar(progress: CGFloat(currentStep) / CGFloat(totalSteps))
+                .padding()
+
+            // Indicadores de paso (agregamos la acción para seleccionar un paso)
+            StepIndicator(currentStep: currentStep, totalSteps: totalSteps, steps: steps, onStepSelected: { step in
+                currentStep = step
+            })
+            
+            // Formulario por paso
+            switch currentStep {
+            case 0: basicInfoForm
+            case 1: dateForm
+            case 2: rubrosForm
+            case 3: equiposForm
+            case 4: juecesForm
+            case 5: reviewForm  // Resumen al final
+            default: EmptyView()
+            }
+            
+            // Botones de navegación
+            HStack {
+                if currentStep > 0 {
+                    Button("Anterior") {
+                        currentStep -= 1
+                    }
+                    .padding()
+                }
+                
+                Spacer()
+                
+                if currentStep < totalSteps - 1 {
+                    Button("Siguiente") {
+                        currentStep += 1
+                    }
+                    .padding()
+                } else {
+                    Button("Guardar") {
+                        validateAndSave()
+                    }
+                    .padding()
+                }
+            }
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+    }
+
+    // Información básica
+    var basicInfoForm: some View {
         Form {
             Section(header: Text("Nombre del Hackathon")) {
                 TextField("Nombre del hack", text: $nombre)
@@ -38,24 +96,32 @@ struct AddHackForm: View {
             Section(header: Text("Descripción del Hackathon")) {
                 TextField("Descripción del hack", text: $descripcion)
             }
+        }
+    }
+
+    // Fechas
+    var dateForm: some View {
+        Form {
             Section(header: Text("Fecha de inicio del Hackathon")) {
                 DatePicker("Selecciona la fecha inicio", selection: $date)
             }
             Section(header: Text("Fecha de fin del Hackathon")) {
                 DatePicker("Selecciona la fecha fin", selection: $dateEnd)
             }
+        }
+    }
 
-            
+    // Rúbricas
+    var rubrosForm: some View {
+        Form {
             Section(header: Text("Duración del pitch (minutos)")) {
                 TextField("Valor máximo de los rubros", text: $tiempoPitch)
                     .keyboardType(.numberPad)
             }
-            
             Section(header: Text("Valor máximo de los rubros del Hackathon")) {
                 TextField("Valor máximo de los rubros", text: $valorRubro)
                     .keyboardType(.numberPad)
             }
-            
             Section(header: Text("Rúbrica")) {
                 AddRubroButton(showingAddRubroPopover: $showingAddRubroPopover,
                                listaRubros: listaRubros,
@@ -71,6 +137,12 @@ struct AddHackForm: View {
                     }
                 }
             }
+        }
+    }
+
+    // Equipos
+    var equiposForm: some View {
+        Form {
             Section(header: Text("Equipos")) {
                 AddEquipoButton(showingAddEquipoPopover: $showingAddEquipoPopover,
                                 listaEquipos: listaEquipos,
@@ -83,6 +155,12 @@ struct AddHackForm: View {
                     }
                 }
             }
+        }
+    }
+
+    // Jueces
+    var juecesForm: some View {
+        Form {
             Section(header: Text("Jueces")) {
                 AddJuezButton(showingAddJuezPopover: $showingAddJuezPopover,
                                listaJueces: listaJueces,
@@ -97,4 +175,220 @@ struct AddHackForm: View {
             }
         }
     }
+
+    // Revisión final
+    var reviewForm: some View {
+        VStack {
+            Text("Revisa la información antes de guardar")
+                .font(.headline)
+                .padding()
+
+            // Mostrar el resumen de los datos ingresados
+            Form {
+                Section(header: Text("Información Básica")) {
+                    Text("Nombre: \(nombre)")
+                    Text("Clave: \(clave)")
+                    Text("Descripción: \(descripcion)")
+                }
+
+                Section(header: Text("Fechas")) {
+                    Text("Fecha de inicio: \(date, style: .date)")
+                    Text("Fecha de fin: \(dateEnd, style: .date)")
+                }
+
+                Section(header: Text("Rúbricas")) {
+                    Text("Tiempo Pitch: \(tiempoPitch) minutos")
+                    Text("Valor de rubros: \(valorRubro) ")
+                    ForEach(listaRubros.rubroList) { rubro in
+                        Text("\(rubro.nombre): \(rubro.valor, specifier: "%.0f")%")
+                    }
+                }
+
+                Section(header: Text("Equipos")) {
+                    ForEach(listaEquipos.equipoList) { equipo in
+                        Text(equipo.nombre)
+                    }
+                }
+
+                Section(header: Text("Jueces")) {
+                    ForEach(listaJueces.juezList) { juez in
+                        Text(juez.nombre)
+                    }
+                }
+            }
+        }
+    }
+
+    
+    private func validateAndSave() {
+        // Validar campos obligatorios
+        if nombre.isEmpty {
+            alertMessage = "El nombre es obligatorio."
+            showingAlert = true
+            return
+        }
+        
+        if clave.isEmpty {
+            alertMessage = "La clave es obligatoria."
+            showingAlert = true
+            return
+        }
+        
+        if date >= dateEnd {
+            alertMessage = "La fecha de inicio no puede ser posterior a la fecha de fin."
+            showingAlert = true
+            return
+        }
+        
+        if tiempoPitch.isEmpty{
+            alertMessage = "El tiempo de pitch es obligatorio."
+            showingAlert = true
+            return
+        }
+        
+        if let tiempo = Double(tiempoPitch), tiempo < 0 {
+            alertMessage = "El valor máximo del tiempo de pitch debe ser un número mayor a 0."
+            showingAlert = true
+            return
+        }
+        
+        if !isNumeric(tiempoPitch) {
+            alertMessage = "El tiempo de pitch debe contener solo números."
+            showingAlert = true
+            return
+        }
+        
+        if valorRubro.isEmpty {
+            alertMessage = "El valor máximo de los rubros es obligatorio."
+            showingAlert = true
+            return
+        }
+        
+        if let valor = Double(valorRubro), valor < 0 {
+            alertMessage = "El valor máximo de los rubros debe ser un número mayor a 0."
+            showingAlert = true
+            return
+        }
+        if !isNumeric(valorRubro) {
+            alertMessage = "El valor de los rubros debe contener solo números."
+            showingAlert = true
+            return
+        }
+        
+        
+        if listaRubros.rubroList.isEmpty {
+            alertMessage = "Debe agregar al menos un rubro."
+            showingAlert = true
+            return
+        }
+        
+        let totalRubroValue = listaRubros.rubroList.reduce(0) { $0 + $1.valor }
+        if totalRubroValue < 100 {
+            alertMessage = "La suma de los valores de los rubros debe ser al menos 100."
+            showingAlert = true
+            return
+        }
+        
+        if listaEquipos.equipoList.isEmpty {
+            alertMessage = "Debe agregar al menos un equipo."
+            showingAlert = true
+            return
+        }
+
+        if listaJueces.juezList.isEmpty {
+            alertMessage = "Debe agregar al menos un juez."
+            showingAlert = true
+            return
+        }
+        
+        listaHacks.checkIfKeyExists(clave) { exists in
+              if exists {
+                  DispatchQueue.main.async {
+                      alertMessage = "No se puede guardar porque ya existe un hack con esa clave."
+                      showingAlert = true
+                  }
+                  return
+              }
+              
+              let nuevoHack = HackPrueba(
+                  clave: clave,
+                  descripcion: descripcion,
+                  equipos: listaEquipos.equipoList.map { $0.nombre },
+                  jueces: listaJueces.juezList.map { $0.nombre },
+                  rubros: listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
+                  estaActivo: true,
+                  nombre: nombre,
+                  tiempoPitch: Double(tiempoPitch) ?? 0.0,
+                  FechaStart: date,
+                  FechaEnd: dateEnd,
+                  valorRubro: Int(valorRubro) ?? 0
+              )
+              
+            listaHacks.addHack(hack: nuevoHack) { result in
+                switch result {
+                case .success:
+                    presentationMode.wrappedValue.dismiss()
+                    listaHacks.fetchHacks()
+                case .failure(let error):
+                    alertMessage = "Error al guardar el hack: \(error.localizedDescription)"
+                    showingAlert = true
+                }
+            }
+        }
+    }
 }
+
+private func isNumeric(_ str: String) -> Bool {
+    let numericCharacterSet = CharacterSet(charactersIn: "0123456789.")
+    let invertedCharacterSet = numericCharacterSet.inverted
+    return str.rangeOfCharacter(from: invertedCharacterSet) == nil
+}
+
+
+
+
+struct StepIndicator: View {
+    var currentStep: Int
+    var totalSteps: Int
+    var steps: [String]
+    var onStepSelected: (Int) -> Void  // Agregar una acción para cuando un paso sea seleccionado
+    
+    var body: some View {
+        HStack {
+            ForEach(0..<totalSteps, id: \.self) { step in
+                VStack {
+                    Button(action: {
+                        onStepSelected(step)  // Cambiar el paso cuando se haga clic en la sección
+                    }) {
+                        Text(steps[step])
+                            .font(.footnote)
+                            .foregroundColor(currentStep == step ? .blue : .gray)
+                            .padding(5)
+                    }
+                    .buttonStyle(PlainButtonStyle()) // Evita que el botón se vea con un estilo predeterminado
+                    
+                    Circle()
+                        .frame(width: 10, height: 10)
+                        .foregroundColor(currentStep >= step ? .blue : .gray)
+                }
+                if step < totalSteps - 1 {
+                    Spacer()
+                }
+            }
+        }
+        .padding()
+    }
+}
+
+
+struct ProgressBar: View {
+    var progress: CGFloat
+    
+    var body: some View {
+        ProgressView(value: progress, total: 1)
+            .progressViewStyle(LinearProgressViewStyle(tint: .blue))
+            .frame(height: 10)
+            .padding([.leading, .trailing])
+    }
+}
+
