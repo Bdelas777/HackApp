@@ -9,10 +9,17 @@ import SwiftUI
 enum AlertType: Identifiable {
     case closeHack
     case invalidDate
+    case editHack
+    case errorProcess
+    case closeSucess
+    
     var id: Int {
         switch self {
         case .closeHack: return 1
         case .invalidDate: return 2
+        case .editHack: return 3
+        case .errorProcess: return 4
+        case .closeSucess: return 5
         }
     }
 }
@@ -30,7 +37,7 @@ struct HackView: View {
     @State private var fechaStart: Date
     @State private var fechaEnd: Date
     @State private var statusMessage: String = ""
-
+    
     init(hack: HackPrueba) {
         self.hack = hack
         _nombre = State(initialValue: hack.nombre)
@@ -43,95 +50,150 @@ struct HackView: View {
     }
 
     var body: some View {
-        VStack(spacing: 20) {
-            VStack(alignment: .leading, spacing: 15) {
-                // Campos editables
-                infoField(title: "Clave:", text: $clave)
-                infoField(title: "Nombre:", text: $nombre)
-                infoField(title: "Descripción:", text: $descripcion)
-                dateField(title: "Fecha Inicio:", date: $fechaStart)
-                dateField(title: "Fecha Fin:", date: $fechaEnd)
-                infoField(title: "Valor Rubro:", value: $valorRubro)
-                infoField(title: "Tiempo Pitch:", value: $tiempoPitch)
+        ScrollView {
+            VStack(spacing: 20) {
+                // Sección de Información
+                infoSection
 
-                Text(statusMessage)
-                    .font(.subheadline)
-                    .foregroundColor(.orange)
-                    .padding(.top, 10)
+                // Mensaje de estado
+                statusMessageView
 
-                Button(action: saveChanges) {
-                    Text("Guardar Cambios")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(hack.estaActivo ? Color.green : Color.gray)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
-                }
-                .disabled(!hack.estaActivo)
+                // Botones de acción
+                actionButtons
             }
             .padding()
-            .background(Color.white)
-            .cornerRadius(12)
-            .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
-            .padding()
+            .navigationTitle("Detalles del Hackathon")
+            .onAppear {
+                fetchEquipos()
+                checkHackStatus()
+            }
+            .alert(item: $alertType) { type in
+                switch type {
+                case .closeHack:
+                    return Alert(
+                        title: Text("Cerrar hack"),
+                        message: Text("¿Estás seguro de que quieres cerrar el hack?"),
+                        primaryButton: .cancel(),
+                        secondaryButton: .default(Text("Confirmar")) {
+                            closeHack()
+                        }
+                    )
+                case .invalidDate:
+                    return Alert(
+                        title: Text("Fecha Invalida"),
+                        message: Text("La fecha de inicio no puede ser menor a la fecha de fin."),
+                        dismissButton: .default(Text("Aceptar"))
+                    )
+                case .editHack:
+                    return Alert(
+                        title: Text("Se ha editado"),
+                        message: Text("Los datos del Hack se han actualizado con éxito"),
+                        dismissButton: .default(Text("Aceptar"))
+                    )
+                case .errorProcess:
+                    return Alert(
+                        title: Text("Error"),
+                        message: Text("Se ha producido un error"),
+                        dismissButton: .default(Text("Aceptar"))
+                    )
+                case .closeSucess:
+                    return Alert(
+                        title: Text("Cerrar hack"),
+                        message: Text("El hack se ha cerrado exitosamente"),
+                        dismissButton: .default(Text("Aceptar"))
+                    )
+                }
+            }
+        }
+    }
 
-            NavigationLink(destination: ResultsView(hack: hack)) {
-                Text("Ver Resultados")
-                    .font(.title2)
-                    .fontWeight(.bold)
+    // Sección de información de formulario
+    private var infoSection: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Información del Hackathon")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+            
+            infoField(title: "Clave:", text: $clave)
+            infoField(title: "Nombre:", text: $nombre)
+            infoField(title: "Descripción:", text: $descripcion)
+            dateField(title: "Fecha Inicio:", date: $fechaStart)
+            dateField(title: "Fecha Fin:", date: $fechaEnd)
+            infoField(title: "Valor Rubro:", value: $valorRubro)
+            infoField(title: "Tiempo Pitch:", value: $tiempoPitch)
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(12)
+        .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
+    }
+
+    // Mensaje de estado
+    private var statusMessageView: some View {
+        Text(statusMessage)
+            .font(.subheadline)
+            .foregroundColor(.orange)
+            .padding(.top, 10)
+            .frame(maxWidth: .infinity, alignment: .center)
+    }
+
+    // Botones de acción
+    private var actionButtons: some View {
+        VStack(spacing: 15) {
+            saveButton
+            navigationLinkButton
+            closeHackButton
+        }
+        .padding(.top, 20)
+    }
+    
+    private var saveButton: some View {
+        Button(action: saveChanges) {
+            Text("Guardar Cambios")
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(hack.estaActivo ? Color.green : Color.gray)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
+        }
+        .disabled(!hack.estaActivo)
+    }
+
+    private var navigationLinkButton: some View {
+        NavigationLink(destination: ResultsView(hack: hack)) {
+            Text("Ver Resultados")
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
+        }
+        .padding(.horizontal)
+    }
+
+    private var closeHackButton: some View {
+        HStack {
+            Spacer()
+            Button(action: {
+                alertType = .closeHack
+            }) {
+                Text("Cerrar Hack")
+                    .font(.headline)
                     .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
+                    .frame(width: 130)
+                    .background(Color.red)
                     .foregroundColor(.white)
                     .cornerRadius(10)
-                    .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
+                    .shadow(color: Color.red.opacity(0.3), radius: 2, x: 0, y: 2)
             }
-            .padding(.horizontal)
-            .padding(.bottom, 20)
-            HStack {
-                Spacer()
-                Button(action: {
-                    alertType = .closeHack
-                }) {
-                    Text("Cerrar Hack")
-                        .font(.headline)
-                        .padding()
-                        .frame(width: 130)
-                        .background(Color.red)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(color: Color.red.opacity(0.3), radius: 2, x: 0, y: 2)
-                }
-                .padding(.trailing, 20) // Espaciado al lado derecho
-            }
-        }
-        .navigationTitle("Detalles del Hackathon")
-        .onAppear {
-            fetchEquipos()
-            checkHackStatus()
-        }
-        .alert(item: $alertType) { type in
-            switch type {
-            case .closeHack:
-                return Alert(
-                    title: Text("Cerrar hack"),
-                    message: Text("¿Estás seguro de que quieres cerrar el hack?"),
-                    primaryButton: .cancel(),
-                    secondaryButton: .default(Text("Confirmar")) {
-                        closeHack()
-                        fetchEquipos()
-                    }
-                )
-            case .invalidDate:
-                return Alert(
-                    title: Text("Fecha Invalida"),
-                    message: Text("La fecha de inicio no puede ser menor a la fecha de fin."),
-                    dismissButton: .default(Text("Aceptar"))
-                )
-            }
+            .padding(.trailing, 20) // Espaciado al lado derecho
         }
     }
 
@@ -160,9 +222,9 @@ struct HackView: View {
 
         viewModel.updateHack(hack: updatedHack, hackClave: hack.clave) { success in
             if success {
-                statusMessage = "Hack actualizado exitosamente."
+                alertType = .editHack
             } else {
-                statusMessage = "Error al actualizar el hack."
+                alertType = .errorProcess
             }
         }
     }
@@ -170,9 +232,9 @@ struct HackView: View {
     private func closeHack() {
         viewModel.updateHackStatus(hackClave: hack.clave, isActive: false) { success in
             if success {
-                statusMessage = "Hack cerrado exitosamente."
+                alertType = .closeSucess
             } else {
-                statusMessage = "Error al cerrar el hack."
+                alertType = .errorProcess
             }
         }
     }
@@ -184,48 +246,54 @@ struct HackView: View {
     }
 
     private func infoField(title: String, text: Binding<String>) -> some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 5) {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.secondary)
             TextField(title, text: text)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.bottom, 5)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .shadow(radius: 2)
         }
     }
-    
+
     private func infoField(title: String, value: Binding<Int>) -> some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 5) {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.secondary)
             TextField(title, value: value, formatter: NumberFormatter())
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.bottom, 5)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .shadow(radius: 2)
         }
     }
 
     private func infoField(title: String, value: Binding<Double>) -> some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 5) {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.secondary)
             TextField(title, value: value, formatter: NumberFormatter())
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.bottom, 5)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .shadow(radius: 2)
         }
     }
-    
+
     private func dateField(title: String, date: Binding<Date>) -> some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 5) {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.secondary)
             DatePicker("", selection: date, displayedComponents: .date)
-                .labelsHidden()
-                .padding(.bottom, 5)
-                .background(Color(.systemGray6), in: RoundedRectangle(cornerRadius: 8))
-                .padding(.horizontal, 5)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .shadow(radius: 2)
         }
     }
 
@@ -234,24 +302,8 @@ struct HackView: View {
             switch result {
             case .success(let equipos):
                 selectedEquipos = equipos.isEmpty ? nil : equipos
-                if let equipos = selectedEquipos {
-                    for equipo in equipos {
-                        fetchAndCalculateScores(for: equipo, hackClave: hack.clave, valorRubro: hack.valorRubro)
-                    }
-                }
             case .failure:
                 selectedEquipos = nil
-            }
-        }
-    }
-
-    private func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int) {
-        viewModel.fetchAndCalculateScores(for: equipo, hackClave: hackClave, valorRubro: valorRubro) { result in
-            switch result {
-            case .success(let totalScore):
-                print("Puntuación total para \(equipo): \(totalScore)")
-            case .failure(let error):
-                print("Error al calcular la puntuación: \(error)")
             }
         }
     }
