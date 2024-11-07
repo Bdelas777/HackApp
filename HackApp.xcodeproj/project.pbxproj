@@ -34,6 +34,12 @@
 		FB2F606D2CA37976004D2E55 /* HacksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */; };
 		FB2F60732CA3838B004D2E55 /* HackRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2F60722CA38386004D2E55 /* HackRow.swift */; };
 		FB2F60762CA38449004D2E55 /* HackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2F60752CA38445004D2E55 /* HackView.swift */; };
+		FB33360B2CDD7AFE001C8E7A /* TeamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB33360A2CDD7AFE001C8E7A /* TeamViewModel.swift */; };
+		FB33360E2CDD7C28001C8E7A /* InfoField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB33360D2CDD7C28001C8E7A /* InfoField.swift */; };
+		FB3336102CDD7C34001C8E7A /* InfoFieldInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB33360F2CDD7C34001C8E7A /* InfoFieldInt.swift */; };
+		FB3336122CDD7C41001C8E7A /* InfoFieldDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3336112CDD7C41001C8E7A /* InfoFieldDouble.swift */; };
+		FB3336142CDD7C4F001C8E7A /* DateField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3336132CDD7C4F001C8E7A /* DateField.swift */; };
+		FB3336162CDD7C58001C8E7A /* ActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3336152CDD7C58001C8E7A /* ActionButtons.swift */; };
 		FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CF67D2C8BD6A000835D7B /* HomeView.swift */; };
 		FB64A9432CBF3C8D00BFD6F4 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB64A9422CBF3C8D00BFD6F4 /* ResultsView.swift */; };
 		FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */; };
@@ -76,6 +82,12 @@
 		FB2F606E2CA37C32004D2E55 /* HackApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = HackApp.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FB2F60722CA38386004D2E55 /* HackRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackRow.swift; sourceTree = "<group>"; };
 		FB2F60752CA38445004D2E55 /* HackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackView.swift; sourceTree = "<group>"; };
+		FB33360A2CDD7AFE001C8E7A /* TeamViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamViewModel.swift; sourceTree = "<group>"; };
+		FB33360D2CDD7C28001C8E7A /* InfoField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoField.swift; sourceTree = "<group>"; };
+		FB33360F2CDD7C34001C8E7A /* InfoFieldInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoFieldInt.swift; sourceTree = "<group>"; };
+		FB3336112CDD7C41001C8E7A /* InfoFieldDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoFieldDouble.swift; sourceTree = "<group>"; };
+		FB3336132CDD7C4F001C8E7A /* DateField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateField.swift; sourceTree = "<group>"; };
+		FB3336152CDD7C58001C8E7A /* ActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtons.swift; sourceTree = "<group>"; };
 		FB5CF67D2C8BD6A000835D7B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FB64A9422CBF3C8D00BFD6F4 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackForm.swift; sourceTree = "<group>"; };
@@ -119,6 +131,7 @@
 		F86AC6BB2BF512A100BEAFCA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				FB33360A2CDD7AFE001C8E7A /* TeamViewModel.swift */,
 				FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */,
 				FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */,
 				FBFC5E022C9B9452002813E4 /* JuezViewModel.swift */,
@@ -202,6 +215,7 @@
 		FB3169142C8923610021A389 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				FB33360C2CDD7C18001C8E7A /* HackView */,
 				FB6840102CB891BD00C1BB07 /* Timer */,
 				FB2F60712CA38377004D2E55 /* GetHack */,
 				FB701F8B2C93BE6A00EF83E4 /* AddHack */,
@@ -249,6 +263,18 @@
 				FB5CF67D2C8BD6A000835D7B /* HomeView.swift */,
 			);
 			path = Start;
+			sourceTree = "<group>";
+		};
+		FB33360C2CDD7C18001C8E7A /* HackView */ = {
+			isa = PBXGroup;
+			children = (
+				FB3336152CDD7C58001C8E7A /* ActionButtons.swift */,
+				FB3336132CDD7C4F001C8E7A /* DateField.swift */,
+				FB3336112CDD7C41001C8E7A /* InfoFieldDouble.swift */,
+				FB33360F2CDD7C34001C8E7A /* InfoFieldInt.swift */,
+				FB33360D2CDD7C28001C8E7A /* InfoField.swift */,
+			);
+			path = HackView;
 			sourceTree = "<group>";
 		};
 		FB6840102CB891BD00C1BB07 /* Timer */ = {
@@ -399,15 +425,18 @@
 				FBFC5E032C9B9452002813E4 /* JuezViewModel.swift in Sources */,
 				FB2F606D2CA37976004D2E55 /* HacksViewModel.swift in Sources */,
 				FB9733C82CA4CD2900A7BE6F /* JudgesView.swift in Sources */,
+				FB3336122CDD7C41001C8E7A /* InfoFieldDouble.swift in Sources */,
 				FB012BD12CB747E600D5CF7A /* TeamView.swift in Sources */,
 				F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */,
 				F8BD95702BE07131002E496B /* Rubro.swift in Sources */,
 				FB0AB0D52C94F9F2003F94E7 /* AddEquipoPopoverView.swift in Sources */,
+				FB33360B2CDD7AFE001C8E7A /* TeamViewModel.swift in Sources */,
 				FBFC5DFF2C9B93E3002813E4 /* AddJuezPopoverView.swift in Sources */,
 				FBCBA3CA2C8A6F01005548A0 /* FontSizeApp.swift in Sources */,
 				FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */,
 				F8C2E1B42BD2D94400B470F0 /* MainViewButtonStyle.swift in Sources */,
 				F8BD956C2BE070B7002E496B /* Equipo.swift in Sources */,
+				FB33360E2CDD7C28001C8E7A /* InfoField.swift in Sources */,
 				FBCBA3C82C8A69EB005548A0 /* StartButton.swift in Sources */,
 				FB8ACC0D2C9E42CB002479D5 /* HackModel.swift in Sources */,
 				F8BD956E2BE0711C002E496B /* Juez.swift in Sources */,
@@ -416,12 +445,15 @@
 				FB0AB0D72C94FA63003F94E7 /* AddEquipoButton.swift in Sources */,
 				FB2F60732CA3838B004D2E55 /* HackRow.swift in Sources */,
 				F8C2E1B12BD0456E00B470F0 /* HomeAdminView.swift in Sources */,
+				FB3336162CDD7C58001C8E7A /* ActionButtons.swift in Sources */,
 				FB0AB0D92C94FAA7003F94E7 /* EquipoViewModel.swift in Sources */,
 				F86AC6BD2BF514C900BEAFCA /* HackViewModel.swift in Sources */,
+				FB3336102CDD7C34001C8E7A /* InfoFieldInt.swift in Sources */,
 				FBB6DB152CAE0D5300EB9122 /* GradeView.swift in Sources */,
 				FB233CB02CB9E97F00CCB8C2 /* TimerView.swift in Sources */,
 				F81F3FDA2BE2EFE2007927D7 /* JudgeHomeView.swift in Sources */,
 				F8BD95742BE0717F002E496B /* Evaluacion.swift in Sources */,
+				FB3336142CDD7C4F001C8E7A /* DateField.swift in Sources */,
 				FB701F912C93C5CD00EF83E4 /* AddRubroButton.swift in Sources */,
 				F87E76CE2C08F6FA00CEF999 /* RubroViewModel.swift in Sources */,
 				FB2F60762CA38449004D2E55 /* HackView.swift in Sources */,

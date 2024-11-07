@@ -8,17 +8,14 @@ import SwiftUI
 
 struct TeamView: View {
     var hack: HackPrueba
-    @ObservedObject var viewModel = HacksViewModel()
+    @ObservedObject var viewModel: TeamViewModel
     let equipoSeleccionado: String
-    @State private var calificaciones: [String: [String: Double]] = [:]
-    @State private var isLoading = true
-    @State private var timeRemaining: TimeInterval = 0
-    @State private var timer: Timer?
-    @State private var isRunning = false
-    @State private var finalScores: [String: Double] = [:]
-    @State private var totalScore: Double = 0.0
-    @State private var rubros: [String: Double] = [:]
-    @State private var totalJudges: Int = 0
+    
+    init(hack: HackPrueba, equipoSeleccionado: String) {
+        self.hack = hack
+        self.equipoSeleccionado = equipoSeleccionado
+        _viewModel = ObservedObject(wrappedValue: TeamViewModel(hack: hack, equipoSeleccionado: equipoSeleccionado, viewModel: HacksViewModel()))
+    }
 
     var body: some View {
         VStack {
@@ -26,23 +23,21 @@ struct TeamView: View {
                 .font(.largeTitle)
                 .padding()
 
-            if isLoading {
+            if viewModel.isLoading {
                 ProgressView("Cargando calificaciones...")
                     .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                     .padding()
             } else {
-                if calificaciones.isEmpty {
+                if viewModel.calificaciones.isEmpty {
                     TimerView(tiempoPitch: Int(hack.tiempoPitch))
                 } else {
-                  
-
                     List {
-                        ForEach(calificaciones.keys.sorted(), id: \.self) { juez in
+                        ForEach(viewModel.calificaciones.keys.sorted(), id: \.self) { juez in
                             Section(header: Text(juez).font(.subheadline).foregroundColor(.gray)) {
-                                ForEach(calificaciones[juez]?.keys.sorted() ?? [], id: \.self) { rubro in
-                                    let calificacion = calificaciones[juez]?[rubro] ?? 0.0
-                                    let pesoRubro = rubros[rubro] ?? 0.0
-                                    let valorFinal = calculateFinalScore(calificacion: calificacion, peso: pesoRubro)
+                                ForEach(viewModel.calificaciones[juez]?.keys.sorted() ?? [], id: \.self) { rubro in
+                                    let calificacion = viewModel.calificaciones[juez]?[rubro] ?? 0.0
+                                    let pesoRubro = viewModel.rubros[rubro] ?? 0.0
+                                    let valorFinal = viewModel.calculateFinalScore(calificacion: calificacion, peso: pesoRubro)
 
                                     VStack(alignment: .leading) {
                                         Text("\(rubro): \(String(format: "%.2f", calificacion)) de \(hack.valorRubro )")
@@ -56,63 +51,20 @@ struct TeamView: View {
                         }
                     }
 
-                    Text("Puntuación General: \(totalJudges > 0 ? String(format: "%.2f", totalScore / Double(totalJudges)) : "0.00")")
+                    Text("Puntuación General: \(viewModel.totalJudges > 0 ? String(format: "%.2f", viewModel.totalScore / Double(viewModel.totalJudges)) : "0.00")")
                         .font(.headline)
                         .padding()
                 }
             }
         }
-        .navigationTitle(calificaciones.isEmpty ? "Tiempo restante" : "Calificaciones")
+        .navigationTitle(viewModel.calificaciones.isEmpty ? "Tiempo restante" : "Calificaciones")
         .onAppear {
-            timeRemaining = TimeInterval(hack.tiempoPitch * 60)
-            fetchRubros()
-            fetchCalificaciones()
-        }
-    }
-    
-    private func calculateFinalScore(calificacion: Double, peso: Double) -> Double {
-        return (calificacion * peso) / Double(hack.valorRubro)
-    }
-
-    private func accumulateScores() {
-        totalScore = 0.0
-        for juez in calificaciones.keys {
-            if let rubrosDelJuez = calificaciones[juez] {
-                for rubro in rubrosDelJuez.keys {
-                    let calificacion = rubrosDelJuez[rubro] ?? 0.0
-                    let pesoRubro = rubros[rubro] ?? 0.0
-                    let valorFinal = calculateFinalScore(calificacion: calificacion, peso: pesoRubro)
-                    totalScore += valorFinal
-                }
-            }
-        }
-    }
-
-    private func fetchRubros() {
-        viewModel.fetchRubros(for: hack.clave) { result in
-            switch result {
-            case .success(let rubrosData):
-                self.rubros = rubrosData.mapValues { Double($0) }
-            case .failure(let error):
-                print("Error al obtener rubros: \(error)")
-            }
-        }
-    }
-    
-    private func fetchCalificaciones() {
-        viewModel.getCalificaciones(for: equipoSeleccionado, hackClave: hack.clave) { result in
-            switch result {
-            case .success(let calificaciones):
-                self.calificaciones = calificaciones
-                totalJudges = calificaciones.keys.count
-                accumulateScores()
-            case .failure(let error):
-                print("Error al obtener calificaciones: \(error.localizedDescription)")
-            }
-            self.isLoading = false
+            viewModel.fetchRubros()
+            viewModel.fetchCalificaciones()
         }
     }
 }
+
 
 #Preview {
     TeamView(hack: HackPrueba(
