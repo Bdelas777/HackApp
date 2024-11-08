@@ -28,5 +28,3 @@ struct AddEquipoPopoverView: View {
         .frame(width: 400, height: 200)
     }
 }
-
-

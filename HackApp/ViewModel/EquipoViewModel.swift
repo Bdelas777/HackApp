@@ -11,3 +11,5 @@ import Foundation
 class EquipoViewModel: ObservableObject {
     @Published var equipoList: [Equipo] = []
 }
+
+

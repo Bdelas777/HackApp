@@ -108,7 +108,6 @@ struct AddHackForm: View {
         }
     }
 
-    // Rúbricas
     var rubrosForm: some View {
         Form {
             Section(header: Text("Duración del pitch (minutos)")) {
@@ -120,46 +119,40 @@ struct AddHackForm: View {
                     .keyboardType(.numberPad)
             }
             Section(header: Text("Rúbrica")) {
-                        // Componente para añadir o editar rubros
-                        AddRubroButton(
-                            showingAddRubroPopover: $showingAddRubroPopover,
-                            listaRubros: listaRubros,
-                            rubroNombre: $rubroNombre,
-                            rubroValor: $rubroValor,
-                            showingAlert: $showingAlert
-                        )
+                // Componente para añadir o editar rubros
+                AddRubroButton(
+                    showingAddRubroPopover: $showingAddRubroPopover,
+                    listaRubros: listaRubros,
+                    rubroNombre: $rubroNombre,
+                    rubroValor: $rubroValor,
+                    showingAlert: $showingAlert
+                )
+                
+                // Lista de rubros (ForEach) con botón de eliminar
+                ForEach(listaRubros.rubroList, id: \.id) { rubro in
+                    HStack {
+                        Text(rubro.nombre)
+                        Spacer()
+                        Text("\(rubro.valor, specifier: "%.0f")%")
                         
-                        // Lista de rubros (ForEach) con botón de eliminar
-                        ForEach(listaRubros.rubroList) { rubro in
-                            HStack {
-                                Text(rubro.nombre)
-                                Spacer()
-                                Text("\(rubro.valor, specifier: "%.0f")%")
-                                
-                                // Botón de editar
-                                Button(action: {
-                                    // Cargar datos del rubro para editar
-                                    rubroNombre = rubro.nombre
-                                    rubroValor = "\(rubro.valor)"
-                                    showingAddRubroPopover.toggle()
-                                }) {
-                                    Image(systemName: "pencil.circle.fill")
-                                        .foregroundColor(.yellow)
-                                }
-                                
-                                // Botón de eliminar
-                                Button(action: {
-                                    eliminarRubro(rubro) // Llamar a la función de eliminación
-                                }) {
-                                    Image(systemName: "trash.circle.fill")
-                                        .foregroundColor(.red)
-                                }
-                            }
+                        // Botón de editar
+                        Button(action: {
+                            // Cargar datos del rubro para editar
+                            rubroNombre = rubro.nombre
+                            rubroValor = "\(rubro.valor)"
+                            showingAddRubroPopover.toggle() // Muestra el popover de edición
+                        }) {
+                            Image(systemName: "pencil.circle.fill")
+                                .foregroundColor(.yellow)
                         }
+                        
+                        
                     }
-
+                }
+            }
         }
     }
+
 
     // Equipos
     var equiposForm: some View {
@@ -240,13 +233,7 @@ struct AddHackForm: View {
         }
     }
     
-    private func eliminarRubro(_ rubro: Rubro) {
-           if let index = listaRubros.rubroList.firstIndex(where: { $0.id == rubro.id }) {
-               listaRubros.rubroList.remove(at: index)
-           }
-        rubroNombre = ""
-                   rubroValor = ""
-       }
+
     
     private func validateAndSave() {
         // Validar campos obligatorios
@@ -379,7 +366,7 @@ struct StepIndicator: View {
     var currentStep: Int
     var totalSteps: Int
     var steps: [String]
-    var onStepSelected: (Int) -> Void  // Agregar una acción para cuando un paso sea seleccionado
+    var onStepSelected: (Int) -> Void
     
     var body: some View {
         HStack {
