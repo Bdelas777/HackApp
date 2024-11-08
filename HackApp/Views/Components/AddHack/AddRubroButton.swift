@@ -18,7 +18,7 @@ struct AddRubroButton: View {
         Button {
             showingAddRubroPopover.toggle()
         } label: {
-            Label("Añadir rubro", systemImage: "plus")
+            Label("Añadir criterio", systemImage: "plus")
                 .foregroundColor(.blue)
         }
         .disabled(totalRubroValue() >= 100)

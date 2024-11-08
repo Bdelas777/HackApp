@@ -8,9 +8,7 @@ struct GradeView: View {
     @State private var rubros: [String: Double] = [:]
     @ObservedObject var viewModel = HacksViewModel()
     @State private var calificaciones: [String: [String: [String: Double]]] = [:]
-    
-    @State private var showAlert = false
-    @State private var alertMessage = ""
+    @Environment(\.dismiss) var dismiss
     @State private var alreadyRated = false
     let isActive: Bool
 
@@ -111,13 +109,6 @@ struct GradeView: View {
         .background(Color(UIColor.systemGroupedBackground))
         .cornerRadius(12)
         .shadow(radius: 5)
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text(alreadyRated ? "Éxito" : "Error"),
-                message: Text(alertMessage),
-                dismissButton: .default(Text("Aceptar"))
-            )
-        }
         .onAppear {
             fetchValorRubro()
             fetchRubros()
@@ -174,12 +165,9 @@ struct GradeView: View {
         viewModel.saveCalificaciones(for: hackClaveInput, calificaciones: rubrosData) { result in
             switch result {
             case .success:
-                alertMessage = "Calificaciones guardadas exitosamente."
-                showAlert = true
-                alreadyRated = true
+                dismiss()  
             case .failure(let error):
-                alertMessage = "Error al guardar calificaciones: \(error.localizedDescription)"
-                showAlert = true
+                print("Hubo un error")
             }
         }
     }
@@ -188,4 +176,3 @@ struct GradeView: View {
 #Preview {
     GradeView(hackClaveInput: "HACK24", selectedEquipo: "Equipo 1", nombreJuez: "NombreJuez", isActive: true)
 }
-

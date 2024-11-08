@@ -37,7 +37,7 @@ struct HackView: View {
     @State private var alertType: AlertType? = nil
     
     @ObservedObject var viewModel = HackViewModel()
-
+    @ObservedObject var viewModel2 = HacksViewModel()
     init(hack: HackPrueba) {
         self.hack = hack
         _nombre = State(initialValue: hack.nombre)
@@ -48,16 +48,16 @@ struct HackView: View {
         _fechaStart = State(initialValue: hack.FechaStart)
         _fechaEnd = State(initialValue: hack.FechaEnd)
     }
-
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 // Sección de Información
                 infoSection
-
+                
                 // Mensaje de estado
                 statusMessageView
-
+                
                 // Botones de acción
                 ActionButtons(
                     hack: hack,
@@ -77,13 +77,13 @@ struct HackView: View {
             }
         }
     }
-
+    
     private func saveChanges() {
         if fechaStart >= fechaEnd {
             alertType = .invalidDate
             return
         }
-
+        
         let updatedHack = HackPrueba(
             clave: clave,
             descripcion: descripcion,
@@ -99,7 +99,7 @@ struct HackView: View {
             calificaciones: hack.calificaciones,
             finalScores: hack.finalScores
         )
-
+        
         viewModel.updateHack(hack: updatedHack) { success in
             if success {
                 alertType = .editHack
@@ -108,7 +108,7 @@ struct HackView: View {
             }
         }
     }
-
+    
     private func closeHack() {
         viewModel.updateHackStatus(hackClave: hack.clave, isActive: false) { success in
             if success {
@@ -118,13 +118,13 @@ struct HackView: View {
             }
         }
     }
-
+    
     private func checkHackStatus() {
         if hack.estaActivo && hack.FechaEnd < Date() {
             alertType = .closeHack
         }
     }
-
+    
     private func alert(for type: AlertType) -> Alert {
         switch type {
         case .closeHack:
@@ -162,7 +162,7 @@ struct HackView: View {
             )
         }
     }
-
+    
     private var infoSection: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Información del Hackathon")
@@ -183,7 +183,7 @@ struct HackView: View {
         .cornerRadius(12)
         .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
     }
-
+    
     private var statusMessageView: some View {
         Text(viewModel.statusMessage)
             .font(.subheadline)
@@ -191,17 +191,36 @@ struct HackView: View {
             .padding(.top, 10)
             .frame(maxWidth: .infinity, alignment: .center)
     }
-
+    
     private func fetchEquipos() {
         viewModel.fetchEquipos(clave: hack.clave) { result in
             switch result {
             case .success(let equipos):
                 selectedEquipos = equipos.isEmpty ? nil : equipos
+                if let equipos = selectedEquipos {
+                                   for equipo in equipos {
+                                       fetchAndCalculateScores(for: equipo, hackClave: hack.clave, valorRubro: hack.valorRubro)
+                                   }
+                               }
+
             case .failure:
                 selectedEquipos = nil
             }
         }
     }
+    
+    private func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int) {
+        viewModel2.fetchAndCalculateScores(for: equipo, hackClave: hackClave, valorRubro: valorRubro) { result in
+               switch result {
+               case .success(let totalScore):
+                   print("Puntuación total para \(equipo): \(totalScore)")
+               case .failure(let error):
+                   print("Error al calcular la puntuación: \(error)")
+               }
+           }
+       }
+
+    
 }
 
 #Preview {

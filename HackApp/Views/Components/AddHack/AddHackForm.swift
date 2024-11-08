@@ -26,7 +26,7 @@ struct AddHackForm: View {
     @State private var equipoNombre: String = ""
     @State private var juezNombre: String = ""
     @State private var currentStep: Int = 0  // Paso actual
-    @State private var steps: [String] = ["Información Básica", "Fechas", "Rúbricas", "Equipos", "Jueces", "Revisión"]
+    @State private var steps: [String] = ["Información Básica", "Fechas", "Rúbrica", "Equipos", "Jueces", "Revisión"]
     private let totalSteps = 6
     @State private var alertMessage: String = ""
     @ObservedObject var listaHacks: HacksViewModel
@@ -34,11 +34,9 @@ struct AddHackForm: View {
 
     var body: some View {
         VStack {
-            // Barra de progreso
             ProgressBar(progress: CGFloat(currentStep) / CGFloat(totalSteps))
                 .padding()
 
-            // Indicadores de paso (agregamos la acción para seleccionar un paso)
             StepIndicator(currentStep: currentStep, totalSteps: totalSteps, steps: steps, onStepSelected: { step in
                 currentStep = step
             })
@@ -50,11 +48,10 @@ struct AddHackForm: View {
             case 2: rubrosForm
             case 3: equiposForm
             case 4: juecesForm
-            case 5: reviewForm  // Resumen al final
+            case 5: reviewForm
             default: EmptyView()
             }
             
-            // Botones de navegación
             HStack {
                 if currentStep > 0 {
                     Button("Anterior") {
@@ -118,7 +115,7 @@ struct AddHackForm: View {
                 TextField("Valor máximo de los rubros", text: $tiempoPitch)
                     .keyboardType(.numberPad)
             }
-            Section(header: Text("Valor máximo de los rubros del Hackathon")) {
+            Section(header: Text("Valor de la calificación máxima")) {
                 TextField("Valor máximo de los rubros", text: $valorRubro)
                     .keyboardType(.numberPad)
             }
