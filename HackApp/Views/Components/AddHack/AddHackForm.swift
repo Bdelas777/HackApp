@@ -31,6 +31,8 @@ struct AddHackForm: View {
     @State private var alertMessage: String = ""
     @ObservedObject var listaHacks: HacksViewModel
     @Environment(\.presentationMode) var presentationMode
+    
+    @State private var equipoAEditar: Equipo?
 
     var body: some View {
         VStack {
@@ -161,16 +163,29 @@ struct AddHackForm: View {
                 AddEquipoButton(showingAddEquipoPopover: $showingAddEquipoPopover,
                                 listaEquipos: listaEquipos,
                                 equipoNombre: $equipoNombre,
-                                showingAlert: $showingAlert)
+                                showingAlert: $showingAlert,
+                                equipoAEditar: $equipoAEditar)
                 
                 ForEach(listaEquipos.equipoList) { equipo in
                     HStack {
                         Text(equipo.nombre)
+                        
+                        // Botón para editar equipo
+                        Button(action: {
+                            // Cuando se toca un equipo, se carga su nombre para editar
+                            equipoAEditar = equipo
+                            equipoNombre = equipo.nombre
+                            showingAddEquipoPopover.toggle() // Mostrar popover de edición
+                        }) {
+                            Image(systemName: "pencil.circle.fill")
+                                .foregroundColor(.yellow)
+                        }
                     }
                 }
             }
         }
     }
+
 
     // Jueces
     var juecesForm: some View {
@@ -236,7 +251,6 @@ struct AddHackForm: View {
 
     
     private func validateAndSave() {
-        // Validar campos obligatorios
         if nombre.isEmpty {
             alertMessage = "El nombre es obligatorio."
             showingAlert = true
