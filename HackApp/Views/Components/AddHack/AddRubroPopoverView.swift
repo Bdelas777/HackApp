@@ -15,12 +15,14 @@ struct AddRubroPopoverView: View {
     var body: some View {
         VStack {
             Form {
-                Section(header: Text("Nombre del Rubro")) {
+                Section(header: Text("Nombre del Criterio")) {
                     TextField("Nombre", text: $rubroNombre)
+                        .autocorrectionDisabled(true)
                 }
                 Section(header: Text("Valor del Rubro")) {
                     TextField("Valor", text: $rubroValor)
                         .keyboardType(.decimalPad)
+                        .autocorrectionDisabled(true)
                 }
             }
             .padding()

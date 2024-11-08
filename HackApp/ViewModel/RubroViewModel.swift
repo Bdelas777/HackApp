@@ -10,3 +10,4 @@ import Foundation
 class RubroViewModel : ObservableObject {
     @Published var rubroList = [Rubro]()
 }
+

@@ -165,7 +165,7 @@ struct GradeView: View {
         viewModel.saveCalificaciones(for: hackClaveInput, calificaciones: rubrosData) { result in
             switch result {
             case .success:
-                dismiss()  
+                dismiss()
             case .failure(let error):
                 print("Hubo un error")
             }

@@ -17,6 +17,7 @@ struct AddJuezPopoverView: View {
             Form {
                 Section(header: Text("Nombre del Juez")) {
                     TextField("Nombre", text: $juezNombre)
+                        .autocorrectionDisabled(true)
                 }
             }
             .padding()

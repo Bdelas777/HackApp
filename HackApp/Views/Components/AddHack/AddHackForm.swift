@@ -120,20 +120,44 @@ struct AddHackForm: View {
                     .keyboardType(.numberPad)
             }
             Section(header: Text("Rúbrica")) {
-                AddRubroButton(showingAddRubroPopover: $showingAddRubroPopover,
-                               listaRubros: listaRubros,
-                               rubroNombre: $rubroNombre,
-                               rubroValor: $rubroValor,
-                               showingAlert: $showingAlert)
-                
-                ForEach(listaRubros.rubroList) { rubro in
-                    HStack {
-                        Text(rubro.nombre)
-                        Spacer()
-                        Text("\(rubro.valor, specifier: "%.0f")%")
+                        // Componente para añadir o editar rubros
+                        AddRubroButton(
+                            showingAddRubroPopover: $showingAddRubroPopover,
+                            listaRubros: listaRubros,
+                            rubroNombre: $rubroNombre,
+                            rubroValor: $rubroValor,
+                            showingAlert: $showingAlert
+                        )
+                        
+                        // Lista de rubros (ForEach) con botón de eliminar
+                        ForEach(listaRubros.rubroList) { rubro in
+                            HStack {
+                                Text(rubro.nombre)
+                                Spacer()
+                                Text("\(rubro.valor, specifier: "%.0f")%")
+                                
+                                // Botón de editar
+                                Button(action: {
+                                    // Cargar datos del rubro para editar
+                                    rubroNombre = rubro.nombre
+                                    rubroValor = "\(rubro.valor)"
+                                    showingAddRubroPopover.toggle()
+                                }) {
+                                    Image(systemName: "pencil.circle.fill")
+                                        .foregroundColor(.yellow)
+                                }
+                                
+                                // Botón de eliminar
+                                Button(action: {
+                                    eliminarRubro(rubro) // Llamar a la función de eliminación
+                                }) {
+                                    Image(systemName: "trash.circle.fill")
+                                        .foregroundColor(.red)
+                                }
+                            }
+                        }
                     }
-                }
-            }
+
         }
     }
 
@@ -193,9 +217,9 @@ struct AddHackForm: View {
                     Text("Fecha de fin: \(dateEnd, style: .date)")
                 }
 
-                Section(header: Text("Rúbricas")) {
+                Section(header: Text("Rúbrica")) {
                     Text("Tiempo Pitch: \(tiempoPitch) minutos")
-                    Text("Valor de rubros: \(valorRubro) ")
+                    Text("Calificación máxima: \(valorRubro) ")
                     ForEach(listaRubros.rubroList) { rubro in
                         Text("\(rubro.nombre): \(rubro.valor, specifier: "%.0f")%")
                     }
@@ -215,7 +239,14 @@ struct AddHackForm: View {
             }
         }
     }
-
+    
+    private func eliminarRubro(_ rubro: Rubro) {
+           if let index = listaRubros.rubroList.firstIndex(where: { $0.id == rubro.id }) {
+               listaRubros.rubroList.remove(at: index)
+           }
+        rubroNombre = ""
+                   rubroValor = ""
+       }
     
     private func validateAndSave() {
         // Validar campos obligatorios

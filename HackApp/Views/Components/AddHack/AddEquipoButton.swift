@@ -19,6 +19,7 @@ struct AddEquipoButton: View {
         } label: {
             Label("Añadir equipo", systemImage: "plus")
                 .foregroundColor(.blue)
+                .autocorrectionDisabled(true)
         }
         .popover(isPresented: $showingAddEquipoPopover) {
             AddEquipoPopoverView(

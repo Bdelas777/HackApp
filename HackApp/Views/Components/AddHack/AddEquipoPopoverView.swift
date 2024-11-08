@@ -16,6 +16,7 @@ struct AddEquipoPopoverView: View {
             Form {
                 Section(header: Text("Nombre del Equipo")) {
                     TextField("Nombre", text: $equipoNombre)
+                        .autocorrectionDisabled(true)
                 }
             }
             .padding()

@@ -20,6 +20,7 @@ struct AddRubroButton: View {
         } label: {
             Label("Añadir criterio", systemImage: "plus")
                 .foregroundColor(.blue)
+                .autocorrectionDisabled(true)
         }
         .disabled(totalRubroValue() >= 100)
         .popover(isPresented: $showingAddRubroPopover) {
@@ -40,8 +41,14 @@ struct AddRubroButton: View {
     
     private func addRubro() {
         if let valor = Double(rubroValor), totalRubroValue() + valor <= 100 {
-            let nuevoRubro = Rubro( nombre: rubroNombre, valor: valor)
-            listaRubros.rubroList.append(nuevoRubro)
+            if let index = listaRubros.rubroList.firstIndex(where: { $0.nombre == rubroNombre }) {
+                // Editar rubro existente
+                listaRubros.rubroList[index].valor = valor
+            } else {
+                // Agregar un nuevo rubro
+                let nuevoRubro = Rubro(nombre: rubroNombre, valor: valor)
+                listaRubros.rubroList.append(nuevoRubro)
+            }
             rubroNombre = ""
             rubroValor = ""
             showingAddRubroPopover = false
@@ -54,5 +61,3 @@ struct AddRubroButton: View {
         listaRubros.rubroList.reduce(0) { $0 + $1.valor }
     }
 }
-
-
