@@ -16,4 +16,10 @@ class JuezViewModel: ObservableObject {
         let newJuez = Juez(id: UUID(), nombre: nombre)
         juezList.append(newJuez)
     }
+    
+    func eliminarJuez(_ juez: Juez) {
+           if let index = juezList.firstIndex(where: { $0.id == juez.id }) {
+               juezList.remove(at: index)
+           }
+       }
 }

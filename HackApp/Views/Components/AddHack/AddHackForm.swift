@@ -30,6 +30,7 @@ struct AddHackForm: View {
     private let totalSteps = 6
     @State private var alertMessage: String = ""
     @ObservedObject var listaHacks: HacksViewModel
+    @State private var juezAEditar: Juez?
     @Environment(\.presentationMode) var presentationMode
     
     @State private var equipoAEditar: Equipo?
@@ -190,20 +191,35 @@ struct AddHackForm: View {
     // Jueces
     var juecesForm: some View {
         Form {
-            Section(header: Text("Jueces")) {
-                AddJuezButton(showingAddJuezPopover: $showingAddJuezPopover,
-                               listaJueces: listaJueces,
-                               juezNombre: $juezNombre,
-                               showingAlert: $showingAlert)
-                
-                ForEach(listaJueces.juezList) { juez in
-                    HStack {
-                        Text(juez.nombre)
+                    Section(header: Text("Jueces")) {
+                        AddJuezButton(
+                            showingAddJuezPopover: $showingAddJuezPopover,
+                            listaJueces: listaJueces,
+                            juezNombre: $juezNombre,
+                            showingAlert: $showingAlert,
+                            juezAEditar: $juezAEditar // Pasamos el binding aquí
+                        )
+                        
+                        ForEach(listaJueces.juezList) { juez in
+                            HStack {
+                                Text(juez.nombre)
+                                
+                                // Botón para editar el juez
+                                Button(action: {
+                                    // Cuando se toca un juez, se carga su nombre para editar
+                                    juezAEditar = juez
+                                    juezNombre = juez.nombre
+                                    showingAddJuezPopover.toggle() // Mostrar popover de edición
+                                }) {
+                                    Image(systemName: "pencil.circle.fill")
+                                        .foregroundColor(.yellow)
+                                }
+                            }
+                        }
                     }
                 }
             }
-        }
-    }
+    
 
     // Revisión final
     var reviewForm: some View {
@@ -228,28 +244,79 @@ struct AddHackForm: View {
                 Section(header: Text("Rúbrica")) {
                     Text("Tiempo Pitch: \(tiempoPitch) minutos")
                     Text("Calificación máxima: \(valorRubro) ")
+                    
                     ForEach(listaRubros.rubroList) { rubro in
-                        Text("\(rubro.nombre): \(rubro.valor, specifier: "%.0f")%")
+                        HStack {
+                            Text("\(rubro.nombre): \(rubro.valor, specifier: "%.0f")%")
+                            
+                            Spacer()
+                            
+                            // Botón de eliminación
+                            Button(action: {
+                                eliminarRubro(rubro)  // Llamamos a la función para eliminar el rubro
+                            }) {
+                                Image(systemName: "trash.circle.fill")
+                                    .foregroundColor(.red)
+                            }
+                        }
                     }
                 }
+
+
 
                 Section(header: Text("Equipos")) {
                     ForEach(listaEquipos.equipoList) { equipo in
-                        Text(equipo.nombre)
+                        HStack {
+                            Text(equipo.nombre)
+                            
+                            Spacer()
+                            
+                            // Botón de eliminación
+                            Button(action: {
+                                eliminarEquipo(equipo)  // Llamamos a la función para eliminar el equipo
+                            }) {
+                                Image(systemName: "trash.circle.fill")
+                                    .foregroundColor(.red)
+                            }
+                        }
                     }
                 }
 
+
                 Section(header: Text("Jueces")) {
                     ForEach(listaJueces.juezList) { juez in
-                        Text(juez.nombre)
+                        HStack {
+                            Text(juez.nombre)
+                            
+                            Spacer()
+                            
+                            // Botón de eliminación
+                            Button(action: {
+                                eliminarJuez(juez)  // Llamamos a la función para eliminar el juez
+                            }) {
+                                Image(systemName: "trash.circle.fill")
+                                    .foregroundColor(.red)
+                            }
+                        }
                     }
                 }
+
             }
         }
     }
     
+    func eliminarRubro(_ rubro: Rubro) {
+        listaRubros.eliminarRubro(rubro)  // Llamas al método del ViewModel para eliminar el rubro
+    }
 
-    
+    func eliminarEquipo(_ equipo: Equipo) {
+        listaEquipos.eliminarEquipo(equipo)  // Llamas al método del ViewModel para eliminar el equipo
+    }
+
+    func eliminarJuez(_ juez: Juez) {
+        listaJueces.eliminarJuez(juez)  // Llamas al método del ViewModel para eliminar el juez
+    }
+
     private func validateAndSave() {
         if nombre.isEmpty {
             alertMessage = "El nombre es obligatorio."

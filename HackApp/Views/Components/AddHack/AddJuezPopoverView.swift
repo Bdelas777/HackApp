@@ -5,7 +5,6 @@
 //  Created by Alumno on 18/09/24.
 //
 
-
 import SwiftUI
 
 struct AddJuezPopoverView: View {
