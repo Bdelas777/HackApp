@@ -1,20 +1,17 @@
 import SwiftUI
+
 enum AlertType: Identifiable {
-   case closeHack
-   case invalidDate
-   case editHack
-   case errorProcess
-   case closeSucess
-   
-   var id: Int {
-       switch self {
-       case .closeHack: return 1
-       case .invalidDate: return 2
-       case .editHack: return 3
-       case .errorProcess: return 4
-       case .closeSucess: return 5
-       }
-   }
+    case closeHack, invalidDate, editHack, errorProcess, closeSucess
+
+    var id: Int {
+        switch self {
+        case .closeHack: return 1
+        case .invalidDate: return 2
+        case .editHack: return 3
+        case .errorProcess: return 4
+        case .closeSucess: return 5
+        }
+    }
 }
 
 struct HackView: View {
@@ -63,6 +60,8 @@ struct HackView: View {
                 )
             }
             .padding()
+            .cornerRadius(20)
+            .shadow(radius: 15)
             .navigationTitle("Detalles del Hackathon")
             .onAppear {
                 fetchEquipos()
@@ -74,11 +73,10 @@ struct HackView: View {
                 alert(for: type)
             }
         }
-        .background(Color(.systemGroupedBackground))
-        .cornerRadius(15)
-        .shadow(radius: 10)
+        .background(Color(.systemGroupedBackground)) // Fondo más claro
     }
 
+    // Sección de Información
     private var infoSection: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Información del Hackathon")
@@ -96,21 +94,26 @@ struct HackView: View {
         }
         .padding()
         .background(Color.white)
-        .cornerRadius(12)
-        .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
+        .cornerRadius(16)
+        .shadow(radius: 8)
+        .padding(.horizontal)
     }
 
+    // Sección para expandir y colapsar las vistas internas (Equipos, Jueces, Rubros)
     private func toggleSectionView<Content: View>(title: String, isExpanded: Binding<Bool>, content: Content) -> some View {
         VStack {
             HStack {
                 Text(title)
                     .font(.headline)
                     .foregroundColor(.primary)
+                    .fontWeight(.semibold)
                 Spacer()
                 Image(systemName: isExpanded.wrappedValue ? "chevron.up" : "chevron.down")
                     .foregroundColor(.gray)
             }
-            .padding(.horizontal)
+            .padding()
+            .background(Color(.systemGray5))
+            .cornerRadius(12)
             .onTapGesture {
                 withAnimation {
                     isExpanded.wrappedValue.toggle()
@@ -123,16 +126,21 @@ struct HackView: View {
                     .transition(.opacity)
             }
         }
-        .padding(.bottom, 10)
     }
 
+    // Vista de Equipos
     private var equiposView: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 12) {
             if let equipos = selectedEquipos, !equipos.isEmpty {
                 ForEach(equipos, id: \.self) { equipo in
                     Text(equipo)
-                        .font(.subheadline)
-                        .padding(.vertical, 5)
+                        .font(.body)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 15)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .shadow(color: Color.gray.opacity(0.15), radius: 5, x: 0, y: 3)
+                        .padding(.bottom, 8)
                 }
             } else {
                 Text("No hay equipos asignados.")
@@ -141,15 +149,22 @@ struct HackView: View {
             }
         }
         .padding(.leading, 20)
+        .padding(.trailing, 20)
     }
 
+    // Vista de Jueces
     private var juecesView: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 12) {
             if !jueces.isEmpty {
                 ForEach(jueces, id: \.self) { juez in
                     Text(juez)
-                        .font(.subheadline)
-                        .padding(.vertical, 5)
+                        .font(.body)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 15)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .shadow(color: Color.gray.opacity(0.15), radius: 5, x: 0, y: 3)
+                        .padding(.bottom, 8)
                 }
             } else {
                 Text("No hay jueces asignados.")
@@ -158,21 +173,28 @@ struct HackView: View {
             }
         }
         .padding(.leading, 20)
+        .padding(.trailing, 20)
     }
 
+    // Vista de Rubros
     private var rubrosView: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 12) {
             if !rubros.isEmpty {
                 ForEach(rubros.keys.sorted(), id: \.self) { key in
                     if let value = rubros[key] {
                         HStack {
                             Text(key)
-                                .font(.subheadline)
+                                .font(.body)
                             Spacer()
                             Text("\(value, specifier: "%.2f")")
-                                .font(.subheadline)
+                                .font(.body)
                         }
-                        .padding(.vertical, 5)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 15)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .shadow(color: Color.gray.opacity(0.15), radius: 5, x: 0, y: 3)
+                        .padding(.bottom, 8)
                     }
                 }
             } else {
@@ -182,8 +204,10 @@ struct HackView: View {
             }
         }
         .padding(.leading, 20)
+        .padding(.trailing, 20)
     }
 
+    // Mensaje de estado
     private var statusMessageView: some View {
         Text(viewModel.statusMessage)
             .font(.subheadline)
@@ -229,7 +253,7 @@ struct HackView: View {
             }
         }
     }
-
+    
     private func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int) {
         viewModel2.fetchAndCalculateScores(for: equipo, hackClave: hackClave, valorRubro: valorRubro) { result in
             switch result {
@@ -278,7 +302,6 @@ struct HackView: View {
         }
     }
 
-    // Función para mostrar las alertas
     private func alert(for type: AlertType) -> Alert {
         switch type {
         case .closeHack:
@@ -317,7 +340,6 @@ struct HackView: View {
         }
     }
 
-    // Función para cerrar el hackathon
     private func closeHack() {
         viewModel.updateHackStatus(hackClave: hack.clave, isActive: false) { success in
             if success {
@@ -327,22 +349,4 @@ struct HackView: View {
             }
         }
     }
-}
-
-
-#Preview {
-    HackView(hack: HackPrueba(
-        id: "Ejemplo Hack",
-        clave: "Hack",
-        descripcion: "Descripción del hack",
-        equipos: ["Pedro", "Pablo"],
-        jueces: ["Huicho"],
-        rubros: ["X": 100],
-        estaActivo: true,
-        nombre: "Ejemplo",
-        tiempoPitch: 29,
-        FechaStart: Date(),
-        FechaEnd: Date(),
-        valorRubro: 5
-    ))
 }
