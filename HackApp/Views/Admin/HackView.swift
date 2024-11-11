@@ -1,6 +1,5 @@
 import SwiftUI
 
-// Enum para los tipos de alerta
 enum AlertType: Identifiable {
     case closeHack
     case invalidDate
@@ -31,8 +30,8 @@ struct HackView: View {
     @State private var fechaStart: Date
     @State private var fechaEnd: Date
     @State private var selectedEquipos: [String]?
-    @State private var jueces: [String] = [] // Array para los jueces
-    @State private var rubros: [String: Double] = [:] // Diccionario para los rubros
+    @State private var jueces: [String] = []
+    @State private var rubros: [String: Double] = [:]
     @State private var alertType: AlertType? = nil
     @State private var showEquipos = false
     @State private var showJueces = false
@@ -59,7 +58,7 @@ struct HackView: View {
                 statusMessageView
                 toggleSectionView(title: "Equipos", isExpanded: $showEquipos, content: equiposView)
                 toggleSectionView(title: "Jueces", isExpanded: $showJueces, content: juecesView)
-                toggleSectionView(title: "Rubros", isExpanded: $showRubros, content: rubrosView)
+                toggleSectionView(title: "Criterios", isExpanded: $showRubros, content: rubrosView)
                 ActionButtons(
                     hack: hack,
                     saveChanges: saveChanges,

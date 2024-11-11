@@ -35,6 +35,7 @@ struct ResultsView: View {
                     .foregroundColor(.gray)
                     .padding()
             } else {
+                // Gráfico de barras de los primeros 3 lugares
                 Chart(topTeams, id: \.team) { team in
                     BarMark(
                         x: .value("Puntuación", team.score),
@@ -61,35 +62,34 @@ struct ResultsView: View {
                 .chartYAxis {
                     AxisMarks(position: .leading)
                 }
-                
+
                 Text("Mejores Equipos")
                     .font(.title2)
                     .fontWeight(.bold)
                     .padding(.top)
 
-                // Show more teams (e.g., top 20)
-                let columns = Array(repeating: GridItem(.flexible()), count: 4)
-                
-                LazyVGrid(columns: columns, spacing: 10) {
-                    ForEach(topTeams.prefix(20), id: \.team) { team in // Show top 20 teams
-                        NavigationLink(destination: TeamView(hack: hack, equipoSeleccionado: team.team)) {
+                // ScrollView para ver los resultados de los equipos
+                ScrollView {
+                    VStack(spacing: 10) {
+                        // Crear el top 3 con colores específicos
+                        ForEach(getRankedTeams(), id: \.team) { rankedGroup in
                             HStack {
-                                Text(team.team)
+                                Text(rankedGroup.team)
                                     .fontWeight(.bold)
                                     .foregroundColor(.primary)
                                 Spacer()
-                                Text("\(String(format: "%.2f", team.score)) / 100")
+                                Text("\(String(format: "%.2f", rankedGroup.score)) / 100")
                                     .fontWeight(.bold)
                                     .foregroundColor(.accentColor)
                             }
                             .padding()
-                            .background(Color(.systemGray6))
+                            .background(getBackgroundColor(for: rankedGroup.rank))
                             .cornerRadius(12)
                             .shadow(color: Color.black.opacity(0.1), radius: 4)
                         }
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
         }
         .padding()
@@ -98,7 +98,8 @@ struct ResultsView: View {
             fetchScores()
         }
     }
-    
+
+    // Función para obtener los puntajes
     private func fetchScores() {
         viewModel.getScores(for: hack.clave) { result in
             isLoading = false
@@ -110,6 +111,45 @@ struct ResultsView: View {
             case .failure(let error):
                 print("Error al obtener los puntajes: \(error)")
             }
+        }
+    }
+
+    // Función para agrupar equipos con puntuaciones iguales y asignar rango
+    private func getRankedTeams() -> [(team: String, score: Double, rank: Int)] {
+        var rankedTeams: [(team: String, score: Double)] = []
+        var currentRank = 1
+        var currentScore: Double? = nil
+        var sameRankTeams: [(team: String, score: Double)] = []
+        
+        for team in topTeams {
+            if currentScore == nil || team.score == currentScore {
+                sameRankTeams.append(team)
+                currentScore = team.score
+            } else {
+                rankedTeams.append(contentsOf: sameRankTeams)
+                sameRankTeams = [team]
+                currentRank += sameRankTeams.count
+                currentScore = team.score
+            }
+        }
+        rankedTeams.append(contentsOf: sameRankTeams)
+        
+        return rankedTeams.enumerated().map { (index, team) in
+            (team: team.team, score: team.score, rank: index + 1)
+        }
+    }
+
+    // Función para obtener el color de fondo dependiendo del rango
+    private func getBackgroundColor(for rank: Int) -> Color {
+        switch rank {
+        case 1:
+            return Color.yellow.opacity(0.6) // Oro
+        case 2:
+            return Color.gray.opacity(0.6) // Plata
+        case 3:
+            return Color.brown.opacity(0.6) // Bronce
+        default:
+            return Color(.systemGray6)
         }
     }
 }
