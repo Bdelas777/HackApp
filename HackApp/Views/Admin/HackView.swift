@@ -1,24 +1,21 @@
 import SwiftUI
-
 enum AlertType: Identifiable {
-    case closeHack
-    case invalidDate
-    case editHack
-    case errorProcess
-    case closeSucess
-    
-    var id: Int {
-        switch self {
-        case .closeHack: return 1
-        case .invalidDate: return 2
-        case .editHack: return 3
-        case .errorProcess: return 4
-        case .closeSucess: return 5
-        }
-    }
+   case closeHack
+   case invalidDate
+   case editHack
+   case errorProcess
+   case closeSucess
+   
+   var id: Int {
+       switch self {
+       case .closeHack: return 1
+       case .invalidDate: return 2
+       case .editHack: return 3
+       case .errorProcess: return 4
+       case .closeSucess: return 5
+       }
+   }
 }
-
-import SwiftUI
 
 struct HackView: View {
     var hack: HackPrueba
@@ -36,7 +33,6 @@ struct HackView: View {
     @State private var showEquipos = false
     @State private var showJueces = false
     @State private var showRubros = false
-    
     @ObservedObject var viewModel = HackViewModel()
     @ObservedObject var viewModel2 = HacksViewModel()
 
@@ -70,8 +66,8 @@ struct HackView: View {
             .navigationTitle("Detalles del Hackathon")
             .onAppear {
                 fetchEquipos()
-                fetchJudges()  // Llamamos la función para obtener los jueces
-                fetchRubros()  // Llamamos la función para obtener los rubros
+                fetchJudges()
+                fetchRubros()
                 checkHackStatus()
             }
             .alert(item: $alertType) { type in
@@ -83,7 +79,6 @@ struct HackView: View {
         .shadow(radius: 10)
     }
 
-    // Sección de información con campos de texto editables
     private var infoSection: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Información del Hackathon")
@@ -105,7 +100,6 @@ struct HackView: View {
         .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
     }
 
-    // Vista para mostrar los equipos, jueces y rubros con animación de expansión
     private func toggleSectionView<Content: View>(title: String, isExpanded: Binding<Bool>, content: Content) -> some View {
         VStack {
             HStack {
@@ -132,7 +126,6 @@ struct HackView: View {
         .padding(.bottom, 10)
     }
 
-    // Vista para la sección de Equipos
     private var equiposView: some View {
         VStack(alignment: .leading) {
             if let equipos = selectedEquipos, !equipos.isEmpty {
@@ -150,7 +143,6 @@ struct HackView: View {
         .padding(.leading, 20)
     }
 
-    // Vista para la sección de Jueces
     private var juecesView: some View {
         VStack(alignment: .leading) {
             if !jueces.isEmpty {
@@ -168,7 +160,6 @@ struct HackView: View {
         .padding(.leading, 20)
     }
 
-    // Vista para la sección de Rubros
     private var rubrosView: some View {
         VStack(alignment: .leading) {
             if !rubros.isEmpty {
@@ -193,7 +184,6 @@ struct HackView: View {
         .padding(.leading, 20)
     }
 
-    // Vista de estado del mensaje
     private var statusMessageView: some View {
         Text(viewModel.statusMessage)
             .font(.subheadline)
@@ -202,7 +192,6 @@ struct HackView: View {
             .frame(maxWidth: .infinity, alignment: .center)
     }
 
-    // Función para obtener equipos
     private func fetchEquipos() {
         viewModel.fetchEquipos(clave: hack.clave) { result in
             switch result {
@@ -219,7 +208,6 @@ struct HackView: View {
         }
     }
 
-    // Función para obtener los jueces
     private func fetchJudges() {
         viewModel2.getJudges(for: hack.clave) { result in
             switch result {
@@ -231,7 +219,6 @@ struct HackView: View {
         }
     }
 
-    // Función para obtener los rubros
     private func fetchRubros() {
         viewModel2.fetchRubros(for: hack.clave) { result in
             switch result {
@@ -243,7 +230,6 @@ struct HackView: View {
         }
     }
 
-    // Función para obtener y calcular puntuaciones
     private func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int) {
         viewModel2.fetchAndCalculateScores(for: equipo, hackClave: hackClave, valorRubro: valorRubro) { result in
             switch result {
@@ -255,7 +241,6 @@ struct HackView: View {
         }
     }
 
-    // Función para guardar cambios
     private func saveChanges() {
         if fechaStart >= fechaEnd {
             alertType = .invalidDate
@@ -287,7 +272,6 @@ struct HackView: View {
         }
     }
 
-    // Función para verificar si el hackathon debe cerrarse
     private func checkHackStatus() {
         if hack.estaActivo && hack.FechaEnd < Date() {
             alertType = .closeHack

@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+
 class HackViewModel: ObservableObject {
     @Published var statusMessage: String = ""
     
@@ -30,3 +32,5 @@ class HackViewModel: ObservableObject {
         }
     }
 }
+
+
