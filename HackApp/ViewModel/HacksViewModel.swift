@@ -62,9 +62,9 @@ class HacksViewModel: ObservableObject {
             }
 
             let data = document.data()
-            let equipos = data["Equipos"] as? [String] ?? []
-            let jueces = data["Jueces"] as? [String] ?? []
-            let rubrosData = data["Rubros"] as? [String: Any] ?? [:]
+            let equipos = data["equipos"] as? [String] ?? []
+            let jueces = data["jueces"] as? [String] ?? []
+            let rubrosData = data["rubros"] as? [String: Any] ?? [:]
             let rubros = rubrosData.compactMapValues { value -> Double? in
                 if let doubleValue = value as? Double {
                     return doubleValue
@@ -250,11 +250,7 @@ class HacksViewModel: ObservableObject {
             }
         }
     
-    /// Guarda las calificaciones dadas por los jueces para un hackathon específico.
-    /// - Parameters:
-    ///   - hackClave: Clave del hackathon.
-    ///   - calificaciones: Diccionario de calificaciones.
-    ///   - completion: Closure que devuelve un resultado de éxito o error.
+
     func saveCalificaciones(for hackClave: String, calificaciones: [String: [String: [String: Double]]?], completion: @escaping (Result<Void, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -295,10 +291,6 @@ class HacksViewModel: ObservableObject {
         }
     }
     
-    /// Recupera los rubros de evaluación para un hackathon específico.
-    /// - Parameters:
-    ///   - hackClave: Clave del hackathon.
-    ///   - completion: Closure que devuelve un resultado con los rubros o un error.
     func fetchRubros(for hackClave: String, completion: @escaping (Result<[String: Double], Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
