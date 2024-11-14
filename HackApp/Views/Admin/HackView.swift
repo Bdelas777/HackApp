@@ -15,7 +15,7 @@ enum AlertType: Identifiable {
 }
 
 struct HackView: View {
-    var hack: HackPrueba
+    var hack: HackModel
     @State private var nombre: String
     @State private var descripcion: String
     @State private var clave: String
@@ -33,7 +33,7 @@ struct HackView: View {
     @ObservedObject var viewModel = HackViewModel()
     @ObservedObject var viewModel2 = HacksViewModel()
 
-    init(hack: HackPrueba) {
+    init(hack: HackModel) {
         self.hack = hack
         _nombre = State(initialValue: hack.nombre)
         _descripcion = State(initialValue: hack.descripcion)
@@ -271,7 +271,7 @@ struct HackView: View {
             return
         }
         
-        let updatedHack = HackPrueba(
+        let updatedHack = HackModel(
             clave: clave,
             descripcion: descripcion,
             equipos: hack.equipos,

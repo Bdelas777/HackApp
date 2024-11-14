@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct HackRow: View {
-    var hack: HackPrueba
+    var hack: HackModel
     @State private var showDeleteConfirmation = false
     @EnvironmentObject var viewModel: HacksViewModel
 

@@ -8,7 +8,7 @@ import SwiftUI
 import Charts
 
 struct ResultsView: View {
-    var hack: HackPrueba
+    var hack: HackModel
     @ObservedObject var viewModel = HacksViewModel()
     
     @State private var scores: [String: Double] = [:]

@@ -406,7 +406,7 @@ struct AddHackForm: View {
                   return
               }
               
-              let nuevoHack = HackPrueba(
+              let nuevoHack = HackModel(
                   clave: clave,
                   descripcion: descripcion,
                   equipos: listaEquipos.equipoList.map { $0.nombre },

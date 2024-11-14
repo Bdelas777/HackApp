@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ActionButtons: View {
-    var hack: HackPrueba
+    var hack: HackModel
     var saveChanges: () -> Void
     var showCloseAlert: () -> Void
     var showResults: () -> Void

@@ -14,11 +14,11 @@ class TeamViewModel: ObservableObject {
     @Published var totalJudges: Int = 0
     @Published var isLoading: Bool = true
 
-    private var hack: HackPrueba
+    private var hack: HackModel
     private var equipoSeleccionado: String
     private var viewModel: HacksViewModel
 
-    init(hack: HackPrueba, equipoSeleccionado: String, viewModel: HacksViewModel) {
+    init(hack: HackModel, equipoSeleccionado: String, viewModel: HacksViewModel) {
         self.hack = hack
         self.equipoSeleccionado = equipoSeleccionado
         self.viewModel = viewModel

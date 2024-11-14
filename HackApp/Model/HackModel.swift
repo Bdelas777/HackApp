@@ -9,23 +9,12 @@ import FirebaseFirestore
 
 /// Estructura que representa un hackathon.
 /// Esta estructura se utiliza para almacenar y manejar la información relevante sobre un hackathon específico.
-struct HackPrueba: Identifiable, Encodable {
-    /// Identificador único del hackathon.
+struct HackModel: Identifiable, Encodable {
     var id = UUID().uuidString
-    
-    /// Clave única que identifica el hackathon.
     var clave: String
-    
-    /// Descripción del hackathon.
     var descripcion: String
-    
-    /// Lista de equipos que participan en el hackathon.
     var equipos: [String]
-    
-    /// Lista de jueces asignados al hackathon.
     var jueces: [String]
-    
-    /// Diccionario que contiene los rubros de evaluación y sus puntajes asociados.
     var rubros: [String: Double]
     
     /// Indica si el hackathon está activo (true) o inactivo (false).
@@ -39,18 +28,8 @@ struct HackPrueba: Identifiable, Encodable {
     
     /// Fecha   de inicio en la que se lleva a cabo el hackathon.
     var FechaStart: Date
-    
-    /// Fecha   de termina  en la que se lleva a cabo el hackathon.
     var FechaEnd: Date
-    
-    /// Maximo valor del rubro
     var valorRubro: Int
-    
-    /// Diccionario que almacena las calificaciones dadas por los jueces a los equipos.
-    /// La estructura es: [equipo: [juez: [rubros: puntaje]]]
     var calificaciones: [String: [String: [String: Double]]]?
-    
-    /// Diccionario que almacena las puntuaciones finales de cada equipo.
-    /// La estructura es: [equipo: puntuación final]
     var finalScores: [String: Double]?
 }

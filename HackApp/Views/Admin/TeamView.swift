@@ -7,11 +7,11 @@
 import SwiftUI
 
 struct TeamView: View {
-    var hack: HackPrueba
+    var hack: HackModel
     @ObservedObject var viewModel: TeamViewModel
     let equipoSeleccionado: String
     
-    init(hack: HackPrueba, equipoSeleccionado: String) {
+    init(hack: HackModel, equipoSeleccionado: String) {
         self.hack = hack
         self.equipoSeleccionado = equipoSeleccionado
         _viewModel = ObservedObject(wrappedValue: TeamViewModel(hack: hack, equipoSeleccionado: equipoSeleccionado, viewModel: HacksViewModel()))
@@ -67,7 +67,7 @@ struct TeamView: View {
 
 
 #Preview {
-    TeamView(hack: HackPrueba(
+    TeamView(hack: HackModel(
         id: "Ejemplo Hack",
         clave: "Hack",
         descripcion: "Descripción del hack",

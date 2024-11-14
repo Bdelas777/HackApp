@@ -14,7 +14,7 @@ class HackViewModel: ObservableObject {
     
     private var viewModel = HacksViewModel()
     
-    func updateHack(hack: HackPrueba, completion: @escaping (Bool) -> Void) {
+    func updateHack(hack: HackModel, completion: @escaping (Bool) -> Void) {
         viewModel.updateHack(hack: hack, hackClave: hack.clave) { success in
             completion(success)
         }
