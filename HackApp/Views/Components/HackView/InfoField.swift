@@ -6,6 +6,13 @@
 //
 import SwiftUI
 
+/// Vista que muestra un campo de texto con un título para ingresar un valor de tipo `String`.
+/// Utiliza un `TextField` para permitir la entrada de texto.
+///
+/// - `title`: El título que describe el campo de texto.
+/// - `text`: El valor `String` vinculado mediante `@Binding` que se actualiza con la entrada del usuario.
+///
+/// Esta vista es útil para ingresar y editar valores de texto.
 struct InfoField: View {
     var title: String
     @Binding var text: String

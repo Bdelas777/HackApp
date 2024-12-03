@@ -6,6 +6,14 @@
 //
 import SwiftUI
 
+/// Vista que muestra un campo de texto para ingresar un valor `Double` con un título.
+/// Utiliza un `TextField` para permitir la entrada de números decimales.
+///
+/// - `title`: El título que describe el campo de valor.
+/// - `value`: El valor `Double` vinculado mediante `@Binding` que se actualiza con la entrada del usuario.
+///
+/// Esta vista es útil para ingresar y editar valores numéricos de tipo `Double`.
+
 struct InfoFieldDouble: View {
     var title: String
     @Binding var value: Double
