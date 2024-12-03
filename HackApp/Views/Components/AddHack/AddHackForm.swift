@@ -6,6 +6,26 @@
 //
 import SwiftUI
 
+/// Vista que permite a los usuarios agregar un nuevo Hackathon.
+/// El formulario se divide en varios pasos que incluyen información básica,
+/// fechas, rúbricas, equipos, jueces y una revisión final antes de guardar.
+///
+/// - `nombre`: El nombre del Hackathon.
+/// - `clave`: La clave única del Hackathon.
+/// - `descripcion`: Descripción detallada del Hackathon.
+/// - `date`: Fecha de inicio del Hackathon.
+/// - `dateEnd`: Fecha de finalización del Hackathon.
+/// - `valorRubro`: Valor máximo para la calificación de los rubros.
+/// - `tiempoPitch`: Duración en minutos del pitch.
+/// - `listaRubros`: Un `ViewModel` que contiene los rubros (criterios de evaluación).
+/// - `listaEquipos`: Un `ViewModel` que contiene los equipos participantes.
+/// - `listaJueces`: Un `ViewModel` que contiene los jueces que evaluarán los equipos.
+/// - `showingAlert`: Un indicador de alerta que muestra mensajes de error.
+/// - `listaHacks`: Un `ViewModel` que maneja la lista de Hackathons existentes.
+///
+/// Esta vista guía al usuario a través de un flujo paso a paso, validando la información ingresada
+/// en cada paso. Al finalizar, el Hackathon ingresado se guarda si todos los campos son válidos.
+
 struct AddHackForm: View {
     @Binding var nombre: String
     @Binding var clave: String
@@ -439,52 +459,3 @@ private func isNumeric(_ str: String) -> Bool {
     let invertedCharacterSet = numericCharacterSet.inverted
     return str.rangeOfCharacter(from: invertedCharacterSet) == nil
 }
-
-
-
-
-struct StepIndicator: View {
-    var currentStep: Int
-    var totalSteps: Int
-    var steps: [String]
-    var onStepSelected: (Int) -> Void
-    
-    var body: some View {
-        HStack {
-            ForEach(0..<totalSteps, id: \.self) { step in
-                VStack {
-                    Button(action: {
-                        onStepSelected(step)  // Cambiar el paso cuando se haga clic en la sección
-                    }) {
-                        Text(steps[step])
-                            .font(.footnote)
-                            .foregroundColor(currentStep == step ? .blue : .gray)
-                            .padding(5)
-                    }
-                    .buttonStyle(PlainButtonStyle()) // Evita que el botón se vea con un estilo predeterminado
-                    
-                    Circle()
-                        .frame(width: 10, height: 10)
-                        .foregroundColor(currentStep >= step ? .blue : .gray)
-                }
-                if step < totalSteps - 1 {
-                    Spacer()
-                }
-            }
-        }
-        .padding()
-    }
-}
-
-
-struct ProgressBar: View {
-    var progress: CGFloat
-    
-    var body: some View {
-        ProgressView(value: progress, total: 1)
-            .progressViewStyle(LinearProgressViewStyle(tint: .blue))
-            .frame(height: 10)
-            .padding([.leading, .trailing])
-    }
-}
-

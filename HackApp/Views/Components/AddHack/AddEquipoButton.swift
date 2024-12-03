@@ -5,6 +5,16 @@
 //  Created by Alumno on 13/09/24.
 //
 import SwiftUI
+/// Vista que presenta un botón para añadir un equipo.
+/// Al presionar el botón, se muestra un `Popover` para ingresar el nombre del equipo y agregarlo a la lista.
+///
+/// - `showingAddEquipoPopover`: Bandera vinculada para mostrar u ocultar el popover de añadir equipo.
+/// - `listaEquipos`: El `EquipoViewModel` que gestiona la lista de equipos.
+/// - `equipoNombre`: El nombre del equipo a agregar o editar.
+/// - `showingAlert`: Bandera que indica si se debe mostrar una alerta en caso de error al agregar el equipo.
+/// - `equipoAEditar`: El equipo que se está editando, si existe.
+///
+/// Esta vista gestiona tanto la adición de un nuevo equipo como la edición de uno existente.
 
 struct AddEquipoButton: View {
     @Binding var showingAddEquipoPopover: Bool

@@ -5,6 +5,14 @@
 //  Created by Alumno on 24/09/24.
 //
 import SwiftUI
+/// Vista que muestra los detalles de un hackathon en una fila.
+/// Incluye información sobre la clave, nombre, descripción, fechas de inicio y fin,
+/// y un botón para eliminar el hackathon.
+///
+/// - `hack`: El modelo de datos que representa un hackathon.
+/// - `viewModel`: El `HacksViewModel` que maneja la lógica y la eliminación del hackathon.
+///
+/// La vista incluye un botón de eliminación que presenta una confirmación antes de ejecutar la acción.
 
 struct HackRow: View {
     var hack: HackModel

@@ -40,6 +40,8 @@
 		FB3336122CDD7C41001C8E7A /* InfoFieldDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3336112CDD7C41001C8E7A /* InfoFieldDouble.swift */; };
 		FB3336142CDD7C4F001C8E7A /* DateField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3336132CDD7C4F001C8E7A /* DateField.swift */; };
 		FB3336162CDD7C58001C8E7A /* ActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3336152CDD7C58001C8E7A /* ActionButtons.swift */; };
+		FB3ACCD02CFFB8540022D21E /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3ACCCF2CFFB8540022D21E /* ProgressBar.swift */; };
+		FB3ACCD22CFFB87B0022D21E /* StepIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3ACCD12CFFB87B0022D21E /* StepIndicator.swift */; };
 		FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CF67D2C8BD6A000835D7B /* HomeView.swift */; };
 		FB64A9432CBF3C8D00BFD6F4 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB64A9422CBF3C8D00BFD6F4 /* ResultsView.swift */; };
 		FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */; };
@@ -88,6 +90,8 @@
 		FB3336112CDD7C41001C8E7A /* InfoFieldDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoFieldDouble.swift; sourceTree = "<group>"; };
 		FB3336132CDD7C4F001C8E7A /* DateField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateField.swift; sourceTree = "<group>"; };
 		FB3336152CDD7C58001C8E7A /* ActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtons.swift; sourceTree = "<group>"; };
+		FB3ACCCF2CFFB8540022D21E /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		FB3ACCD12CFFB87B0022D21E /* StepIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepIndicator.swift; sourceTree = "<group>"; };
 		FB5CF67D2C8BD6A000835D7B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FB64A9422CBF3C8D00BFD6F4 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackForm.swift; sourceTree = "<group>"; };
@@ -288,6 +292,8 @@
 		FB701F8B2C93BE6A00EF83E4 /* AddHack */ = {
 			isa = PBXGroup;
 			children = (
+				FB3ACCD12CFFB87B0022D21E /* StepIndicator.swift */,
+				FB3ACCCF2CFFB8540022D21E /* ProgressBar.swift */,
 				FBFC5E002C9B93F6002813E4 /* AddJuezButton.swift */,
 				FBFC5DFE2C9B93E3002813E4 /* AddJuezPopoverView.swift */,
 				FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */,
@@ -423,6 +429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBFC5E032C9B9452002813E4 /* JuezViewModel.swift in Sources */,
+				FB3ACCD22CFFB87B0022D21E /* StepIndicator.swift in Sources */,
 				FB2F606D2CA37976004D2E55 /* HacksViewModel.swift in Sources */,
 				FB9733C82CA4CD2900A7BE6F /* JudgesView.swift in Sources */,
 				FB3336122CDD7C41001C8E7A /* InfoFieldDouble.swift in Sources */,
@@ -460,6 +467,7 @@
 				FBFC5E012C9B93F6002813E4 /* AddJuezButton.swift in Sources */,
 				FB701F932C93C62100EF83E4 /* AddRubroPopoverView.swift in Sources */,
 				F8B0CAC62BC6F22D00CB8497 /* HackApp.swift in Sources */,
+				FB3ACCD02CFFB8540022D21E /* ProgressBar.swift in Sources */,
 				FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
