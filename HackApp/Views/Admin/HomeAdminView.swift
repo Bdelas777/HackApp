@@ -6,6 +6,15 @@
 //
 // example
 import SwiftUI
+/// Vista principal del administrador de Hackathons.
+///
+/// Esta vista muestra una lista de hackathons disponibles para el administrador. Si no hay hackathons disponibles,
+/// se muestra un mensaje indicando que no hay datos. Si se encuentran hackathons, estos se presentan en una cuadrícula.
+/// Además, hay un botón flotante que permite al administrador crear un nuevo hackathon.
+///
+/// **Propiedades**:
+/// - `hackData`: Un `HacksViewModel` que maneja los datos de los hackathons.
+/// - `isActivated`: Estado que controla la presentación de la vista para agregar un nuevo hackathon.
 
 struct HomeAdminView: View {
     @EnvironmentObject var hackData: HacksViewModel

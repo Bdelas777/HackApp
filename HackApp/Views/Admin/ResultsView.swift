@@ -6,6 +6,15 @@
 //
 import SwiftUI
 import Charts
+/// Muestra los resultados del hackathon con las puntuaciones de los equipos.
+/// Incluye un gráfico de barras y una lista de los mejores equipos.
+///
+/// **Propiedades**:
+/// - `hack`: Detalles del hackathon.
+/// - `viewModel`: Para obtener los puntajes.
+/// - `scores`: Puntuaciones de los equipos.
+/// - `topTeams`: Equipos ordenados por puntaje.
+/// - `isLoading`: Indica si los datos están cargando.
 
 struct ResultsView: View {
     var hack: HackModel

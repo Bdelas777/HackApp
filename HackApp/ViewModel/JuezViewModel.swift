@@ -8,7 +8,7 @@
 
 import Foundation
 import Combine
-
+/// ViewModel encargado de gestionar la lista de jueces en el sistema.
 class JuezViewModel: ObservableObject {
     @Published var juezList: [Juez] = []
     

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// ViewModel para gestionar las operaciones relacionadas con los hackathons.
 class HackViewModel: ObservableObject {
     @Published var statusMessage: String = ""
     

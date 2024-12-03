@@ -5,14 +5,22 @@
 //  Created by Sebastian Presno Alvarado on 01/05/24.
 //
 import SwiftUI
-
+/// Vista para que los jueces puedan seleccionar un hackathon y luego elegir su nombre de juez para calificar.
+///
+/// Esta vista permite a los jueces ingresar la clave de un hackathon y, si el hackathon existe, mostrar la lista de jueces
+/// disponibles. El juez puede seleccionar su nombre de la lista y, posteriormente, acceder a su vista de calificación.
+/// **Características**:
+/// - Permite al usuario ingresar la clave de un hackathon para buscar los jueces disponibles.
+/// - Si la clave es válida, muestra los jueces en una lista y permite que el usuario seleccione uno.
+/// - Si se selecciona un juez, el botón "Presiona aquí, para comenzar a calificar" habilita el acceso a la vista de calificación.
+/// - Si no se encuentran resultados (hackathon o jueces), muestra un mensaje de error.
 struct JudgeHomeView: View {
     let hackClaveInput: String
     let selectedJudge: String
     let nombreHack: String
     let isActive: Bool
     @State private var selectedEquipos: [String]?
-    @State private var equiposEvaluados: [String: Bool] = [:]  // Diccionario que guarda si el equipo está calificado o no
+    @State private var equiposEvaluados: [String: Bool] = [:]
     @ObservedObject var viewModel = HacksViewModel()
 
     var body: some View {
@@ -93,17 +101,14 @@ struct JudgeHomeView: View {
 
    
     private func fetchEquipos() {
-        // Primero obtenemos los equipos para este hack
         viewModel.getEquipos(for: hackClaveInput) { result in
             switch result {
             case .success(let equipos):
                 selectedEquipos = equipos.isEmpty ? nil : equipos
             case .failure:
-                selectedEquipos = nil // Manejo de errores
+                selectedEquipos = nil
             }
         }
-
-        // Luego, verificamos si los equipos han sido calificados por el juez
         viewModel.fetchHackAndEvaluateTeams(for: hackClaveInput, selectedJudge: selectedJudge) { result in
             switch result {
             case .success(let equiposEvaluadosDict):

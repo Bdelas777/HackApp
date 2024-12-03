@@ -1,6 +1,17 @@
 
 
 import SwiftUI
+/// Vista que permite a un juez calificar a un equipo en función de rubros de evaluación en un hackathon.
+///
+/// Esta vista se utiliza para calificar un equipo específico dentro de un hackathon, mostrando una lista de rubros
+/// que el juez puede puntuar usando un slider.
+/// **Características**:
+/// - Muestra los rubros de evaluación como un conjunto de sliders para calificar.
+/// - Verifica si el juez ya ha calificado al equipo antes de permitir la calificación.
+/// - Informa al usuario si el hackathon ha cerrado y no se puede calificar.
+/// - Valida que todas las calificaciones sean mayores a 1.0 antes de enviarlas.
+/// - Si el valor de algún rubro es 1.0, muestra una alerta solicitando confirmación para continuar.
+
 
 struct GradeView: View {
     let hackClaveInput: String
@@ -12,8 +23,8 @@ struct GradeView: View {
     @State private var calificaciones: [String: [String: [String: Double]]] = [:]
     @Environment(\.dismiss) var dismiss
     @State private var alreadyRated = false
-    @State private var showAlert = false  // Para controlar la alerta
-    @State private var alertMessage = ""  // El mensaje de la alerta
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     let isActive: Bool
 
     var body: some View {

@@ -8,7 +8,12 @@ class HacksViewModel: ObservableObject {
     @Published var totalScores: [String: Double] = [:]
     @Published var nombre: String = ""
     @Published var isActive: Bool = false
-  
+    
+    /// Obtiene un hackathon y evalúa si los equipos han sido calificados por un juez.
+    /// - Parameters:
+    ///   - hackClave: La clave del hackathon.
+    ///   - selectedJudge: El nombre del juez a evaluar.
+    ///   - completion: Closure que devuelve un diccionario con los equipos y si han sido calificados por el juez.
     func fetchHackAndEvaluateTeams(for hackClave: String, selectedJudge: String, completion: @escaping (Result<[String: Bool], Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -37,6 +42,10 @@ class HacksViewModel: ObservableObject {
         }
     }
 
+    /// Obtiene un hackathon específico de la base de datos usando su clave única.
+    /// - Parameters:
+    ///   - hackClave: La clave única del hackathon que se desea obtener.
+    ///   - completion: Closure que devuelve el hackathon (`HackModel`) si la consulta es exitosa, o un error si ocurre un problema.
     func fetchHack(byKey hackClave: String, completion: @escaping (Result<HackModel, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -91,6 +100,9 @@ class HacksViewModel: ObservableObject {
         }
     }
 
+    /// Obtiene todos los hackathons de la base de datos y los mapea a objetos `HackModel`.
+    /// - Actualiza la lista de hackathons en la propiedad `hacks`.
+    /// - Si ocurre un error, se asigna una lista por defecto de hackathons.
     func fetchHacks() {
         isLoading = true
         db.collection("hacks").getDocuments(source: .default) { (querySnapshot, error) in
@@ -213,6 +225,10 @@ class HacksViewModel: ObservableObject {
         }
     }
     
+    /// Verifica si una clave de hackathon existe en la base de datos.
+    /// - Parameters:
+    ///   - clave: Clave del hackathon que se desea verificar.
+    ///   - completion: Closure que devuelve un valor booleano indicando si la clave existe o no.
     func checkIfKeyExists(_ clave: String, completion: @escaping (Bool) -> Void) {
             db.collection("hacks").whereField("clave", isEqualTo: clave).getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -225,7 +241,11 @@ class HacksViewModel: ObservableObject {
             }
         }
     
-
+    /// Guarda o actualiza las calificaciones de los equipos en un hackathon específico.
+    /// - Parameters:
+    ///   - hackClave: Clave del hackathon para el que se guardarán las calificaciones.
+    ///   - calificaciones: Diccionario de calificaciones, donde las claves son los nombres de los equipos, y los valores son diccionarios de jueces y rubros con sus calificaciones.
+    ///   - completion: Closure que devuelve un resultado de éxito o error.
     func saveCalificaciones(for hackClave: String, calificaciones: [String: [String: [String: Double]]?], completion: @escaping (Result<Void, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -266,6 +286,10 @@ class HacksViewModel: ObservableObject {
         }
     }
     
+    /// Obtiene los rubros asociados a un hackathon específico.
+    /// - Parameters:
+    ///   - hackClave: Clave del hackathon para el que se obtendrán los rubros.
+    ///   - completion: Closure que devuelve un diccionario de rubros con sus valores o un error.
     func fetchRubros(for hackClave: String, completion: @escaping (Result<[String: Double], Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -329,6 +353,11 @@ class HacksViewModel: ObservableObject {
         ]
     }
     
+    /// Obtiene las calificaciones de todos los jueces para un equipo en un hackathon específico.
+    /// - Parameters:
+    ///   - teamName: Nombre del equipo para el que se obtendrán las calificaciones.
+    ///   - hackClave: Clave del hackathon donde se encuentran las calificaciones.
+    ///   - completion: Closure que devuelve un diccionario con las calificaciones por juez o un error.
     func getCalificaciones(for teamName: String, hackClave: String, completion: @escaping (Result<[String: [String: Double]], Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -380,7 +409,12 @@ class HacksViewModel: ObservableObject {
         }
     }
 
-
+    /// Obtiene las calificaciones de un juez para un equipo en un hackathon específico.
+    /// - Parameters:
+    ///   - teamName: Nombre del equipo para el que se obtendrán las calificaciones.
+    ///   - judgeName: Nombre del juez cuyas calificaciones se desean obtener.
+    ///   - hackClave: Clave del hackathon donde se encuentran las calificaciones.
+    ///   - completion: Closure que devuelve las calificaciones del equipo por el juez o un error.
     func getCalificacionesJuez(for teamName: String, judgeName: String, hackClave: String, completion: @escaping (Result<[String: Double]?, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -403,7 +437,13 @@ class HacksViewModel: ObservableObject {
             }
         }
     }
-
+    
+    /// Actualiza o guarda la calificación final de un equipo en un hackathon.
+    /// - Parameters:
+    ///   - equipo: Nombre del equipo al que se le actualiza o guarda la calificación final.
+    ///   - finalScore: La puntuación final que se asignará al equipo.
+    ///   - hackClave: Clave del hackathon en el que se actualizarán las calificaciones.
+    ///   - completion: Closure que devuelve el resultado de la operación, éxito o error.
     func updateOrSaveCalificaciones(for equipo: String, with finalScore: Double, hackClave: String, completion: @escaping (Result<Void, Error>) -> Void) {
         guard finalScore > 0 else {
             completion(.success(()))
@@ -433,6 +473,12 @@ class HacksViewModel: ObservableObject {
         }
     }
 
+    /// Obtiene las calificaciones y rubros de un equipo, luego calcula la puntuación total.
+    /// - Parameters:
+    ///   - equipo: El nombre del equipo para el cual se obtendrán las calificaciones.
+    ///   - hackClave: Clave del hackathon donde se evalúa el equipo.
+    ///   - valorRubro: El valor del rubro que se asigna a las calificaciones.
+    ///   - completion: Closure que devuelve el resultado con la puntuación total calculada o un error.
     func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int, completion: @escaping (Result<Double, Error>) -> Void) {
         getCalificaciones(for: equipo, hackClave: hackClave) { result in
             switch result {
@@ -479,10 +525,14 @@ class HacksViewModel: ObservableObject {
         let finalScore = totalJudges > 0 ? totalScore  / Double(totalJudges) : 0.0
         print(finalScore, "Este es el Score final")
         updateOrSaveCalificaciones(for: equipo, with: finalScore, hackClave: hackClave) { _ in }
-        
         return finalScore
     }
     
+    /// Actualiza los datos de un hackathon específico.
+    /// - Parameters:
+    ///   - hack: Modelo del hackathon con los nuevos datos.
+    ///   - hackClave: Clave del hackathon que se va a actualizar.
+    ///   - completion: Closure que devuelve un valor booleano indicando si la actualización fue exitosa.
     func updateHack(hack: HackModel, hackClave: String, completion: @escaping (Bool) -> Void) {
         let hackData: [String: Any] = [
             "nombre": hack.nombre,
@@ -493,7 +543,6 @@ class HacksViewModel: ObservableObject {
             "FechaStart": Timestamp(date: hack.FechaStart),
             "FechaEnd": Timestamp(date: hack.FechaEnd)
         ]
-        
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(false)
@@ -516,18 +565,21 @@ class HacksViewModel: ObservableObject {
         }
     }
 
+    /// Actualiza el estado de actividad de un hackathon.
+    /// - Parameters:
+    ///   - hackClave: Clave del hackathon.
+    ///   - isActive: Estado de actividad (activo/inactivo).
+    ///   - completion: Closure que devuelve un valor booleano indicando si la actualización fue exitosa.
     func updateHackStatus(hackClave: String, isActive: Bool, completion: @escaping (Bool) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(false)
                 return
             }
-            
             guard let document = querySnapshot?.documents.first else {
                 completion(false)
                 return
             }
-            
             document.reference.updateData(["estaActivo": isActive]) { error in
                 if let error = error {
                     completion(false)
@@ -536,21 +588,22 @@ class HacksViewModel: ObservableObject {
                 }
             }
         }
-        
     }
 
+    /// Obtiene el valor del rubro de un hackathon específico.
+    /// - Parameters:
+    ///   - hackClave: Clave del hackathon.
+    ///   - completion: Closure que devuelve el valor del rubro o un error.
     func getValorRubro(for hackClave: String, completion: @escaping (Result<Double, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
             guard let documents = querySnapshot?.documents, let document = documents.first else {
                 completion(.success(0.0))
                 return
             }
-            
             let data = document.data()
             if let valorRubro = data["valorRubro"] as? Int {
                 completion(.success(Double(valorRubro)))
@@ -559,7 +612,6 @@ class HacksViewModel: ObservableObject {
             }
         }
     }
-
 
     /// Obtiene las puntuaciones finales de todos los equipos en un hackathon específico.
     /// - Parameters:
@@ -571,14 +623,11 @@ class HacksViewModel: ObservableObject {
                 completion(.failure(error))
                 return
             }
-            
             guard let documents = querySnapshot?.documents, let document = documents.first else {
                 completion(.success([:]))
                 return
             }
-            
             let data = document.data()
-            
             if let finalScores = data["finalScores"] as? [String: Double] {
                 completion(.success(finalScores))
             } else {

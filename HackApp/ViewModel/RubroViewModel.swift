@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// ViewModel para gestionar las operaciones de rubros en la aplicación.
 class RubroViewModel: ObservableObject {
     @Published var rubroList: [Rubro] = []
     

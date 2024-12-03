@@ -13,6 +13,18 @@ enum AlertType: Identifiable {
         }
     }
 }
+/// Vista para gestionar los detalles de un Hackathon.
+///
+/// Esta vista permite editar los detalles de un hackathon, ver equipos, jueces y rubros, y actualizar el estado del hackathon.
+/// También muestra alertas para confirmar acciones como cerrar el hackathon o gestionar errores.
+///
+/// **Propiedades**:
+/// - `hack`: Información del hackathon.
+/// - `nombre`, `descripcion`, `clave`: Campos editables del hackathon.
+/// - `valorRubro`, `tiempoPitch`, `fechaStart`, `fechaEnd`: Atributos del hackathon.
+/// - `selectedEquipos`, `jueces`, `rubros`: Datos relacionados con equipos, jueces y rubros.
+/// - `alertType`: Tipo de alerta a mostrar.
+/// - `showEquipos`, `showJueces`, `showRubros`: Estados para mostrar las secciones correspondientes.
 
 struct HackView: View {
     var hack: HackModel

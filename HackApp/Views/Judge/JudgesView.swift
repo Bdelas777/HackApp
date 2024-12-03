@@ -1,5 +1,14 @@
 import SwiftUI
 
+/// Vista para que los jueces puedan seleccionar un hackathon y luego elegir su nombre de juez para calificar.
+///
+/// Esta vista permite a los jueces ingresar la clave de un hackathon y, si el hackathon existe, mostrar la lista de jueces
+/// disponibles. El juez puede seleccionar su nombre de la lista y, posteriormente, acceder a su vista de calificación.
+/// **Características**:
+/// - Permite al usuario ingresar la clave de un hackathon para buscar los jueces disponibles.
+/// - Si la clave es válida, muestra los jueces en una lista y permite que el usuario seleccione uno.
+/// - Si se selecciona un juez, el botón "Presiona aquí, para comenzar a calificar" habilita el acceso a la vista de calificación.
+/// - Si no se encuentran resultados (hackathon o jueces), muestra un mensaje de error.
 struct JudgesView: View {
     @State private var hackClaveInput = ""
     @State private var selectedJudges: [String]?
