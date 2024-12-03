@@ -76,13 +76,8 @@ struct HackView: View {
         .background(Color(.systemGroupedBackground)) // Fondo más claro
     }
 
-    // Sección de Información
     private var infoSection: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Información del Hackathon")
-                .font(.title2)
-                .fontWeight(.bold)
-                .foregroundColor(.primary)
             
             InfoField(title: "Clave:", text: $clave)
             InfoField(title: "Nombre:", text: $nombre)
@@ -128,7 +123,6 @@ struct HackView: View {
         }
     }
 
-    // Vista de Equipos
     private var equiposView: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let equipos = selectedEquipos, !equipos.isEmpty {

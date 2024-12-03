@@ -1,3 +1,5 @@
+
+
 import SwiftUI
 
 struct GradeView: View {
@@ -10,6 +12,8 @@ struct GradeView: View {
     @State private var calificaciones: [String: [String: [String: Double]]] = [:]
     @Environment(\.dismiss) var dismiss
     @State private var alreadyRated = false
+    @State private var showAlert = false  // Para controlar la alerta
+    @State private var alertMessage = ""  // El mensaje de la alerta
     let isActive: Bool
 
     var body: some View {
@@ -89,7 +93,7 @@ struct GradeView: View {
                     }
                     
                     Button(action: {
-                        submitCalificaciones()
+                        checkForEmptyScores()
                     }) {
                         Text("Calificar")
                             .font(.headline)
@@ -114,6 +118,16 @@ struct GradeView: View {
             fetchRubros()
             initializeCalificaciones()
             checkAlreadyRated()
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Confirmación"),
+                message: Text(alertMessage),
+                primaryButton: .default(Text("Confirmar"), action: {
+                    submitCalificaciones()
+                }),
+                secondaryButton: .cancel()
+            )
         }
     }
 
@@ -156,6 +170,24 @@ struct GradeView: View {
             case .failure(let error):
                 print("Error al verificar calificaciones: \(error)")
             }
+        }
+    }
+
+    // Verifica si algún rubro está en 1 y muestra la alerta
+    private func checkForEmptyScores() {
+        var allScoresAreValid = true
+        for (key, value) in calificaciones[selectedEquipo]?[nombreJuez] ?? [:] {
+            if value == 1.0 {
+                allScoresAreValid = false
+                alertMessage = "El valor de \(key) sigue siendo 1.0. ¿Estás seguro de querer asignar esta calificación?"
+                break
+            }
+        }
+
+        if allScoresAreValid {
+            submitCalificaciones() // Si todas las calificaciones son válidas, enviamos
+        } else {
+            showAlert = true // Muestra la alerta si algún rubro sigue en 1.0
         }
     }
 

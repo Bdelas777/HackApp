@@ -291,10 +291,10 @@
 				FBFC5E002C9B93F6002813E4 /* AddJuezButton.swift */,
 				FBFC5DFE2C9B93E3002813E4 /* AddJuezPopoverView.swift */,
 				FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */,
-				FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */,
 				FB701F922C93C62100EF83E4 /* AddRubroPopoverView.swift */,
 				FB0AB0D42C94F9F2003F94E7 /* AddEquipoPopoverView.swift */,
 				FB0AB0D62C94FA63003F94E7 /* AddEquipoButton.swift */,
+				FB701F902C93C5CD00EF83E4 /* AddRubroButton.swift */,
 			);
 			path = AddHack;
 			sourceTree = "<group>";

@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+/// Vista que presenta tres botones de acción para un "Hack":
+/// 1. Guardar cambios
+/// 2. Ver resultados
+/// 3. Cerrar el hack.
+///
+/// - `hack`: El modelo de datos que representa el hack actual.
+/// - `saveChanges`: Acción para guardar los cambios del hack.
+/// - `showCloseAlert`: Acción para mostrar una alerta antes de cerrar el hack.
+/// - `showResults`: Acción para navegar a la vista de resultados del hack.
 struct ActionButtons: View {
     var hack: HackModel
     var saveChanges: () -> Void

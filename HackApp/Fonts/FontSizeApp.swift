@@ -1,12 +1,20 @@
-//
-//  FontSizeApp.swift
-//  HackApp
-//
-//  Created by Alumno on 05/09/24.
-//
-
-
 import Foundation
+
+/// Enum que define los tamaños de fuente utilizados en la aplicación.
+///
+/// Los valores son de tipo `CGFloat` y corresponden a tamaños de texto estándar para diferentes elementos UI.
+///
+/// **Casos:**
+/// - `largeTitle`: 64 pts, para títulos grandes.
+/// - `title`: 38 pts, para títulos.
+/// - `subtitle`: 34 pts, para subtítulos.
+/// - `heading`: 30 pts, para encabezados secundarios.
+/// - `largeButtonText`: 52 pts, para botones grandes.
+/// - `buttonText`: 26 pts, para botones estándar.
+/// - `label`: 24 pts, para etiquetas.
+/// - `bigText`: 22 pts, para texto destacado.
+/// - `text`: 20 pts, para texto regular.
+/// - `captions`: 18 pts, para subtítulos pequeños.
 
 enum FontSizeApp: CGFloat {
     case largeTitle = 64

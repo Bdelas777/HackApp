@@ -15,39 +15,27 @@ class HacksViewModel: ObservableObject {
                 completion(.failure(error))
                 return
             }
-
             guard let documents = querySnapshot?.documents, let document = documents.first else {
                 completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
                 return
             }
-
             let data = document.data()
-
-            // Obtener los equipos y las calificaciones
-            let equipos = data["equipos"] as? [String] ?? [] // Asegurarse de que se obtienen los equipos correctamente
-            let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:] // Asegurarse de que se obtienen las calificaciones correctamente
+            let equipos = data["equipos"] as? [String] ?? []
+            let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
             print(calificaciones, "Calificaciones")
-            // Crear un diccionario para almacenar si un equipo ha sido calificado por el juez
             var equiposEvaluados = [String: Bool]()
-         
-            // Recorremos los equipos y verificamos si el juez está presente en las calificaciones
             for equipo in equipos {
-                
                 if let calificacionesEquipo = calificaciones[equipo], let _ = calificacionesEquipo[selectedJudge] {
-                    
-                    equiposEvaluados[equipo] = true // El juez ha calificado al equipo
+                    equiposEvaluados[equipo] = true
                 } else {
-                    equiposEvaluados[equipo] = false // El juez no ha calificado al equipo
+                    equiposEvaluados[equipo] = false
                 }
             }
 
             print(equiposEvaluados, "Equipos")
-            // Devolver el resultado con los equipos y si han sido evaluados o no
             completion(.success(equiposEvaluados))
         }
     }
-
-
 
     func fetchHack(byKey hackClave: String, completion: @escaping (Result<HackModel, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
@@ -55,7 +43,6 @@ class HacksViewModel: ObservableObject {
                 completion(.failure(error))
                 return
             }
-
             guard let documents = querySnapshot?.documents, let document = documents.first else {
                 completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
                 return
@@ -84,7 +71,6 @@ class HacksViewModel: ObservableObject {
             let clave = data["clave"] as? String ?? ""
             let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
             let finalScores = data["finalScores"] as? [String: Double] ?? [:]
-
             let hack = HackModel(
                 clave: clave,
                 descripcion: descripcion,
@@ -135,7 +121,6 @@ class HacksViewModel: ObservableObject {
                     let clave = data["clave"] as? String ?? ""
                     let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
                     let finalScores = data["finalScores"] as? [String: Double] ?? [:]
-
                     return HackModel(
                         clave: clave,
                         descripcion: descripcion,
@@ -167,13 +152,10 @@ class HacksViewModel: ObservableObject {
                 completion(.failure(error))
                 return
             }
-
             guard let documents = querySnapshot?.documents, let document = documents.first else {
                 completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
                 return
             }
-
-            // Eliminar el documento
             document.reference.delete { error in
                 if let error = error {
                     completion(.failure(error))
@@ -183,7 +165,6 @@ class HacksViewModel: ObservableObject {
             }
         }
     }
-
 
     /// Obtiene la lista de jueces para un hackathon específico.
     /// - Parameters:
@@ -195,14 +176,11 @@ class HacksViewModel: ObservableObject {
                 completion(.failure(error))
                 return
             }
-          
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
                 completion(.success([]))
                 return
             }
-            
             let data = documents.first?.data()
-            
             if let jueces = data?["jueces"] as? [String] {
                 completion(.success(jueces))
             } else {
@@ -226,9 +204,7 @@ class HacksViewModel: ObservableObject {
                 completion(.success([]))
                 return
             }
-            
             let data = documents.first?.data()
-            
             if let equipos = data?["equipos"] as? [String] {
                 completion(.success(equipos))
             } else {
@@ -244,7 +220,6 @@ class HacksViewModel: ObservableObject {
                     completion(false)
                     return
                 }
-
                 let exists = querySnapshot?.documents.count ?? 0 > 0
                 completion(exists)
             }
@@ -448,7 +423,6 @@ class HacksViewModel: ObservableObject {
 
             let documentRef = document.reference
             
-            // Actualizar solo el puntaje para el equipo especificado
             documentRef.updateData(["finalScores.\(equipo)": finalScore]) { error in
                 if let error = error {
                     completion(.failure(error))
@@ -494,15 +468,15 @@ class HacksViewModel: ObservableObject {
                 for rubro in rubrosDelJuez.keys {
                     let calificacion = rubrosDelJuez[rubro] ?? 0.0
                     let pesoRubro = rubros[rubro] ?? 0.0
-                    let valorFinal = (calificacion * pesoRubro) / Double(valorRubro)
-                    
+                    let valorFinal = (calificacion * (pesoRubro / 100))
+                    print(valorFinal)
                     totalScore += valorFinal
                 }
                 totalJudges += 1
             }
         }
         
-        let finalScore = totalJudges > 0 ? totalScore / Double(totalJudges) : 0.0
+        let finalScore = totalJudges > 0 ? totalScore  / Double(totalJudges) : 0.0
         print(finalScore, "Este es el Score final")
         updateOrSaveCalificaciones(for: equipo, with: finalScore, hackClave: hackClave) { _ in }
         
@@ -532,8 +506,6 @@ class HacksViewModel: ObservableObject {
             }
 
             let documentID = documents[0].documentID
-            
-            // Actualiza el documento usando su ID
             self.db.collection("hacks").document(documentID).updateData(hackData) { error in
                 if let error = error {
                     completion(false)

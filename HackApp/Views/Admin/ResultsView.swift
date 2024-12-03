@@ -16,90 +16,91 @@ struct ResultsView: View {
     @State private var isLoading: Bool = true
 
     var body: some View {
-        VStack {
-            Text("Resultados del Hackathon")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding()
-                .foregroundColor(.primary)
-                .background(Color(.systemGray5))
-                .cornerRadius(12)
-                .shadow(radius: 5)
+            VStack {
+                Text("Resultados del Hackathon")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding()
+                    .foregroundColor(.primary)
+                    .background(Color(.systemGray5))
+                    .cornerRadius(12)
+                    .shadow(radius: 5)
 
-            if isLoading {
-                ProgressView("Cargando resultados...")
-                    .padding()
-            } else if topTeams.isEmpty || topTeams.allSatisfy({ $0.score <= 0 }) {
-                Text("No hay resultados disponibles.")
-                    .font(.headline)
-                    .foregroundColor(.gray)
-                    .padding()
-            } else {
-                // Gráfico de barras de los primeros 3 lugares
-                Chart(topTeams, id: \.team) { team in
-                    BarMark(
-                        x: .value("Puntuación", team.score),
-                        y: .value("Equipo", team.team)
-                    )
-                    .foregroundStyle(by: .value("Equipo", team.team))
-                    .annotation(position: .top) {
-                        Text(String(format: "%.1f", team.score))
-                            .font(.caption)
-                            .foregroundColor(.black)
-                            .padding(5)
-                            .background(Color.white)
-                            .cornerRadius(5)
-                            .shadow(color: Color.black.opacity(0.1), radius: 1)
+                if isLoading {
+                    ProgressView("Cargando resultados...")
+                        .padding()
+                } else if topTeams.isEmpty || topTeams.allSatisfy({ $0.score <= 0 }) {
+                    Text("No hay resultados disponibles.")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                        .padding()
+                } else {
+                    Chart(topTeams, id: \.team) { team in
+                        BarMark(
+                            x: .value("Puntuación", team.score),
+                            y: .value("Equipo", team.team)
+                        )
+                        .foregroundStyle(by: .value("Equipo", team.team))
+                        .annotation(position: .top) {
+                            Text(String(format: "%.1f", team.score))
+                                .font(.caption)
+                                .foregroundColor(.black)
+                                .padding(5)
+                                .background(Color.white)
+                                .cornerRadius(5)
+                                .shadow(color: Color.black.opacity(0.1), radius: 1)
+                        }
                     }
-                }
-                .frame(height: 500)
-                .padding()
-                .background(Color.white)
-                .cornerRadius(12)
-                .shadow(color: Color.black.opacity(0.1), radius: 8)
-                .chartXAxisLabel("Puntuación")
-                .chartYAxisLabel("Equipos")
-                .chartYAxis {
-                    AxisMarks(position: .leading)
-                }
+                    .frame(height: 500)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(12)
+                    .shadow(color: Color.black.opacity(0.1), radius: 8)
+                    .chartXAxisLabel("Puntuación")
+                    .chartYAxisLabel("Equipos")
+                    .chartYAxis {
+                        AxisMarks(position: .leading)
+                    }
 
+                    
+                }
                 Text("Mejores Equipos")
                     .font(.title2)
                     .fontWeight(.bold)
                     .padding(.top)
 
-                // ScrollView para ver los resultados de los equipos
                 ScrollView {
                     VStack(spacing: 10) {
-                        // Crear el top 3 con colores específicos
                         ForEach(getRankedTeams(), id: \.team) { rankedGroup in
-                            HStack {
-                                Text(rankedGroup.team)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.primary)
-                                Spacer()
-                                Text("\(String(format: "%.2f", rankedGroup.score)) / 100")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.accentColor)
+                            NavigationLink(destination: TeamView(hack: hack, equipoSeleccionado: rankedGroup.team)) {
+                                HStack {
+                                    Text(rankedGroup.team)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.primary)
+                                    Spacer()
+                                    Text("\(String(format: "%.2f", rankedGroup.score)) / 100")
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.accentColor)
+                                }
+                                .padding()
+                                .background(getBackgroundColor(for: rankedGroup.rank))
+                                .cornerRadius(12)
+                                .shadow(color: Color.black.opacity(0.1), radius: 4)
                             }
-                            .padding()
-                            .background(getBackgroundColor(for: rankedGroup.rank))
-                            .cornerRadius(12)
-                            .shadow(color: Color.black.opacity(0.1), radius: 4)
                         }
                     }
                     .padding(.horizontal)
                 }
             }
+            .padding()
+            .background(Color(UIColor.systemGroupedBackground))
+            .navigationTitle("Resultados del Hackathon")
+            .onAppear {
+                fetchScores()
+            }
         }
-        .padding()
-        .background(Color(UIColor.systemGroupedBackground))
-        .onAppear {
-            fetchScores()
-        }
-    }
+    
 
-    // Función para obtener los puntajes
     private func fetchScores() {
         viewModel.getScores(for: hack.clave) { result in
             isLoading = false
@@ -114,7 +115,6 @@ struct ResultsView: View {
         }
     }
 
-    // Función para agrupar equipos con puntuaciones iguales y asignar rango
     private func getRankedTeams() -> [(team: String, score: Double, rank: Int)] {
         var rankedTeams: [(team: String, score: Double)] = []
         var currentRank = 1
@@ -139,15 +139,14 @@ struct ResultsView: View {
         }
     }
 
-    // Función para obtener el color de fondo dependiendo del rango
     private func getBackgroundColor(for rank: Int) -> Color {
         switch rank {
         case 1:
-            return Color.yellow.opacity(0.6) // Oro
+            return Color.yellow.opacity(0.6)
         case 2:
-            return Color.gray.opacity(0.6) // Plata
+            return Color.gray.opacity(0.6)
         case 3:
-            return Color.brown.opacity(0.6) // Bronce
+            return Color.brown.opacity(0.6)
         default:
             return Color(.systemGray6)
         }

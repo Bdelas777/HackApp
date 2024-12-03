@@ -57,6 +57,7 @@ class TeamViewModel: ObservableObject {
                     let calificacion = rubrosDelJuez[rubro] ?? 0.0
                     let pesoRubro = rubros[rubro] ?? 0.0
                     let valorFinal = calculateFinalScore(calificacion: calificacion, peso: pesoRubro)
+                    
                     totalScore += valorFinal
                 }
             }
@@ -64,6 +65,6 @@ class TeamViewModel: ObservableObject {
     }
 
     func calculateFinalScore(calificacion: Double, peso: Double) -> Double {
-        return (calificacion * peso) / Double(hack.valorRubro)
+        return (calificacion * peso) / 100
     }
 }

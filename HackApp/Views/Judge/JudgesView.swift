@@ -33,7 +33,7 @@ struct JudgesView: View {
                     Button(action: {
                         fetchHackData()
                     }) {
-                        Text("Buscar Jueces")
+                        Text("Buscar Hack")
                             .fontWeight(.bold)
                             .padding()
                             .frame(maxWidth: .infinity)

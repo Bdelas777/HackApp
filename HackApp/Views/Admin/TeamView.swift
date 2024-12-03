@@ -37,7 +37,7 @@ struct TeamView: View {
                                 ForEach(viewModel.calificaciones[juez]?.keys.sorted() ?? [], id: \.self) { rubro in
                                     let calificacion = viewModel.calificaciones[juez]?[rubro] ?? 0.0
                                     let pesoRubro = viewModel.rubros[rubro] ?? 0.0
-                                    let valorFinal = viewModel.calculateFinalScore(calificacion: calificacion, peso: pesoRubro)
+                                    let valorFinal = viewModel.calculateFinalScore(calificacion: calificacion, peso: pesoRubro / 100)
 
                                     VStack(alignment: .leading) {
                                         Text("\(rubro): \(String(format: "%.2f", calificacion)) de \(hack.valorRubro )")
@@ -51,7 +51,7 @@ struct TeamView: View {
                         }
                     }
 
-                    Text("Puntuación General: \(viewModel.totalJudges > 0 ? String(format: "%.2f", viewModel.totalScore / Double(viewModel.totalJudges)) : "0.00")")
+                    Text("Puntuación General: \(viewModel.totalJudges > 0 ? String(format: "%.2f", viewModel.totalScore  / Double(viewModel.totalJudges)) : "0.00")")
                         .font(.headline)
                         .padding()
                 }
