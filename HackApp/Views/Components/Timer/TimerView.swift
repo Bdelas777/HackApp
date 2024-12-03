@@ -6,7 +6,12 @@
 //
 import SwiftUI
 import Charts
-
+/// Vista que muestra un temporizador interactivo con un círculo de progreso.
+/// Permite iniciar, detener y visualizar el tiempo restante en formato `mm:ss`.
+///
+/// - `tiempoPitch`: El tiempo inicial en minutos que define el valor total del temporizador.
+///
+/// Esta vista se utiliza para mostrar un temporizador circular con controles de reproducción y pausa.
 struct TimerView: View {
     @State private var timeRemaining: TimeInterval
     @State private var isRunning: Bool = false
