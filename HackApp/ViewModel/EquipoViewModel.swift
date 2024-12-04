@@ -1,9 +1,3 @@
-//
-//  EquipoViewModel.swift
-//  HackApp
-//
-//  Created by Alumno on 13/09/24.
-//
 
 import Foundation
 /// `EquipoViewModel` gestiona la lista de equipos en un Hackathon.

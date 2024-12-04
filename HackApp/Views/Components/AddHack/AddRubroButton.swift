@@ -52,13 +52,9 @@ struct AddRubroButton: View {
     private func addRubro() {
         if let valor = Double(rubroValor), totalRubroValue() + valor <= 100 {
             if let index = listaRubros.rubroList.firstIndex(where: { $0.nombre == rubroNombre }) {
-                // Editar rubro existente
-                
                 listaRubros.rubroList[index].valor = valor
             }
-            
             else {
-                // Agregar un nuevo rubro
                 let nuevoRubro = Rubro(nombre: rubroNombre, valor: valor)
                 listaRubros.rubroList.append(nuevoRubro)
             }

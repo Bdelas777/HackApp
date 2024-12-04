@@ -99,6 +99,7 @@ struct TeamView: View {
         calificaciones: [
             "P": ["A": ["rubro": 9]],
             "Q": ["B": ["rubro": 78]]
-        ]
+        ],
+        estaIniciado: false
     ), equipoSeleccionado: "Equipo 1")
 }

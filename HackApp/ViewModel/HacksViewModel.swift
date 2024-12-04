@@ -56,7 +56,7 @@ class HacksViewModel: ObservableObject {
                 completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
                 return
             }
-
+            
             let data = document.data()
             let equipos = data["equipos"] as? [String] ?? []
             let jueces = data["jueces"] as? [String] ?? []
@@ -69,7 +69,7 @@ class HacksViewModel: ObservableObject {
                 }
                 return nil
             }
-
+            
             let estaActivo = data["estaActivo"] as? Bool ?? false
             let nombre = data["nombre"] as? String ?? ""
             let tiempoPitch = data["tiempoPitch"] as? Double ?? 0.0
@@ -80,6 +80,8 @@ class HacksViewModel: ObservableObject {
             let clave = data["clave"] as? String ?? ""
             let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
             let finalScores = data["finalScores"] as? [String: Double] ?? [:]
+            let notas = data["notas"] as? [String: [String: String]] ?? [:]
+            let estaIniciado = data["estaIniciado"] as? Bool ?? false
             let hack = HackModel(
                 clave: clave,
                 descripcion: descripcion,
@@ -93,13 +95,61 @@ class HacksViewModel: ObservableObject {
                 FechaEnd: fechaend.dateValue(),
                 valorRubro: valorrubro,
                 calificaciones: calificaciones,
-                finalScores: finalScores
+                finalScores: finalScores,
+                notas: notas,
+                estaIniciado: estaIniciado
             )
 
             completion(.success(hack))
         }
     }
 
+    /// Proporciona un conjunto de hackathons de ejemplo para mostrar en caso de error al recuperar datos.
+    /// - Returns: Un array de hackathons de ejemplo.
+    func defaultHacks() -> [HackModel] {
+        return [
+            HackModel(
+                clave: "HACK1",
+                descripcion: "Descripción del Hackathon 1",
+                equipos: ["Equipo A", "Equipo B"],
+                jueces: ["Juez1", "Juez2"],
+                rubros: ["Rubro1": 0.75, "Rubro2": 0.85],
+                estaActivo: true,
+                nombre: "Hackathon Ejemplo 1",
+                tiempoPitch: 5.0,
+                FechaStart: Date(),
+                FechaEnd: Date(),
+                valorRubro: 5,
+                finalScores: ["Equipo A": 0.0, "Equipo B": 0.0],
+                notas: [
+                    "Equipo A": ["Juez1": "Ej1", "Juez2": "Ej2"],
+                    "Equipo B": ["Juez1": "Ej3", "Juez2": "Ej4"]
+                ],
+                estaIniciado: false
+            ),
+            HackModel(
+                clave: "HACK2",
+                descripcion: "Descripción del Hackathon 2",
+                equipos: ["Equipo X", "Equipo Y"],
+                jueces: ["Juez3", "Juez4"],
+                rubros: ["Rubro3": 0.65, "Rubro4": 0.90],
+                estaActivo: false,
+                nombre: "Hackathon Ejemplo 2",
+                tiempoPitch: 7.0,
+                FechaStart: Date(),
+                FechaEnd: Date(),
+                valorRubro: 5,
+                finalScores: ["Equipo X": 0.0, "Equipo Y": 0.0],
+                notas: [
+                    "Equipo X": ["Juez3": "Ej1", "Juez4": "Ej2"],
+                    "Equipo Y": ["Juez3": "Ej3", "Juez4": "Ej4"]
+                ],
+                estaIniciado: false
+            )
+        ]
+    }
+
+    
     /// Obtiene todos los hackathons de la base de datos y los mapea a objetos `HackModel`.
     /// - Actualiza la lista de hackathons en la propiedad `hacks`.
     /// - Si ocurre un error, se asigna una lista por defecto de hackathons.
@@ -133,6 +183,8 @@ class HacksViewModel: ObservableObject {
                     let clave = data["clave"] as? String ?? ""
                     let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
                     let finalScores = data["finalScores"] as? [String: Double] ?? [:]
+                    let notas = data["notas"] as? [String: [String: String]] ?? [:]
+                    let estaIniciado = data["estaIniciado"] as? Bool ?? false
                     return HackModel(
                         clave: clave,
                         descripcion: descripcion,
@@ -146,7 +198,9 @@ class HacksViewModel: ObservableObject {
                         FechaEnd: fechaend.dateValue(),
                         valorRubro: valorrubro,
                         calificaciones: calificaciones,
-                        finalScores: finalScores
+                        finalScores: finalScores,
+                        notas: notas,
+                        estaIniciado: false
                     )
                 } ?? self.defaultHacks()
                 self.hacks.sort { $0.FechaEnd > $1.FechaEnd }
@@ -320,39 +374,7 @@ class HacksViewModel: ObservableObject {
         }
     }
 
-    /// Proporciona un conjunto de hackathons de ejemplo para mostrar en caso de error al recuperar datos.
-    /// - Returns: Un array de hackathons de ejemplo.
-    func defaultHacks() -> [HackModel] {
-        return [
-            HackModel(
-                clave: "HACK1",
-                descripcion: "Descripción del Hackathon 1",
-                equipos: ["Equipo A", "Equipo B"],
-                jueces: ["Juez1", "Juez2"],
-                rubros: ["Rubro1": 0.75, "Rubro2": 0.85],
-                estaActivo: true,
-                nombre: "Hackathon Ejemplo 1",
-                tiempoPitch: 5.0,
-                FechaStart: Date(),
-                FechaEnd: Date(),
-                valorRubro: 5
-            ),
-            HackModel(
-                clave: "HACK2",
-                descripcion: "Descripción del Hackathon 2",
-                equipos: ["Equipo X", "Equipo Y"],
-                jueces: ["Juez3", "Juez4"],
-                rubros: ["Rubro3": 0.65, "Rubro4": 0.90],
-                estaActivo: false,
-                nombre: "Hackathon Ejemplo 2",
-                tiempoPitch: 7.0,
-                FechaStart: Date(),
-                FechaEnd: Date(),
-                valorRubro: 5
-            )
-        ]
-    }
-    
+
     /// Obtiene las calificaciones de todos los jueces para un equipo en un hackathon específico.
     /// - Parameters:
     ///   - teamName: Nombre del equipo para el que se obtendrán las calificaciones.
@@ -387,10 +409,17 @@ class HacksViewModel: ObservableObject {
     ///   - completion: Closure que devuelve un resultado de éxito o error.
     func addHack(hack: HackModel, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
+            var notas: [String: [String: String]] = [:]
+                   for equipo in hack.equipos {
+                       notas[equipo] = [:]
+                       for juez in hack.jueces {
+                           notas[equipo]?[juez] = ""
+                       }
+                   }
+                   
             var hackWithCalificaciones = hack
             hackWithCalificaciones.calificaciones = [:]
             
-            // Crear el diccionario de finalScores con los equipos y su puntaje inicial
             var finalScores: [String: Double] = [:]
             for equipo in hack.equipos {
                 finalScores[equipo] = 0.0

@@ -42,6 +42,7 @@
 		FB3336162CDD7C58001C8E7A /* ActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3336152CDD7C58001C8E7A /* ActionButtons.swift */; };
 		FB3ACCD02CFFB8540022D21E /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3ACCCF2CFFB8540022D21E /* ProgressBar.swift */; };
 		FB3ACCD22CFFB87B0022D21E /* StepIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3ACCD12CFFB87B0022D21E /* StepIndicator.swift */; };
+		FB3ACCD42D00F0ED0022D21E /* FormDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3ACCD32D00F0ED0022D21E /* FormDataViewModel.swift */; };
 		FB5CF67E2C8BD6A000835D7B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CF67D2C8BD6A000835D7B /* HomeView.swift */; };
 		FB64A9432CBF3C8D00BFD6F4 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB64A9422CBF3C8D00BFD6F4 /* ResultsView.swift */; };
 		FB701F8F2C93C5A100EF83E4 /* AddHackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */; };
@@ -92,6 +93,7 @@
 		FB3336152CDD7C58001C8E7A /* ActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtons.swift; sourceTree = "<group>"; };
 		FB3ACCCF2CFFB8540022D21E /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		FB3ACCD12CFFB87B0022D21E /* StepIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepIndicator.swift; sourceTree = "<group>"; };
+		FB3ACCD32D00F0ED0022D21E /* FormDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDataViewModel.swift; sourceTree = "<group>"; };
 		FB5CF67D2C8BD6A000835D7B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FB64A9422CBF3C8D00BFD6F4 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		FB701F8E2C93C5A100EF83E4 /* AddHackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHackForm.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 		F86AC6BB2BF512A100BEAFCA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				FB3ACCD32D00F0ED0022D21E /* FormDataViewModel.swift */,
 				FB33360A2CDD7AFE001C8E7A /* TeamViewModel.swift */,
 				FB0AB0D82C94FAA7003F94E7 /* EquipoViewModel.swift */,
 				FB2F606C2CA37970004D2E55 /* HacksViewModel.swift */,
@@ -434,6 +437,7 @@
 				FB9733C82CA4CD2900A7BE6F /* JudgesView.swift in Sources */,
 				FB3336122CDD7C41001C8E7A /* InfoFieldDouble.swift in Sources */,
 				FB012BD12CB747E600D5CF7A /* TeamView.swift in Sources */,
+				FB3ACCD42D00F0ED0022D21E /* FormDataViewModel.swift in Sources */,
 				F86AC6BF2BF51F2100BEAFCA /* AddHackView.swift in Sources */,
 				F8BD95702BE07131002E496B /* Rubro.swift in Sources */,
 				FB0AB0D52C94F9F2003F94E7 /* AddEquipoPopoverView.swift in Sources */,

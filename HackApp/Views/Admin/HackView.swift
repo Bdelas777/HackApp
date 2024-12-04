@@ -85,7 +85,7 @@ struct HackView: View {
                 alert(for: type)
             }
         }
-        .background(Color(.systemGroupedBackground)) // Fondo más claro
+        .background(Color(.systemGroupedBackground))
     }
 
     private var infoSection: some View {
@@ -106,7 +106,6 @@ struct HackView: View {
         .padding(.horizontal)
     }
 
-    // Sección para expandir y colapsar las vistas internas (Equipos, Jueces, Rubros)
     private func toggleSectionView<Content: View>(title: String, isExpanded: Binding<Bool>, content: Content) -> some View {
         VStack {
             HStack {
@@ -158,7 +157,6 @@ struct HackView: View {
         .padding(.trailing, 20)
     }
 
-    // Vista de Jueces
     private var juecesView: some View {
         VStack(alignment: .leading, spacing: 12) {
             if !jueces.isEmpty {
@@ -182,7 +180,6 @@ struct HackView: View {
         .padding(.trailing, 20)
     }
 
-    // Vista de Rubros
     private var rubrosView: some View {
         VStack(alignment: .leading, spacing: 12) {
             if !rubros.isEmpty {
@@ -213,7 +210,6 @@ struct HackView: View {
         .padding(.trailing, 20)
     }
 
-    // Mensaje de estado
     private var statusMessageView: some View {
         Text(viewModel.statusMessage)
             .font(.subheadline)
@@ -290,7 +286,8 @@ struct HackView: View {
             FechaEnd: fechaEnd,
             valorRubro: valorRubro,
             calificaciones: hack.calificaciones,
-            finalScores: hack.finalScores
+            finalScores: hack.finalScores,
+            estaIniciado: hack.estaIniciado
         )
         
         viewModel.updateHack(hack: updatedHack) { success in

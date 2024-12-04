@@ -27,7 +27,7 @@ struct AddRubroPopoverView: View {
                     TextField("Nombre", text: $rubroNombre)
                         .autocorrectionDisabled(true)
                 }
-                Section(header: Text("Valor del Rubro")) {
+                Section(header: Text("Valor del Rubro(%)")) {
                     TextField("Valor", text: $rubroValor)
                         .keyboardType(.decimalPad)
                         .autocorrectionDisabled(true)

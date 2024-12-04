@@ -1,43 +1,15 @@
-//
-//  AddHackForm.swift
-//  HackApp
-//
-//  Created by Alumno on 12/09/24.
-//
+
 import SwiftUI
 
-/// Vista que permite a los usuarios agregar un nuevo Hackathon.
-/// El formulario se divide en varios pasos que incluyen información básica,
-/// fechas, rúbricas, equipos, jueces y una revisión final antes de guardar.
-///
-/// - `nombre`: El nombre del Hackathon.
-/// - `clave`: La clave única del Hackathon.
-/// - `descripcion`: Descripción detallada del Hackathon.
-/// - `date`: Fecha de inicio del Hackathon.
-/// - `dateEnd`: Fecha de finalización del Hackathon.
-/// - `valorRubro`: Valor máximo para la calificación de los rubros.
-/// - `tiempoPitch`: Duración en minutos del pitch.
-/// - `listaRubros`: Un `ViewModel` que contiene los rubros (criterios de evaluación).
-/// - `listaEquipos`: Un `ViewModel` que contiene los equipos participantes.
-/// - `listaJueces`: Un `ViewModel` que contiene los jueces que evaluarán los equipos.
-/// - `showingAlert`: Un indicador de alerta que muestra mensajes de error.
-/// - `listaHacks`: Un `ViewModel` que maneja la lista de Hackathons existentes.
-///
-/// Esta vista guía al usuario a través de un flujo paso a paso, validando la información ingresada
-/// en cada paso. Al finalizar, el Hackathon ingresado se guarda si todos los campos son válidos.
-
 struct AddHackForm: View {
-    @Binding var nombre: String
-    @Binding var clave: String
-    @Binding var descripcion: String
-    @Binding var date: Date
-    @Binding var dateEnd: Date
-    @Binding var valorRubro: String
-    @Binding var tiempoPitch: String
-    @ObservedObject var listaRubros: RubroViewModel
-    @ObservedObject var listaEquipos: EquipoViewModel
-    @ObservedObject var listaJueces: JuezViewModel
+    @ObservedObject var formData: FormDataViewModel
+    @ObservedObject var listaHacks: HacksViewModel
     @Binding var showingAlert: Bool
+    @State private var currentStep: Int = 0
+    @State private var steps: [String] = ["Información Básica", "Fechas", "Rúbrica", "Equipos", "Jueces", "Revisión"]
+    private let totalSteps = 6
+    @State private var alertMessage: String = ""
+
     @State private var showingAddRubroPopover = false
     @State private var showingAddEquipoPopover = false
     @State private var showingAddJuezPopover = false
@@ -45,16 +17,10 @@ struct AddHackForm: View {
     @State private var rubroValor: String = ""
     @State private var equipoNombre: String = ""
     @State private var juezNombre: String = ""
-    @State private var currentStep: Int = 0  // Paso actual
-    @State private var steps: [String] = ["Información Básica", "Fechas", "Rúbrica", "Equipos", "Jueces", "Revisión"]
-    private let totalSteps = 6
-    @State private var alertMessage: String = ""
-    @ObservedObject var listaHacks: HacksViewModel
-    @State private var juezAEditar: Juez?
-    @Environment(\.presentationMode) var presentationMode
     
+    @State private var juezAEditar: Juez?
     @State private var equipoAEditar: Equipo?
-
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {
             ProgressBar(progress: CGFloat(currentStep) / CGFloat(totalSteps))
@@ -64,7 +30,6 @@ struct AddHackForm: View {
                 currentStep = step
             })
             
-            // Formulario por paso
             switch currentStep {
             case 0: basicInfoForm
             case 1: dateForm
@@ -107,14 +72,14 @@ struct AddHackForm: View {
     var basicInfoForm: some View {
         Form {
             Section(header: Text("Nombre del Hackathon")) {
-                TextField("Nombre del hack", text: $nombre)
+                TextField("Nombre del hack", text: $formData.nombre)
             }
             Section(header: Text("Clave del Hackathon")) {
-                TextField("Clave del hack", text: $clave)
+                TextField("Clave del hack", text: $formData.clave)
                     .autocorrectionDisabled(true)
             }
             Section(header: Text("Descripción del Hackathon")) {
-                TextField("Descripción del hack", text: $descripcion)
+                TextField("Descripción del hack", text: $formData.descripcion)
             }
         }
     }
@@ -123,10 +88,10 @@ struct AddHackForm: View {
     var dateForm: some View {
         Form {
             Section(header: Text("Fecha de inicio del Hackathon")) {
-                DatePicker("Selecciona la fecha inicio", selection: $date)
+                DatePicker("Selecciona la fecha inicio", selection: $formData.date)
             }
             Section(header: Text("Fecha de fin del Hackathon")) {
-                DatePicker("Selecciona la fecha fin", selection: $dateEnd)
+                DatePicker("Selecciona la fecha fin", selection: $formData.dateEnd)
             }
         }
     }
@@ -134,69 +99,56 @@ struct AddHackForm: View {
     var rubrosForm: some View {
         Form {
             Section(header: Text("Duración del pitch (minutos)")) {
-                TextField("Valor máximo de los rubros", text: $tiempoPitch)
+                TextField("Valor máximo de los rubros", text: $formData.tiempoPitch)
                     .keyboardType(.numberPad)
             }
             Section(header: Text("Valor de la calificación máxima")) {
-                TextField("Valor máximo de los rubros", text: $valorRubro)
+                TextField("Valor máximo de los rubros", text: $formData.valorRubro)
                     .keyboardType(.numberPad)
             }
             Section(header: Text("Rúbrica")) {
-                // Componente para añadir o editar rubros
                 AddRubroButton(
                     showingAddRubroPopover: $showingAddRubroPopover,
-                    listaRubros: listaRubros,
+                    listaRubros: formData.listaRubros,
                     rubroNombre: $rubroNombre,
                     rubroValor: $rubroValor,
                     showingAlert: $showingAlert
                 )
-                
-                // Lista de rubros (ForEach) con botón de eliminar
-                ForEach(listaRubros.rubroList, id: \.id) { rubro in
+                ForEach(formData.listaRubros.rubroList, id: \.id) { rubro in
                     HStack {
                         Text(rubro.nombre)
                         Spacer()
                         Text("\(rubro.valor, specifier: "%.0f")%")
-                        
-                        // Botón de editar
                         Button(action: {
-                            // Cargar datos del rubro para editar
                             rubroNombre = rubro.nombre
                             rubroValor = "\(rubro.valor)"
-                            showingAddRubroPopover.toggle() // Muestra el popover de edición
+                            showingAddRubroPopover.toggle()
                         }) {
                             Image(systemName: "pencil.circle.fill")
                                 .foregroundColor(.yellow)
                         }
-                        
-                        
                     }
                 }
             }
         }
     }
 
-
-    // Equipos
     var equiposForm: some View {
         Form {
             Section(header: Text("Equipos")) {
                 AddEquipoButton(showingAddEquipoPopover: $showingAddEquipoPopover,
-                                listaEquipos: listaEquipos,
+                                listaEquipos: formData.listaEquipos,
                                 equipoNombre: $equipoNombre,
                                 showingAlert: $showingAlert,
                                 equipoAEditar: $equipoAEditar)
                 
-                ForEach(listaEquipos.equipoList) { equipo in
+                ForEach(formData.listaEquipos.equipoList) { equipo in
                     HStack {
                         Text(equipo.nombre)
-                        
-                        // Botón para editar equipo
                         Button(action: {
-                            // Cuando se toca un equipo, se carga su nombre para editar
                             equipoAEditar = equipo
                             equipoNombre = equipo.nombre
-                            showingAddEquipoPopover.toggle() // Mostrar popover de edición
+                            showingAddEquipoPopover.toggle()
                         }) {
                             Image(systemName: "pencil.circle.fill")
                                 .foregroundColor(.yellow)
@@ -207,39 +159,36 @@ struct AddHackForm: View {
         }
     }
 
-
-    // Jueces
     var juecesForm: some View {
         Form {
-                    Section(header: Text("Jueces")) {
-                        AddJuezButton(
-                            showingAddJuezPopover: $showingAddJuezPopover,
-                            listaJueces: listaJueces,
-                            juezNombre: $juezNombre,
-                            showingAlert: $showingAlert,
-                            juezAEditar: $juezAEditar // Pasamos el binding aquí
-                        )
+            Section(header: Text("Jueces")) {
+                AddJuezButton(
+                    showingAddJuezPopover: $showingAddJuezPopover,
+                    listaJueces: formData.listaJueces,
+                    juezNombre: $juezNombre,
+                    showingAlert: $showingAlert,
+                    juezAEditar: $juezAEditar // Pasamos el binding aquí
+                )
+                
+                ForEach(formData.listaJueces.juezList) { juez in
+                    HStack {
+                        Text(juez.nombre)
                         
-                        ForEach(listaJueces.juezList) { juez in
-                            HStack {
-                                Text(juez.nombre)
-                                
-                                // Botón para editar el juez
-                                Button(action: {
-                                    // Cuando se toca un juez, se carga su nombre para editar
-                                    juezAEditar = juez
-                                    juezNombre = juez.nombre
-                                    showingAddJuezPopover.toggle() // Mostrar popover de edición
-                                }) {
-                                    Image(systemName: "pencil.circle.fill")
-                                        .foregroundColor(.yellow)
-                                }
-                            }
+                        // Botón para editar el juez
+                        Button(action: {
+                            // Cuando se toca un juez, se carga su nombre para editar
+                            juezAEditar = juez
+                            juezNombre = juez.nombre
+                            showingAddJuezPopover.toggle() // Mostrar popover de edición
+                        }) {
+                            Image(systemName: "pencil.circle.fill")
+                                .foregroundColor(.yellow)
                         }
                     }
                 }
             }
-    
+        }
+    }
 
     // Revisión final
     var reviewForm: some View {
@@ -251,21 +200,21 @@ struct AddHackForm: View {
             // Mostrar el resumen de los datos ingresados
             Form {
                 Section(header: Text("Información Básica")) {
-                    Text("Nombre: \(nombre)")
-                    Text("Clave: \(clave)")
-                    Text("Descripción: \(descripcion)")
+                    Text("Nombre: \(formData.nombre)")
+                    Text("Clave: \(formData.clave)")
+                    Text("Descripción: \(formData.descripcion)")
                 }
 
                 Section(header: Text("Fechas")) {
-                    Text("Fecha de inicio: \(date, style: .date)")
-                    Text("Fecha de fin: \(dateEnd, style: .date)")
+                    Text("Fecha de inicio: \(formData.date, style: .date)")
+                    Text("Fecha de fin: \(formData.dateEnd, style: .date)")
                 }
 
                 Section(header: Text("Rúbrica")) {
-                    Text("Tiempo Pitch: \(tiempoPitch) minutos")
-                    Text("Calificación máxima: \(valorRubro) ")
+                    Text("Tiempo Pitch: \(formData.tiempoPitch) minutos")
+                    Text("Calificación máxima: \(formData.valorRubro) ")
                     
-                    ForEach(listaRubros.rubroList) { rubro in
+                    ForEach(formData.listaRubros.rubroList) { rubro in
                         HStack {
                             Text("\(rubro.nombre): \(rubro.valor, specifier: "%.0f")%")
                             
@@ -281,168 +230,144 @@ struct AddHackForm: View {
                         }
                     }
                 }
-
-
-
-                Section(header: Text("Equipos")) {
-                    ForEach(listaEquipos.equipoList) { equipo in
-                        HStack {
-                            Text(equipo.nombre)
-                            
-                            Spacer()
-                            
-                            // Botón de eliminación
-                            Button(action: {
-                                eliminarEquipo(equipo)  // Llamamos a la función para eliminar el equipo
-                            }) {
-                                Image(systemName: "trash.circle.fill")
-                                    .foregroundColor(.red)
-                            }
-                        }
-                    }
-                }
-
-
-                Section(header: Text("Jueces")) {
-                    ForEach(listaJueces.juezList) { juez in
-                        HStack {
-                            Text(juez.nombre)
-                            
-                            Spacer()
-                            
-                            // Botón de eliminación
-                            Button(action: {
-                                eliminarJuez(juez)  // Llamamos a la función para eliminar el juez
-                            }) {
-                                Image(systemName: "trash.circle.fill")
-                                    .foregroundColor(.red)
-                            }
-                        }
-                    }
-                }
-
             }
         }
     }
-    
+
     func eliminarRubro(_ rubro: Rubro) {
-        listaRubros.eliminarRubro(rubro)  // Llamas al método del ViewModel para eliminar el rubro
+        formData.listaRubros.eliminarRubro(rubro)
     }
 
     func eliminarEquipo(_ equipo: Equipo) {
-        listaEquipos.eliminarEquipo(equipo)  // Llamas al método del ViewModel para eliminar el equipo
+        formData.listaEquipos.eliminarEquipo(equipo)
     }
 
     func eliminarJuez(_ juez: Juez) {
-        listaJueces.eliminarJuez(juez)  // Llamas al método del ViewModel para eliminar el juez
+        formData.listaJueces.eliminarJuez(juez)
     }
 
     private func validateAndSave() {
-        if nombre.isEmpty {
+        // Validaciones de los campos básicos
+        if formData.nombre.isEmpty {
             alertMessage = "El nombre es obligatorio."
             showingAlert = true
             return
         }
-        
-        if clave.isEmpty {
+
+        if formData.clave.isEmpty {
             alertMessage = "La clave es obligatoria."
             showingAlert = true
             return
         }
-        
-        if date >= dateEnd {
+
+        if formData.date >= formData.dateEnd {
             alertMessage = "La fecha de inicio no puede ser posterior a la fecha de fin."
             showingAlert = true
             return
         }
-        
-        if tiempoPitch.isEmpty{
+
+        if formData.tiempoPitch.isEmpty {
             alertMessage = "El tiempo de pitch es obligatorio."
             showingAlert = true
             return
         }
-        
-        if let tiempo = Double(tiempoPitch), tiempo < 0 {
+
+        if let tiempo = Double(formData.tiempoPitch), tiempo < 0 {
             alertMessage = "El valor máximo del tiempo de pitch debe ser un número mayor a 0."
             showingAlert = true
             return
         }
-        
-        if !isNumeric(tiempoPitch) {
+
+        if !isNumeric(formData.tiempoPitch) {
             alertMessage = "El tiempo de pitch debe contener solo números."
             showingAlert = true
             return
         }
-        
-        if valorRubro.isEmpty {
+
+        if formData.valorRubro.isEmpty {
             alertMessage = "El valor máximo de los rubros es obligatorio."
             showingAlert = true
             return
         }
-        
-        if let valor = Double(valorRubro), valor < 0 {
+
+        if let valor = Double(formData.valorRubro), valor < 0 {
             alertMessage = "El valor máximo de los rubros debe ser un número mayor a 0."
             showingAlert = true
             return
         }
-        if !isNumeric(valorRubro) {
+
+        if !isNumeric(formData.valorRubro) {
             alertMessage = "El valor de los rubros debe contener solo números."
             showingAlert = true
             return
         }
-        
-        
-        if listaRubros.rubroList.isEmpty {
+
+        // Validación de rubros
+        if formData.listaRubros.rubroList.isEmpty {
             alertMessage = "Debe agregar al menos un rubro."
             showingAlert = true
             return
         }
-        
-        let totalRubroValue = listaRubros.rubroList.reduce(0) { $0 + $1.valor }
+
+        let totalRubroValue = formData.listaRubros.rubroList.reduce(0) { $0 + $1.valor }
         if totalRubroValue < 100 {
             alertMessage = "La suma de los valores de los rubros debe ser al menos 100."
             showingAlert = true
             return
         }
-        
-        if listaEquipos.equipoList.isEmpty {
+
+        // Validación de equipos
+        if formData.listaEquipos.equipoList.isEmpty {
             alertMessage = "Debe agregar al menos un equipo."
             showingAlert = true
             return
         }
 
-        if listaJueces.juezList.isEmpty {
+        // Validación de jueces
+        if formData.listaJueces.juezList.isEmpty {
             alertMessage = "Debe agregar al menos un juez."
             showingAlert = true
             return
         }
-        
-        listaHacks.checkIfKeyExists(clave) { exists in
-              if exists {
-                  DispatchQueue.main.async {
-                      alertMessage = "No se puede guardar porque ya existe un hack con esa clave."
-                      showingAlert = true
-                  }
-                  return
-              }
-              
-              let nuevoHack = HackModel(
-                  clave: clave,
-                  descripcion: descripcion,
-                  equipos: listaEquipos.equipoList.map { $0.nombre },
-                  jueces: listaJueces.juezList.map { $0.nombre },
-                  rubros: listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
-                  estaActivo: true,
-                  nombre: nombre,
-                  tiempoPitch: Double(tiempoPitch) ?? 0.0,
-                  FechaStart: date,
-                  FechaEnd: dateEnd,
-                  valorRubro: Int(valorRubro) ?? 0
-              )
-              
+
+        // Verificar si la clave ya existe
+        listaHacks.checkIfKeyExists(formData.clave) { exists in
+            if exists {
+                DispatchQueue.main.async {
+                    alertMessage = "No se puede guardar porque ya existe un hack con esa clave."
+                    showingAlert = true
+                }
+                return
+            }
+
+            // Crear el nuevo HackModel
+            let nuevoHack = HackModel(
+                clave: formData.clave,
+                descripcion: formData.descripcion,
+                equipos: formData.listaEquipos.equipoList.map { $0.nombre },
+                jueces: formData.listaJueces.juezList.map { $0.nombre },
+                rubros: formData.listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
+                estaActivo: true,
+                nombre: formData.nombre,
+                tiempoPitch: Double(formData.tiempoPitch) ?? 0.0,
+                FechaStart: formData.date,
+                FechaEnd: formData.dateEnd,
+                valorRubro: Int(formData.valorRubro) ?? 0,
+                notas: formData.listaEquipos.equipoList.reduce(into: [String: [String: String]]()) { equipoNotas, equipo in
+                    var notasPorEquipo = [String: String]()
+                    for juez in formData.listaJueces.juezList {
+                        notasPorEquipo[juez.nombre] = ""
+                    }
+                    equipoNotas[equipo.nombre] = notasPorEquipo
+                },
+                estaIniciado: false
+            )
+
+            // Guardar el Hack
             listaHacks.addHack(hack: nuevoHack) { result in
                 switch result {
                 case .success:
+                    formData.resetForm()
                     presentationMode.wrappedValue.dismiss()
                     listaHacks.fetchHacks()
                 case .failure(let error):
@@ -452,6 +377,7 @@ struct AddHackForm: View {
             }
         }
     }
+
 }
 
 private func isNumeric(_ str: String) -> Bool {

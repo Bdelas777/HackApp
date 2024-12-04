@@ -19,7 +19,6 @@ import Charts
 struct ResultsView: View {
     var hack: HackModel
     @ObservedObject var viewModel = HacksViewModel()
-    
     @State private var scores: [String: Double] = [:]
     @State private var topTeams: [(team: String, score: Double)] = []
     @State private var isLoading: Bool = true
@@ -87,7 +86,7 @@ struct ResultsView: View {
                                         .fontWeight(.bold)
                                         .foregroundColor(.primary)
                                     Spacer()
-                                    Text("\(String(format: "%.2f", rankedGroup.score)) / 100")
+                                    Text("\(String(format: "%.2f", rankedGroup.score)) / \(String(format: "%.2f", Double(hack.valorRubro)))")
                                         .fontWeight(.bold)
                                         .foregroundColor(.accentColor)
                                 }
