@@ -685,4 +685,60 @@ class HacksViewModel: ObservableObject {
             }
         }
     }
+    
+    func saveNotes(for hackClave: String, judgeName: String, teamName: String, notes: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents, !documents.isEmpty else {
+                completion(.failure(NSError(domain: "No documents found", code: 404, userInfo: nil)))
+                return
+            }
+
+            let docRef = documents.first!.reference
+            docRef.updateData([
+                "notas.\(judgeName).\(teamName)": notes
+            ]) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        }
+    }
+    
+    func getNotas(for hackClave: String, judgeName: String, teamName: String, completion: @escaping (Result<String, Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents, !documents.isEmpty else {
+                completion(.success(""))
+                return
+            }
+
+            let docRef = documents.first!.reference
+            docRef.getDocument { (document, error) in
+                if let document = document, document.exists,
+                   let data = document.data(),
+                   let notes = data["notas"] as? [String: Any],
+                   let judgeNotes = notes[judgeName] as? [String: String],
+                   let teamNotes = judgeNotes[teamName] {
+                    completion(.success(teamNotes))
+                } else {
+                    completion(.success(""))
+                }
+            }
+        }
+    }
+    
+    
+
+
 }

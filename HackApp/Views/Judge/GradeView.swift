@@ -1,17 +1,4 @@
-
-
 import SwiftUI
-/// Vista que permite a un juez calificar a un equipo en función de rubros de evaluación en un hackathon.
-///
-/// Esta vista se utiliza para calificar un equipo específico dentro de un hackathon, mostrando una lista de rubros
-/// que el juez puede puntuar usando un slider.
-/// **Características**:
-/// - Muestra los rubros de evaluación como un conjunto de sliders para calificar.
-/// - Verifica si el juez ya ha calificado al equipo antes de permitir la calificación.
-/// - Informa al usuario si el hackathon ha cerrado y no se puede calificar.
-/// - Valida que todas las calificaciones sean mayores a 1.0 antes de enviarlas.
-/// - Si el valor de algún rubro es 1.0, muestra una alerta solicitando confirmación para continuar.
-
 
 struct GradeView: View {
     let hackClaveInput: String
@@ -19,50 +6,98 @@ struct GradeView: View {
     let nombreJuez: String
     @State private var valorRubro: Double = 0.0
     @State private var rubros: [String: Double] = [:]
-    @ObservedObject var viewModel = HacksViewModel()
     @State private var calificaciones: [String: [String: [String: Double]]] = [:]
-    @Environment(\.dismiss) var dismiss
+    @State private var notas: String = ""
     @State private var alreadyRated = false
     @State private var showAlert = false
     @State private var alertMessage = ""
+    @State private var showConfirmationAlert = false
+    @State private var judgeNotes: String = ""
+    @State private var calificacionesPrevias: [String: Double]? = nil // Calificaciones previas
+    @Environment(\.dismiss) var dismiss
     let isActive: Bool
+    @ObservedObject var viewModel = HacksViewModel()
 
     var body: some View {
-        VStack {
+        VStack(spacing: 24) {
             if !isActive {
                 Text("El hackathon ha cerrado. No se puede calificar.")
                     .font(.title2)
-                    .foregroundColor(.red)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
                     .padding()
-                    .background(Color.yellow.opacity(0.3))
-                    .cornerRadius(12)
+                    .background(Color.red.opacity(0.8))
+                    .cornerRadius(16)
+                    .shadow(radius: 10)
                     .padding(.horizontal)
             } else {
+                // Título principal
                 Text("Calificación de \(selectedEquipo)")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .padding(.top)
                     .foregroundColor(.primary)
+                    .padding(.top)
 
                 Text("Rubros de evaluación")
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                    .padding(.bottom)
-
+                    .padding(.bottom, 12)
+                
+                // Sección de calificaciones previas
                 if alreadyRated {
-                    HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundColor(.green)
-                            .font(.title)
-                        Text("Ya has calificado este equipo.")
-                            .font(.title3)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 8).fill(Color.green.opacity(0.2)))
-                            .shadow(radius: 5)
-                    }
-                    .padding(.bottom, 20)
+                    VStack(spacing: 12) {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                                .font(.title)
+                            Text("Ya has calificado este equipo.")
+                                .font(.headline)
+                                .foregroundColor(.green)
+                        }
+                        .padding()
+                        .background(Color.green.opacity(0.1))
+                        .cornerRadius(12)
+                        .shadow(radius: 5)
+                        
+                        // Desglose de calificaciones previas
+                                               VStack(alignment: .center, spacing: 16) {
+                                                   Text("Desglose de calificaciones:")
+                                                       .font(.title)
+                                                       .fontWeight(.bold)
+                                                       .foregroundColor(.white)
+                                                       .padding()
+                                                       .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]), startPoint: .top, endPoint: .bottom))
+                                                       .cornerRadius(16)
+                                                       .shadow(radius: 10)
+                                                       .frame(maxWidth: .infinity)
+                                                       .multilineTextAlignment(.center)
+                                                   
+                                                   if let calificacionesPrevias = calificacionesPrevias {
+                                                       VStack(spacing: 12) {
+                                                           ForEach(calificacionesPrevias.keys.sorted(), id: \.self) { rubro in
+                                                               HStack {
+                                                                   Text(rubro)
+                                                                       .font(.body)
+                                                                       .foregroundColor(.gray)
+                                                                       .padding(.leading)
+                                                                   Spacer()
+                                                                   Text("\(String(format: "%.2f", calificacionesPrevias[rubro] ?? 0.0))")
+                                                                       .font(.body)
+                                                                       .foregroundColor(.black)
+                                                                       .padding(.trailing)
+                                                               }
+                                                               .padding(.vertical, 8)
+                                                               .background(RoundedRectangle(cornerRadius: 8).fill(Color(UIColor.systemGray5)))
+                                                           }
+                                                       }
+                                                       .padding(.top, 12)
+                                                   }
+                                               }
+                                               .padding(.horizontal)
+                                           }
+                                           .padding(.vertical, 24)
                 } else {
+                    // Formulario de calificación
                     ScrollView {
                         VStack(spacing: 24) {
                             ForEach(rubros.keys.sorted(), id: \.self) { key in
@@ -70,78 +105,116 @@ struct GradeView: View {
                                     HStack {
                                         Text(key)
                                             .font(.headline)
-                                            .font(.system(size: 20))
-                                            .frame(maxWidth: .infinity, alignment: .leading)
                                             .foregroundColor(.primary)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
                                         
                                         Text("\(calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 1.0, specifier: "%.1f")")
                                             .font(.headline)
                                             .foregroundColor(.gray)
                                     }
                                     
-                                    // Slider
                                     Slider(value: Binding(
                                         get: {
                                             calificaciones[selectedEquipo]?[nombreJuez]?[key] ?? 1.0
                                         },
                                         set: { newValue in
-                                            let score = min(max(newValue, 1), valorRubro)
-                                            calificaciones[selectedEquipo, default: [:]][nombreJuez, default: [:]][key] = score
+                                            if !alreadyRated {
+                                                let score = min(max(newValue, 1), valorRubro)
+                                                calificaciones[selectedEquipo, default: [:]][nombreJuez, default: [:]][key] = score
+                                            }
                                         }
                                     ), in: 1...valorRubro, step: 1)
                                     .accentColor(.blue)
                                     .padding(.horizontal)
-                                    .background(RoundedRectangle(cornerRadius: 8).fill(Color(UIColor.systemGray5)))
-                                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+                                    .disabled(alreadyRated)
                                 }
-                                .padding(.vertical, 12)
-                                .background(RoundedRectangle(cornerRadius: 12)
-                                                .fill(Color(UIColor.systemGroupedBackground)))
+                                .padding()
+                                .background(RoundedRectangle(cornerRadius: 16).fill(Color(UIColor.systemGroupedBackground)))
                                 .shadow(radius: 5)
                             }
                         }
-                        .padding(.bottom, 30)
+                        .padding(.bottom, 24)
                     }
                     
+                    // Botón de calificación
                     Button(action: {
-                        checkForEmptyScores()
+                        showConfirmationAlert = true
                     }) {
                         Text("Calificar")
                             .font(.headline)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color.blue)
+                            .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]), startPoint: .top, endPoint: .bottom))
                             .foregroundColor(.white)
-                            .cornerRadius(12)
-                            .font(.system(size: 20))
-                            .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
+                            .cornerRadius(16)
+                            .shadow(radius: 5)
                     }
-                    .padding(.top)
+                    .padding(.top, 24)
+                    .alert(isPresented: $showConfirmationAlert) {
+                        Alert(
+                            title: Text("Confirmación"),
+                            message: Text("¿Estás seguro de que quieres calificar? Después de esto no podrás modificar tu calificación."),
+                            primaryButton: .destructive(Text("Confirmar")) {
+                                submitCalificaciones()
+                            },
+                            secondaryButton: .cancel()
+                        )
+                    }
                 }
+
+                // Sección de notas
+                VStack(spacing: 16) {
+                    Text("Notas del Juez")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+
+                    TextEditor(text: $judgeNotes)
+                        .frame(height: 150)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 12).fill(Color(UIColor.systemGray5)))
+                        .shadow(radius: 5)
+                    
+                    Button(action: {
+                        saveNotes()
+                    }) {
+                        Text("Guardar Notas")
+                            .font(.headline)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.green.opacity(0.7)]), startPoint: .top, endPoint: .bottom))
+                            .foregroundColor(.white)
+                            .cornerRadius(16)
+                            .shadow(radius: 5)
+                    }
+                    .padding(.top, 12)
+                }
+                .padding(.horizontal)
             }
         }
-        .padding()
-        .background(Color(UIColor.systemGroupedBackground))
-        .cornerRadius(12)
-        .shadow(radius: 5)
+        .padding(.top, 24)
         .onAppear {
             fetchValorRubro()
             fetchRubros()
             initializeCalificaciones()
             checkAlreadyRated()
-        }
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("Confirmación"),
-                message: Text(alertMessage),
-                primaryButton: .default(Text("Confirmar"), action: {
-                    submitCalificaciones()
-                }),
-                secondaryButton: .cancel()
-            )
+            getNotas()
+            getCalificacionesPrevias() // Cargar las calificaciones previas
         }
     }
 
+    // Función para obtener las calificaciones previas del juez
+    private func getCalificacionesPrevias() {
+        viewModel.getCalificacionesJuez(for: selectedEquipo, judgeName: nombreJuez, hackClave: hackClaveInput) { result in
+            switch result {
+            case .success(let calificacionesData):
+                self.calificacionesPrevias = calificacionesData
+            case .failure(let error):
+                print("Error al obtener calificaciones previas: \(error)")
+            }
+        }
+    }
+    
+    // Fetch de rubros
     private func fetchRubros() {
         viewModel.fetchRubros(for: hackClaveInput) { result in
             switch result {
@@ -153,18 +226,19 @@ struct GradeView: View {
         }
     }
 
+    // Fetch de valor del rubro
     private func fetchValorRubro() {
         viewModel.getValorRubro(for: hackClaveInput) { result in
             switch result {
             case .success(let valor):
                 self.valorRubro = valor
-                print("Valor del Rubro: \(valor)")
             case .failure(let error):
                 print("Error al obtener el valor del rubro: \(error)")
             }
         }
     }
 
+    // Inicializar calificaciones
     private func initializeCalificaciones() {
         calificaciones[selectedEquipo] = [:]
         for key in rubros.keys {
@@ -173,6 +247,7 @@ struct GradeView: View {
         }
     }
 
+    // Verificar si ya se ha calificado
     private func checkAlreadyRated() {
         viewModel.getCalificacionesJuez(for: selectedEquipo, judgeName: nombreJuez, hackClave: hackClaveInput) { result in
             switch result {
@@ -184,24 +259,19 @@ struct GradeView: View {
         }
     }
 
-    // Verifica si algún rubro está en 1 y muestra la alerta
-    private func checkForEmptyScores() {
-        var allScoresAreValid = true
-        for (key, value) in calificaciones[selectedEquipo]?[nombreJuez] ?? [:] {
-            if value == 1.0 {
-                allScoresAreValid = false
-                alertMessage = "El valor de \(key) sigue siendo 1.0. ¿Estás seguro de querer asignar esta calificación?"
-                break
+    // Obtener las notas del juez
+    private func getNotas() {
+        viewModel.getNotas(for: hackClaveInput, judgeName: nombreJuez, teamName: selectedEquipo) { result in
+            switch result {
+            case .success(let notes):
+                self.judgeNotes = notes
+            case .failure(let error):
+                print("Error al obtener notas: \(error)")
             }
-        }
-
-        if allScoresAreValid {
-            submitCalificaciones() // Si todas las calificaciones son válidas, enviamos
-        } else {
-            showAlert = true // Muestra la alerta si algún rubro sigue en 1.0
         }
     }
 
+    // Enviar las calificaciones
     private func submitCalificaciones() {
         let rubrosData: [String: [String: [String: Double]]?] = calificaciones
         
@@ -214,7 +284,20 @@ struct GradeView: View {
             }
         }
     }
+
+    // Guardar notas
+    private func saveNotes() {
+        viewModel.saveNotes(for: hackClaveInput, judgeName: nombreJuez, teamName: selectedEquipo, notes: judgeNotes) { result in
+            switch result {
+            case .success:
+                print("Notas guardadas exitosamente.")
+            case .failure(let error):
+                print("Error al guardar notas: \(error)")
+            }
+        }
+    }
 }
+
 
 #Preview {
     GradeView(hackClaveInput: "HACK24", selectedEquipo: "Equipo 1", nombreJuez: "NombreJuez", isActive: true)
