@@ -410,10 +410,10 @@ class HacksViewModel: ObservableObject {
     func addHack(hack: HackModel, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
             var notas: [String: [String: String]] = [:]
-                   for equipo in hack.equipos {
-                       notas[equipo] = [:]
-                       for juez in hack.jueces {
-                           notas[equipo]?[juez] = ""
+                for juez in hack.jueces{
+                           notas[juez] = [:]
+                    for equipo in hack.equipos  {
+                           notas[juez]?[equipo] = ""
                        }
                    }
                    

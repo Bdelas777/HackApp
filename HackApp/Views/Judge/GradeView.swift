@@ -226,7 +226,6 @@ struct GradeView: View {
         }
     }
 
-    // Fetch de valor del rubro
     private func fetchValorRubro() {
         viewModel.getValorRubro(for: hackClaveInput) { result in
             switch result {
@@ -238,7 +237,6 @@ struct GradeView: View {
         }
     }
 
-    // Inicializar calificaciones
     private func initializeCalificaciones() {
         calificaciones[selectedEquipo] = [:]
         for key in rubros.keys {
@@ -247,7 +245,6 @@ struct GradeView: View {
         }
     }
 
-    // Verificar si ya se ha calificado
     private func checkAlreadyRated() {
         viewModel.getCalificacionesJuez(for: selectedEquipo, judgeName: nombreJuez, hackClave: hackClaveInput) { result in
             switch result {
@@ -259,7 +256,6 @@ struct GradeView: View {
         }
     }
 
-    // Obtener las notas del juez
     private func getNotas() {
         viewModel.getNotas(for: hackClaveInput, judgeName: nombreJuez, teamName: selectedEquipo) { result in
             switch result {
@@ -271,7 +267,6 @@ struct GradeView: View {
         }
     }
 
-    // Enviar las calificaciones
     private func submitCalificaciones() {
         let rubrosData: [String: [String: [String: Double]]?] = calificaciones
         
@@ -285,7 +280,6 @@ struct GradeView: View {
         }
     }
 
-    // Guardar notas
     private func saveNotes() {
         viewModel.saveNotes(for: hackClaveInput, judgeName: nombreJuez, teamName: selectedEquipo, notes: judgeNotes) { result in
             switch result {
