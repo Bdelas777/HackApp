@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Equipo: Identifiable {
+struct Equipo: Identifiable, Equatable {
     var id: UUID = UUID()
     var nombre: String
 }

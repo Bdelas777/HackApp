@@ -1,16 +1,20 @@
-
+//
+//  AddEquipoButton.swift
+//  HackApp
+//
+//  Created by Alumno on 13/09/24.
+//
 import SwiftUI
 
 struct AddEquipoButton: View {
     @Binding var showingAddEquipoPopover: Bool
-    @ObservedObject var listaEquipos: EquipoViewModel
+    @ObservedObject var formData: FormDataViewModel
     @Binding var equipoNombre: String
     @Binding var showingAlert: Bool
-    @Binding var equipoAEditar: Equipo? 
-    
+    @Binding var equipoAEditar: Equipo?
     var body: some View {
         Button {
-            equipoAEditar = nil 
+            equipoAEditar = nil
             showingAddEquipoPopover.toggle()
         } label: {
             Label("Añadir equipo", systemImage: "plus")
@@ -36,13 +40,14 @@ struct AddEquipoButton: View {
         if !equipoNombre.isEmpty {
             if let equipoAEditar = equipoAEditar {
                 // Si existe un equipo a editar, lo actualizamos
-                if let index = listaEquipos.equipoList.firstIndex(where: { $0.id == equipoAEditar.id }) {
-                    listaEquipos.equipoList[index].nombre = equipoNombre
-                }
+                if let index = formData.listaEquipos.equipoList.firstIndex(where: { $0.id == equipoAEditar.id }) {
+                    formData.listaEquipos.equipoList[index].nombre = equipoNombre                }
             } else {
-                // Si no existe un equipo a editar, agregamos uno nuevo
+            
                 let nuevoEquipo = Equipo(id: UUID(), nombre: equipoNombre)
-                listaEquipos.equipoList.append(nuevoEquipo)
+                formData.listaEquipos.equipoList.append(nuevoEquipo)
+               
+                
             }
             equipoNombre = ""
             showingAddEquipoPopover = false

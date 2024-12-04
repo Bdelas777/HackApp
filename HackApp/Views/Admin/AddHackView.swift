@@ -7,7 +7,7 @@ struct AddHackView: View {
     @State private var alertMessage: String = ""
     @ObservedObject var listaHacks: HacksViewModel
     @Environment(\.presentationMode) var presentationMode
-    
+
     var body: some View {
         VStack {
             AddHackForm(

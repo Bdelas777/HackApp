@@ -9,7 +9,6 @@ struct AddHackForm: View {
     @State private var steps: [String] = ["Información Básica", "Fechas", "Rúbrica", "Equipos", "Jueces", "Revisión"]
     private let totalSteps = 6
     @State private var alertMessage: String = ""
-
     @State private var showingAddRubroPopover = false
     @State private var showingAddEquipoPopover = false
     @State private var showingAddJuezPopover = false
@@ -17,9 +16,9 @@ struct AddHackForm: View {
     @State private var rubroValor: String = ""
     @State private var equipoNombre: String = ""
     @State private var juezNombre: String = ""
-    
     @State private var juezAEditar: Juez?
     @State private var equipoAEditar: Equipo?
+
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {
@@ -136,12 +135,15 @@ struct AddHackForm: View {
     var equiposForm: some View {
         Form {
             Section(header: Text("Equipos")) {
-                AddEquipoButton(showingAddEquipoPopover: $showingAddEquipoPopover,
-                                listaEquipos: formData.listaEquipos,
-                                equipoNombre: $equipoNombre,
-                                showingAlert: $showingAlert,
-                                equipoAEditar: $equipoAEditar)
+                AddEquipoButton(
+                    showingAddEquipoPopover: $showingAddEquipoPopover,
+                    formData: formData,
+                    equipoNombre: $equipoNombre,
+                    showingAlert: $showingAlert,
+                    equipoAEditar: $equipoAEditar
+                )
                 
+                // Mostrar la lista de equipos
                 ForEach(formData.listaEquipos.equipoList) { equipo in
                     HStack {
                         Text(equipo.nombre)
@@ -159,6 +161,7 @@ struct AddHackForm: View {
         }
     }
 
+
     var juecesForm: some View {
         Form {
             Section(header: Text("Jueces")) {
@@ -167,7 +170,7 @@ struct AddHackForm: View {
                     listaJueces: formData.listaJueces,
                     juezNombre: $juezNombre,
                     showingAlert: $showingAlert,
-                    juezAEditar: $juezAEditar // Pasamos el binding aquí
+                    juezAEditar: $juezAEditar
                 )
                 
                 ForEach(formData.listaJueces.juezList) { juez in
@@ -197,7 +200,6 @@ struct AddHackForm: View {
                 .font(.headline)
                 .padding()
 
-            // Mostrar el resumen de los datos ingresados
             Form {
                 Section(header: Text("Información Básica")) {
                     Text("Nombre: \(formData.nombre)")
@@ -220,7 +222,6 @@ struct AddHackForm: View {
                             
                             Spacer()
                             
-                            // Botón de eliminación
                             Button(action: {
                                 eliminarRubro(rubro)  // Llamamos a la función para eliminar el rubro
                             }) {
@@ -230,6 +231,43 @@ struct AddHackForm: View {
                         }
                     }
                 }
+                Section(header: Text("Equipos")) {
+                    ForEach(formData.listaEquipos.equipoList) { equipo in
+                                       HStack {
+                                           Text(equipo.nombre)
+                                           
+                                           Spacer()
+                                           
+                                           // Botón de eliminación
+                                           Button(action: {
+                                               eliminarEquipo(equipo)  // Llamamos a la función para eliminar el equipo
+                                           }) {
+                                               Image(systemName: "trash.circle.fill")
+                                                   .foregroundColor(.red)
+                                           }
+                                       }
+                                   }
+                               }
+
+
+                               Section(header: Text("Jueces")) {
+                                   ForEach(formData.listaJueces.juezList) { juez in
+                                       HStack {
+                                           Text(juez.nombre)
+                                           
+                                           Spacer()
+                                           
+                                           // Botón de eliminación
+                                           Button(action: {
+                                               eliminarJuez(juez)  // Llamamos a la función para eliminar el juez
+                                           }) {
+                                               Image(systemName: "trash.circle.fill")
+                                                   .foregroundColor(.red)
+                                           }
+                                       }
+                                   }
+                               }
+                
             }
         }
     }

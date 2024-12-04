@@ -15,7 +15,6 @@ import SwiftUI
 ///
 /// Esta vista contiene un campo de texto donde se puede ingresar el nombre del juez
 /// y un botón para guardar el valor ingresado.
-
 struct AddJuezPopoverView: View {
     @Binding var juezNombre: String
     var onSave: () -> Void

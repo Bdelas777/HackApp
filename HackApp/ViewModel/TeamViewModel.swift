@@ -6,20 +6,7 @@
 //
 import SwiftUI
 import Foundation
-/// `TeamViewModel` gestiona las calificaciones y rubros de un equipo en un Hackathon.
-///
-/// **Propiedades**:
-/// - `calificaciones`: Calificaciones de los jueces por rubro.
-/// - `rubros`: Rubros de evaluación y sus pesos.
-/// - `totalScore`: Puntaje total acumulado.
-/// - `totalJudges`: Número de jueces.
-/// - `isLoading`: Indica si los datos están cargando.
-///
-/// **Métodos**:
-/// - `fetchRubros()`: Obtiene los rubros del Hackathon.
-/// - `fetchCalificaciones()`: Obtiene las calificaciones de los jueces.
-/// - `accumulateScores()`: Suma las calificaciones con el peso de cada rubro.
-/// - `calculateFinalScore()`: Calcula el puntaje final de un rubro.
+
 class TeamViewModel: ObservableObject {
     @Published var calificaciones: [String: [String: Double]] = [:]
     @Published var rubros: [String: Double] = [:]

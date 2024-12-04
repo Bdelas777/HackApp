@@ -25,6 +25,12 @@ class HackViewModel: ObservableObject {
         }
     }
     
+    func updateHackStart(hackClave: String, completion: @escaping (Bool) -> Void) {
+        viewModel.updateHackStart(hackClave: hackClave) { success in
+            completion(success)
+        }
+    }
+    
     func fetchEquipos(clave: String, completion: @escaping (Result<[String], Error>) -> Void) {
         viewModel.getEquipos(for: clave) { result in
             completion(result)

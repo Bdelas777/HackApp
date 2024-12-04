@@ -34,7 +34,6 @@ class FormDataViewModel: ObservableObject {
         self.valorRubro = ""
         self.tiempoPitch = ""
         
-        // Limpiar las listas de equipos, rubros y jueces
         listaEquipos.equipoList.removeAll()
         listaJueces.juezList.removeAll()
         listaRubros.rubroList.removeAll()

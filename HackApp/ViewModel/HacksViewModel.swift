@@ -618,6 +618,27 @@ class HacksViewModel: ObservableObject {
             }
         }
     }
+    
+    
+    func updateHackStart(hackClave: String, completion: @escaping (Bool) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(false)
+                return
+            }
+            guard let document = querySnapshot?.documents.first else {
+                completion(false)
+                return
+            }
+            document.reference.updateData(["estaIniciado": true]) { error in
+                if let error = error {
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            }
+        }
+    }
 
     /// Obtiene el valor del rubro de un hackathon específico.
     /// - Parameters:

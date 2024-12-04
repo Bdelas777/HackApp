@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum AlertType: Identifiable {
-    case closeHack, invalidDate, editHack, errorProcess, closeSucess
+    case closeHack, invalidDate, editHack, errorProcess, closeSucess, startSucess
 
     var id: Int {
         switch self {
@@ -10,22 +10,10 @@ enum AlertType: Identifiable {
         case .editHack: return 3
         case .errorProcess: return 4
         case .closeSucess: return 5
+        case .startSucess: return 6
         }
     }
 }
-/// Vista para gestionar los detalles de un Hackathon.
-///
-/// Esta vista permite editar los detalles de un hackathon, ver equipos, jueces y rubros, y actualizar el estado del hackathon.
-/// También muestra alertas para confirmar acciones como cerrar el hackathon o gestionar errores.
-///
-/// **Propiedades**:
-/// - `hack`: Información del hackathon.
-/// - `nombre`, `descripcion`, `clave`: Campos editables del hackathon.
-/// - `valorRubro`, `tiempoPitch`, `fechaStart`, `fechaEnd`: Atributos del hackathon.
-/// - `selectedEquipos`, `jueces`, `rubros`: Datos relacionados con equipos, jueces y rubros.
-/// - `alertType`: Tipo de alerta a mostrar.
-/// - `showEquipos`, `showJueces`, `showRubros`: Estados para mostrar las secciones correspondientes.
-
 struct HackView: View {
     var hack: HackModel
     @State private var nombre: String
@@ -68,7 +56,8 @@ struct HackView: View {
                     hack: hack,
                     saveChanges: saveChanges,
                     showCloseAlert: { alertType = .closeHack },
-                    showResults: { print("Mostrar Resultados") }
+                    showResults: { print("Mostrar Resultados") },
+                    startHack: startHack
                 )
             }
             .padding()
@@ -138,19 +127,23 @@ struct HackView: View {
         VStack(alignment: .leading, spacing: 12) {
             if let equipos = selectedEquipos, !equipos.isEmpty {
                 ForEach(equipos, id: \.self) { equipo in
-                    Text(equipo)
-                        .font(.body)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 15)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(color: Color.gray.opacity(0.15), radius: 5, x: 0, y: 3)
-                        .padding(.bottom, 8)
+                    HStack {
+                        Text(equipo)
+                            .font(.body)
+                        Spacer()
+                    }
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 15)
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .padding(.bottom, 8)
+                  
                 }
             } else {
                 Text("No hay equipos asignados.")
                     .font(.subheadline)
                     .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, alignment: .leading) // Alineación y ocupación del espacio
             }
         }
         .padding(.leading, 20)
@@ -161,24 +154,29 @@ struct HackView: View {
         VStack(alignment: .leading, spacing: 12) {
             if !jueces.isEmpty {
                 ForEach(jueces, id: \.self) { juez in
-                    Text(juez)
-                        .font(.body)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 15)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(color: Color.gray.opacity(0.15), radius: 5, x: 0, y: 3)
-                        .padding(.bottom, 8)
+                    HStack {
+                        Text(juez)
+                            .font(.body)
+                        Spacer()
+                    }
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 15)
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .padding(.bottom, 8)
+                   
                 }
             } else {
                 Text("No hay jueces asignados.")
                     .font(.subheadline)
                     .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, alignment: .leading) // Alineación y ocupación del espacio
             }
         }
         .padding(.leading, 20)
         .padding(.trailing, 20)
     }
+
 
     private var rubrosView: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -196,7 +194,6 @@ struct HackView: View {
                         .padding(.horizontal, 15)
                         .background(Color.white)
                         .cornerRadius(10)
-                        .shadow(color: Color.gray.opacity(0.15), radius: 5, x: 0, y: 3)
                         .padding(.bottom, 8)
                     }
                 }
@@ -340,13 +337,31 @@ struct HackView: View {
                 message: Text("El hack se ha cerrado exitosamente"),
                 dismissButton: .default(Text("Aceptar"))
             )
+        case .startSucess:
+            return Alert(
+                title: Text("Hack iniciado"),
+                message: Text("El hack se ha iniciado exitosamente"),
+                dismissButton: .default(Text("Aceptar"))
+            )
+
         }
+        
     }
 
     private func closeHack() {
         viewModel.updateHackStatus(hackClave: hack.clave, isActive: false) { success in
             if success {
                 alertType = .closeSucess
+            } else {
+                alertType = .errorProcess
+            }
+        }
+    }
+    
+    private func startHack() {
+        viewModel.updateHackStart(hackClave: hack.clave) { success in
+            if success {
+                alertType = .startSucess
             } else {
                 alertType = .errorProcess
             }

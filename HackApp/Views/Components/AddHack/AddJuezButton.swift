@@ -57,6 +57,7 @@ struct AddJuezButton: View {
             } else {
                 let nuevoJuez = Juez(id: UUID(), nombre: juezNombre)
                 listaJueces.juezList.append(nuevoJuez)
+                
             }
             juezNombre = ""
             showingAddJuezPopover = false
