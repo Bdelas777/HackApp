@@ -546,7 +546,6 @@ class HacksViewModel: ObservableObject {
                     let calificacion = rubrosDelJuez[rubro] ?? 0.0
                     let pesoRubro = rubros[rubro] ?? 0.0
                     let valorFinal = (calificacion * (pesoRubro / 100))
-                    print(valorFinal)
                     totalScore += valorFinal
                 }
                 totalJudges += 1
@@ -564,32 +563,42 @@ class HacksViewModel: ObservableObject {
     ///   - hack: Modelo del hackathon con los nuevos datos.
     ///   - hackClave: Clave del hackathon que se va a actualizar.
     ///   - completion: Closure que devuelve un valor booleano indicando si la actualización fue exitosa.
+    ///
     func updateHack(hack: HackModel, hackClave: String, completion: @escaping (Bool) -> Void) {
-        let hackData: [String: Any] = [
-            "nombre": hack.nombre,
-            "descripcion": hack.descripcion,
-            "clave": hack.clave,
-            "valorRubro": hack.valorRubro,
-            "tiempoPitch": hack.tiempoPitch,
-            "FechaStart": Timestamp(date: hack.FechaStart),
-            "FechaEnd": Timestamp(date: hack.FechaEnd)
-        ]
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
+                print("Error al buscar el documento: \(error)")
                 completion(false)
                 return
             }
             
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
+                print("No se encontró ningún hack con esa clave.")
                 completion(false)
                 return
             }
 
+            // Obtener el documentID del primer hack encontrado
             let documentID = documents[0].documentID
+
+            // Los datos que deseas actualizar
+            let hackData: [String: Any] = [
+                "nombre": hack.nombre,
+                "descripcion": hack.descripcion,
+                "clave": hack.clave,
+                "valorRubro": hack.valorRubro,
+                "tiempoPitch": hack.tiempoPitch,
+                "FechaStart": Timestamp(date: hack.FechaStart),
+                "FechaEnd": Timestamp(date: hack.FechaEnd)
+            ]
+
+            // Actualizar el documento con los nuevos datos
             self.db.collection("hacks").document(documentID).updateData(hackData) { error in
                 if let error = error {
+                    print("Error al actualizar el hack: \(error)")
                     completion(false)
                 } else {
+                    print("Hack actualizado con éxito.")
                     completion(true)
                 }
             }

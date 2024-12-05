@@ -1,10 +1,3 @@
-//
-//  HackViewModel.swift
-//  HackApp
-//
-//  Created by Sebastian Presno Alvarado on 15/05/24.
-//
-
 import Foundation
 
 /// ViewModel para gestionar las operaciones relacionadas con los hackathons.
@@ -13,8 +6,8 @@ class HackViewModel: ObservableObject {
     
     private var viewModel = HacksViewModel()
     
-    func updateHack(hack: HackModel, completion: @escaping (Bool) -> Void) {
-        viewModel.updateHack(hack: hack, hackClave: hack.clave) { success in
+    func updateHack(hack: HackModel, hackClave: String, completion: @escaping (Bool) -> Void) {
+        viewModel.updateHack(hack: hack, hackClave: hackClave) { success in
             completion(success)
         }
     }

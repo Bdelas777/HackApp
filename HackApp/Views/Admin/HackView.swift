@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum AlertType: Identifiable {
-    case closeHack, invalidDate, editHack, errorProcess, closeSucess, startSucess, confirmNoShow(equipo: String)
+    case closeHack, invalidDate, editHack, errorProcess, closeSucess, startSucess, confirmNoShow(equipo: String), passwordError
 
     var id: Int {
         switch self {
@@ -12,6 +12,7 @@ enum AlertType: Identifiable {
         case .closeSucess: return 5
         case .startSucess: return 6
         case .confirmNoShow: return 7
+        case .passwordError: return 8
         }
     }
 }
@@ -23,6 +24,7 @@ struct HackView: View {
     @State private var nombre: String
     @State private var descripcion: String
     @State private var clave: String
+    @State private var claveOriginal: String
     @State private var valorRubro: Int
     @State private var tiempoPitch: Double
     @State private var fechaStart: Date
@@ -44,6 +46,7 @@ struct HackView: View {
         _nombre = State(initialValue: hack.nombre)
         _descripcion = State(initialValue: hack.descripcion)
         _clave = State(initialValue: hack.clave)
+        _claveOriginal = State(initialValue: hack.clave)
         _valorRubro = State(initialValue: hack.valorRubro)
         _tiempoPitch = State(initialValue: hack.tiempoPitch)
         _fechaStart = State(initialValue: hack.FechaStart)
@@ -87,8 +90,9 @@ struct HackView: View {
                 InfoField(title: "Clave:", text: $clave)
                     .onChange(of: clave) { _ in
                         checkForChanges()
+                        
                     }
-                    .disabled(hack.estaIniciado)  
+                    .disabled(hack.estaIniciado)
                 InfoField(title: "Nombre:", text: $nombre)
                     .onChange(of: nombre) { _ in
                         checkForChanges()
@@ -125,7 +129,7 @@ struct HackView: View {
                     }
                     .disabled(hack.estaIniciado)
         
-                if hasChanges && hack.estaIniciado {
+                if hasChanges && !hack.estaIniciado {
                     Button(action: saveChanges) {
                         Text("Guardar Cambios")
                             .font(.title2)
@@ -360,34 +364,43 @@ struct HackView: View {
             alertType = .invalidDate
             return
         }
-        
-        let updatedHack = HackModel(
-            clave: clave,
-            descripcion: descripcion,
-            equipos: hack.equipos,
-            jueces: hack.jueces,
-            rubros: hack.rubros,
-            estaActivo: hack.estaActivo,
-            nombre: nombre,
-            tiempoPitch: tiempoPitch,
-            FechaStart: fechaStart,
-            FechaEnd: fechaEnd,
-            valorRubro: valorRubro,
-            calificaciones: hack.calificaciones,
-            finalScores: hack.finalScores,
-            estaIniciado: hack.estaIniciado
-        )
-        
-        viewModel.updateHack(hack: updatedHack) { success in
-            if success {
-                alertType = .editHack
-                presentationMode.wrappedValue.dismiss()
 
-            } else {
-                alertType = .errorProcess
+
+        checkIfKeyExists(clave) { exists in
+            if exists  && clave != hack.clave {
+                alertType = .passwordError  // Cambia al tipo de alerta que prefieras
+                return
+            }
+
+            // Si la clave no existe, continúa con el proceso de guardado
+            let updatedHack = HackModel(
+                clave: clave,
+                descripcion: descripcion,
+                equipos: hack.equipos,
+                jueces: hack.jueces,
+                rubros: hack.rubros,
+                estaActivo: hack.estaActivo,
+                nombre: nombre,
+                tiempoPitch: tiempoPitch,
+                FechaStart: fechaStart,
+                FechaEnd: fechaEnd,
+                valorRubro: valorRubro,
+                calificaciones: hack.calificaciones,
+                finalScores: hack.finalScores,
+                estaIniciado: hack.estaIniciado
+            )
+            
+            viewModel.updateHack(hack: updatedHack,hackClave:claveOriginal) { success in
+                if success {
+                    alertType = .editHack
+                    presentationMode.wrappedValue.dismiss()
+                } else {
+                    alertType = .errorProcess
+                }
             }
         }
     }
+
 
     private func checkHackStatus() {
         if hack.estaActivo && hack.FechaEnd < Date() {
@@ -445,6 +458,12 @@ struct HackView: View {
                     markNoShowForTeam(hackClave: hack.clave, equipo: equipo)
                 }
             )
+        case .passwordError:
+            return Alert(
+                title: Text("Error"),
+                message: Text("Ya existe esa clave"),
+                dismissButton: .default(Text("Aceptar"))
+            )
         }
     }
 
@@ -488,5 +507,12 @@ struct HackView: View {
                       fechaStart != hack.FechaStart ||
                       fechaEnd != hack.FechaEnd)
     }
+    
+    private func checkIfKeyExists(_ clave: String, completion: @escaping (Bool) -> Void) {
+        viewModel2.checkIfKeyExists(clave) { exists in
+            completion(exists)
+        }
+    }
+
 
 }
