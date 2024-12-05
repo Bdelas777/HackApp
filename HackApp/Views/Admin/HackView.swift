@@ -18,6 +18,7 @@ enum AlertType: Identifiable {
 
 struct HackView: View {
     var hack: HackModel
+    @State private var hasChanges = false
     @State private var calificacionesEquipos: [String: Bool] = [:]
     @State private var nombre: String
     @State private var descripcion: String
@@ -57,7 +58,6 @@ struct HackView: View {
                 toggleSectionView(title: "Criterios", isExpanded: $showRubros, content: rubrosView)
                 ActionButtons(
                     hack: hack,
-                    saveChanges: saveChanges,
                     showCloseAlert: { alertType = .closeHack },
                     showResults: { print("Mostrar Resultados") },
                     startHack: startHack
@@ -81,21 +81,70 @@ struct HackView: View {
     }
 
     private var infoSection: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            InfoField(title: "Clave:", text: $clave)
-            InfoField(title: "Nombre:", text: $nombre)
-            InfoField(title: "Descripción:", text: $descripcion)
-            DateField(title: "Fecha Inicio:", date: $fechaStart)
-            DateField(title: "Fecha Fin:", date: $fechaEnd)
-            InfoFieldInt(title: "Valor Rubro:", value: $valorRubro)
-            InfoFieldDouble(title: "Tiempo Pitch:", value: $tiempoPitch)
+            VStack(alignment: .leading, spacing: 20) {
+                InfoField(title: "Clave:", text: $clave)
+                    .onChange(of: clave) { _ in
+                        checkForChanges()
+                    }
+                    .disabled(hack.estaIniciado)  
+                InfoField(title: "Nombre:", text: $nombre)
+                    .onChange(of: nombre) { _ in
+                        checkForChanges()
+                    }
+                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+
+                InfoField(title: "Descripción:", text: $descripcion)
+                    .onChange(of: descripcion) { _ in
+                        checkForChanges()
+                    }
+                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+
+                DateField(title: "Fecha Inicio:", date: $fechaStart)
+                    .onChange(of: fechaStart) { _ in
+                        checkForChanges()
+                    }
+                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+
+                DateField(title: "Fecha Fin:", date: $fechaEnd)
+                    .onChange(of: fechaEnd) { _ in
+                        checkForChanges()
+                    }
+                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+
+                InfoFieldInt(title: "Valor Rubro:", value: $valorRubro)
+                    .onChange(of: valorRubro) { _ in
+                        checkForChanges()
+                    }
+                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+
+                InfoFieldDouble(title: "Tiempo Pitch:", value: $tiempoPitch)
+                    .onChange(of: tiempoPitch) { _ in
+                        checkForChanges()
+                    }
+                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+
+                // Mostrar botón de guardar solo si hay cambios y el hack no está iniciado
+                if hasChanges && !hack.estaIniciado {
+                    Button(action: saveChanges) {
+                        Text("Guardar Cambios")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(hack.estaActivo ? Color.green : Color.gray)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
+                    }
+                    .padding(.top, 20)
+                }
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(16)
+            .shadow(radius: 8)
+            .padding(.horizontal)
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(radius: 8)
-        .padding(.horizontal)
-    }
 
     private func toggleSectionView<Content: View>(title: String, isExpanded: Binding<Bool>, content: Content) -> some View {
         VStack {
@@ -129,13 +178,12 @@ struct HackView: View {
         viewModel2.getCalificaciones(for: equipo, hackClave: hack.clave) { result in
             switch result {
             case .success(let teamCalificaciones):
-                // Si las calificaciones están vacías, el equipo no está calificado
                 DispatchQueue.main.async {
                     calificacionesEquipos[equipo] = !teamCalificaciones.isEmpty
                 }
             case .failure:
                 DispatchQueue.main.async {
-                    calificacionesEquipos[equipo] = false // Consideramos que el equipo no está calificado si hay un error
+                    calificacionesEquipos[equipo] = false
                 }
             }
         }
@@ -427,4 +475,15 @@ struct HackView: View {
             }
         }
     }
+    
+    private func checkForChanges() {
+        hasChanges = (nombre != hack.nombre ||
+                      descripcion != hack.descripcion ||
+                      clave != hack.clave ||
+                      valorRubro != hack.valorRubro ||
+                      tiempoPitch != hack.tiempoPitch ||
+                      fechaStart != hack.FechaStart ||
+                      fechaEnd != hack.FechaEnd)
+    }
+
 }

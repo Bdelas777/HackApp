@@ -2,34 +2,18 @@ import SwiftUI
 
 struct ActionButtons: View {
     var hack: HackModel
-    var saveChanges: () -> Void
     var showCloseAlert: () -> Void
     var showResults: () -> Void
     var startHack: () -> Void
     
     var body: some View {
         VStack(spacing: 15) {
-            saveButton
             navigationLinkButton
             closeAndStartButtons
         }
         .padding(.top, 20)
     }
     
-    private var saveButton: some View {
-        Button(action: saveChanges) {
-            Text("Guardar Cambios")
-                .font(.title2)
-                .fontWeight(.bold)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(hack.estaActivo ? Color.green : Color.gray)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
-        }
-        .disabled(!hack.estaActivo)
-    }
     
     private var navigationLinkButton: some View {
         NavigationLink(destination: ResultsView(hack: hack)) {
@@ -67,12 +51,12 @@ struct ActionButtons: View {
                     .font(.headline)
                     .padding()
                     .frame(maxWidth: .infinity) // Esto asegura que el botón ocupe la mitad
-                    .background(!hack.estaIniciado ? Color.gray : Color.blue )
+                    .background(!hack.estaIniciado ? Color.gray: Color.blue )
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
             }
-            .disabled(!hack.estaIniciado) // Deshabilitar si ya está iniciado
+            .disabled(!hack.estaIniciado)
         }
         .padding(.horizontal)
     }
