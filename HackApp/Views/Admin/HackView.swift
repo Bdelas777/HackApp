@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum AlertType: Identifiable {
-    case closeHack, invalidDate, editHack, errorProcess, closeSucess, startSucess
+    case closeHack, invalidDate, editHack, errorProcess, closeSucess, startSucess, confirmNoShow(equipo: String)
 
     var id: Int {
         switch self {
@@ -11,11 +11,14 @@ enum AlertType: Identifiable {
         case .errorProcess: return 4
         case .closeSucess: return 5
         case .startSucess: return 6
+        case .confirmNoShow: return 7
         }
     }
 }
+
 struct HackView: View {
     var hack: HackModel
+    @State private var calificacionesEquipos: [String: Bool] = [:]
     @State private var nombre: String
     @State private var descripcion: String
     @State private var clave: String
@@ -79,7 +82,6 @@ struct HackView: View {
 
     private var infoSection: some View {
         VStack(alignment: .leading, spacing: 20) {
-            
             InfoField(title: "Clave:", text: $clave)
             InfoField(title: "Nombre:", text: $nombre)
             InfoField(title: "Descripción:", text: $descripcion)
@@ -122,33 +124,75 @@ struct HackView: View {
             }
         }
     }
+    
+    private func checkEquipoCalificado(for equipo: String) {
+        viewModel2.getCalificaciones(for: equipo, hackClave: hack.clave) { result in
+            switch result {
+            case .success(let teamCalificaciones):
+                // Si las calificaciones están vacías, el equipo no está calificado
+                DispatchQueue.main.async {
+                    calificacionesEquipos[equipo] = !teamCalificaciones.isEmpty
+                }
+            case .failure:
+                DispatchQueue.main.async {
+                    calificacionesEquipos[equipo] = false // Consideramos que el equipo no está calificado si hay un error
+                }
+            }
+        }
+    }
 
+    
     private var equiposView: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let equipos = selectedEquipos, !equipos.isEmpty {
                 ForEach(equipos, id: \.self) { equipo in
+                    // Usamos un método para verificar si el equipo está calificado
                     HStack {
                         Text(equipo)
                             .font(.body)
                         Spacer()
+                        let equipoCalificado = calificacionesEquipos[equipo] ?? false
+                        
+                        Button(action: {
+                            if !equipoCalificado {
+                                alertType = .confirmNoShow(equipo: equipo)
+                            }
+                        }) {
+                            Text("No se presentó")
+                                .font(.body)
+                                .foregroundColor(equipoCalificado ? .gray : .white)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(equipoCalificado ? Color.gray : Color.red)
+                                .cornerRadius(10)
+                                .shadow(radius: 5)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(.leading)
+                        .disabled(equipoCalificado)
                     }
                     .padding(.vertical, 10)
                     .padding(.horizontal, 15)
                     .background(Color.white)
                     .cornerRadius(10)
                     .padding(.bottom, 8)
-                  
+                    // Llamamos al método para verificar las calificaciones cuando la vista aparece
+                    .onAppear {
+                        checkEquipoCalificado(for: equipo)
+                    }
                 }
             } else {
                 Text("No hay equipos asignados.")
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity, alignment: .leading) // Alineación y ocupación del espacio
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .padding(.leading, 20)
         .padding(.trailing, 20)
     }
+
+
 
     private var juecesView: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -164,7 +208,6 @@ struct HackView: View {
                     .background(Color.white)
                     .cornerRadius(10)
                     .padding(.bottom, 8)
-                   
                 }
             } else {
                 Text("No hay jueces asignados.")
@@ -176,7 +219,6 @@ struct HackView: View {
         .padding(.leading, 20)
         .padding(.trailing, 20)
     }
-
 
     private var rubrosView: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -252,7 +294,7 @@ struct HackView: View {
             }
         }
     }
-    
+
     private func fetchAndCalculateScores(for equipo: String, hackClave: String, valorRubro: Int) {
         viewModel2.fetchAndCalculateScores(for: equipo, hackClave: hackClave, valorRubro: valorRubro) { result in
             switch result {
@@ -343,9 +385,16 @@ struct HackView: View {
                 message: Text("El hack se ha iniciado exitosamente"),
                 dismissButton: .default(Text("Aceptar"))
             )
-
+        case .confirmNoShow(let equipo):
+            return Alert(
+                title: Text("Confirmar No Presentación"),
+                message: Text("¿Estás seguro de que \(equipo) no se presentó? Todos los jueces calificarán este equipo con 0."),
+                primaryButton: .cancel(),
+                secondaryButton: .destructive(Text("Confirmar")) {
+                    markNoShowForTeam(hackClave: hack.clave, equipo: equipo)
+                }
+            )
         }
-        
     }
 
     private func closeHack() {
@@ -358,6 +407,17 @@ struct HackView: View {
         }
     }
     
+    private func markNoShowForTeam(hackClave: String, equipo: String) {
+        viewModel2.saveCalificacionesForAllJudges(for: hackClave, equipo: equipo, calificacion: 0) { result in
+            switch result {
+            case .success:
+                print("Las calificaciones de \(equipo) han sido actualizadas a 0 para todos los jueces.")
+            case .failure(let error):
+                print("Error al actualizar las calificaciones: \(error)")
+            }
+        }
+    }
+
     private func startHack() {
         viewModel.updateHackStart(hackClave: hack.clave) { success in
             if success {

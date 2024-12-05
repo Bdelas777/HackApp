@@ -739,6 +739,53 @@ class HacksViewModel: ObservableObject {
     }
     
     
+    func saveCalificacionesForAllJudges(for hackClave: String, equipo: String, calificacion: Double, completion: @escaping (Result<Void, Error>) -> Void) {
+        // Obtiene el hackathon desde Firestore
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let documents = querySnapshot?.documents, let document = documents.first else {
+                completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
+                return
+            }
+
+            let existingData = document.data()
+            var existingCalificaciones = existingData["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
+
+            // Recorremos todos los jueces
+            if let jueces = existingData["jueces"] as? [String] {
+                for juez in jueces {
+                    // Si no existe el equipo o el juez en las calificaciones, lo inicializamos
+                    if existingCalificaciones[equipo] == nil {
+                        existingCalificaciones[equipo] = [:]
+                    }
+                    if existingCalificaciones[equipo]?[juez] == nil {
+                        existingCalificaciones[equipo]?[juez] = [:]
+                    }
+
+                    // Asignamos la calificación para todos los rubros
+                    for rubro in existingData["rubros"] as? [String: Double] ?? [:] {
+                        existingCalificaciones[equipo]?[juez]?[rubro.key] = calificacion
+                    }
+                }
+            }
+
+            // Actualizamos las calificaciones en Firestore
+            let documentRef = document.reference
+            documentRef.updateData(["calificaciones": existingCalificaciones]) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        }
+    }
+
+    
 
 
 }
