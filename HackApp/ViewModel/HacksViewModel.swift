@@ -665,29 +665,7 @@ class HacksViewModel: ObservableObject {
         }
     }
 
-    /// Obtiene las puntuaciones finales de todos los equipos en un hackathon específico.
-    /// - Parameters:
-    ///   - hackClave: Clave del hackathon.
-    ///   - completion: Closure que devuelve un resultado con las puntuaciones o un error.
-    func getScores(for hackClave: String, completion: @escaping (Result<[String: Double], Error>) -> Void) {
-        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            guard let documents = querySnapshot?.documents, let document = documents.first else {
-                completion(.success([:]))
-                return
-            }
-            let data = document.data()
-            if let finalScores = data["finalScores"] as? [String: Double] {
-                completion(.success(finalScores))
-            } else {
-                completion(.success([:]))
-            }
-        }
-    }
-    
+   
     func saveNotes(for hackClave: String, judgeName: String, teamName: String, notes: String, completion: @escaping (Result<Void, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -786,7 +764,80 @@ class HacksViewModel: ObservableObject {
         }
     }
 
-    
+    @Published var calificacionesGenerales: [String: Double] = [:] // Para almacenar las calificaciones generales
+       @Published var calificacionesPorCriterio: [String: [String: Double]] = [:] // Para almacenar calificaciones por criterio
+        func getScores(for hackClave: String, completion: @escaping (Result<[String: Double], Error>) -> Void) {
+            db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let documents = querySnapshot?.documents, let document = documents.first else {
+                    completion(.success([:]))
+                    return
+                }
+                
+                let data = document.data()
+                
+                if let finalScores = data["finalScores"] as? [String: Double] {
+                    self.calificacionesGenerales = finalScores
+                    completion(.success(finalScores))
+                } else {
+                    completion(.success([:]))
+                }
+            }
+        }
+        
+    func getCalificacionesPorCriterio(for hackClave: String, completion: @escaping (Result<[String: [String: Double]], Error>) -> Void) {
+        db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let documents = querySnapshot?.documents, let document = documents.first else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No se encontraron documentos"])))
+                return
+            }
+
+            let data = document.data()
+
+            if let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]], !calificaciones.isEmpty {
+                var calificacionesPorEquipo: [String: [String: (suma: Double, jueces: Int)]] = [:]  // Para almacenar la suma y el número de jueces por criterio
+
+                // Reorganizamos las calificaciones para cada equipo y criterio
+                for (equipo, jueces) in calificaciones {
+                    for (_, criterios) in jueces {
+                        for (criterio, calificacion) in criterios {
+                            // Si ya existe el criterio para el equipo, sumamos la calificación y aumentamos el número de jueces
+                            calificacionesPorEquipo[equipo, default: [:]][criterio, default: (0.0, 0)].suma += calificacion
+                            calificacionesPorEquipo[equipo, default: [:]][criterio, default: (0.0, 0)].jueces += 1
+                        }
+                    }
+                }
+
+                // Calculamos los promedios para cada criterio de cada equipo
+                var promediosPorEquipo: [String: [String: Double]] = [:]
+
+                for (equipo, criterios) in calificacionesPorEquipo {
+                    for (criterio, sumaYJueces) in criterios {
+                        // Calculamos el promedio (suma / número de jueces)
+                        let promedio = sumaYJueces.suma / Double(sumaYJueces.jueces)
+                        promediosPorEquipo[criterio, default: [:]][equipo] = promedio
+                    }
+                }
+
+                // Ahora imprimimos el resultado para verificar
+                print("Promedios por equipo y criterio: \(promediosPorEquipo)")
+
+                // Devolvemos la estructura que contiene los promedios de las calificaciones
+                completion(.success(promediosPorEquipo))
+            } else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No se encontraron calificaciones"])))
+            }
+        }
+    }
 
 
 }
