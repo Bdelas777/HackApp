@@ -563,18 +563,15 @@ class HacksViewModel: ObservableObject {
     ///   - hackClave: Clave del hackathon que se va a actualizar.
     ///   - completion: Closure que devuelve un valor booleano indicando si la actualización fue exitosa.
     func updateHack(hack: HackModel, hackClave: String, completion: @escaping (Bool) -> Void) {
-        // Crear el nuevo diccionario con los datos del hack actualizado
         let hackData: [String: Any] = [
             "nombre": hack.nombre,
             "descripcion": hack.descripcion,
-            "clave": hack.clave,  // Esto cambiará la clave del hack
+            "clave": hack.clave,
             "valorRubro": hack.valorRubro,
             "tiempoPitch": hack.tiempoPitch,
             "FechaStart": Timestamp(date: hack.FechaStart),
             "FechaEnd": Timestamp(date: hack.FechaEnd)
         ]
-        
-        // Buscar el documento con la clave antigua (hackClave)
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(false)
@@ -585,24 +582,13 @@ class HacksViewModel: ObservableObject {
                 completion(false)
                 return
             }
-            
-            // Obtener el documentID del hack actual
+
             let documentID = documents[0].documentID
-            
-            // Crear un nuevo documento con la nueva clave
-            self.db.collection("hacks").addDocument(data: hackData) { error in
+            self.db.collection("hacks").document(documentID).updateData(hackData) { error in
                 if let error = error {
                     completion(false)
-                    return
-                }
-                
-                // Eliminar el documento antiguo con la clave antigua
-                self.db.collection("hacks").document(documentID).delete() { deleteError in
-                    if let deleteError = deleteError {
-                        completion(false)
-                    } else {
-                        completion(true)
-                    }
+                } else {
+                    completion(true)
                 }
             }
         }
@@ -751,7 +737,6 @@ class HacksViewModel: ObservableObject {
             }
         }
     }
-    
     
     func saveCalificacionesForAllJudges(for hackClave: String, equipo: String, calificacion: Double, completion: @escaping (Result<Void, Error>) -> Void) {
         // Obtiene el hackathon desde Firestore

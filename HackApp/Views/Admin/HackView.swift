@@ -36,6 +36,8 @@ struct HackView: View {
     @State private var showRubros = false
     @ObservedObject var viewModel = HackViewModel()
     @ObservedObject var viewModel2 = HacksViewModel()
+    @Environment(\.presentationMode) var presentationMode
+
 
     init(hack: HackModel) {
         self.hack = hack
@@ -380,6 +382,8 @@ struct HackView: View {
         viewModel.updateHack(hack: updatedHack) { success in
             if success {
                 alertType = .editHack
+                presentationMode.wrappedValue.dismiss()
+
             } else {
                 alertType = .errorProcess
             }
