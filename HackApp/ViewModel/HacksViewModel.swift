@@ -71,6 +71,7 @@ class HacksViewModel: ObservableObject {
             }
             
             let estaActivo = data["estaActivo"] as? Bool ?? false
+            let estaIniciado = data["estaIniciado"] as? Bool ?? false
             let nombre = data["nombre"] as? String ?? ""
             let tiempoPitch = data["tiempoPitch"] as? Double ?? 0.0
             let descripcion = data["descripcion"] as? String ?? ""
@@ -81,7 +82,7 @@ class HacksViewModel: ObservableObject {
             let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
             let finalScores = data["finalScores"] as? [String: Double] ?? [:]
             let notas = data["notas"] as? [String: [String: String]] ?? [:]
-            let estaIniciado = data["estaIniciado"] as? Bool ?? false
+            
             let hack = HackModel(
                 clave: clave,
                 descripcion: descripcion,
@@ -174,6 +175,7 @@ class HacksViewModel: ObservableObject {
                     }
                     
                     let estaActivo = data["estaActivo"] as? Bool ?? false
+                    let estaIniciado = data["estaIniciado"] as? Bool ?? false
                     let nombre = data["nombre"] as? String ?? ""
                     let tiempoPitch = data["tiempoPitch"] as? Double ?? 0.0
                     let descripcion = data["descripcion"] as? String ?? ""
@@ -184,7 +186,7 @@ class HacksViewModel: ObservableObject {
                     let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
                     let finalScores = data["finalScores"] as? [String: Double] ?? [:]
                     let notas = data["notas"] as? [String: [String: String]] ?? [:]
-                    let estaIniciado = data["estaIniciado"] as? Bool ?? false
+                    
                     return HackModel(
                         clave: clave,
                         descripcion: descripcion,
@@ -200,7 +202,7 @@ class HacksViewModel: ObservableObject {
                         calificaciones: calificaciones,
                         finalScores: finalScores,
                         notas: notas,
-                        estaIniciado: false
+                        estaIniciado: estaIniciado
                     )
                 } ?? self.defaultHacks()
                 self.hacks.sort { $0.FechaEnd > $1.FechaEnd }

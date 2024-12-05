@@ -118,15 +118,14 @@ struct HackView: View {
                         checkForChanges()
                     }
                     .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
-
+                
                 InfoFieldDouble(title: "Tiempo Pitch:", value: $tiempoPitch)
                     .onChange(of: tiempoPitch) { _ in
                         checkForChanges()
                     }
-                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
-
-                // Mostrar botón de guardar solo si hay cambios y el hack no está iniciado
-                if hasChanges && !hack.estaIniciado {
+                    .disabled(hack.estaIniciado)
+        
+                if hasChanges && hack.estaIniciado {
                     Button(action: saveChanges) {
                         Text("Guardar Cambios")
                             .font(.title2)
