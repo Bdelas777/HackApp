@@ -9,7 +9,11 @@ struct HomeAdminView: View {
         listaEquipos: EquipoViewModel(),
         listaJueces: JuezViewModel()
     )
-
+    @StateObject private var listaRubros = RubroViewModel()
+    @StateObject  private var listaEquipos = EquipoViewModel()
+    @StateObject private var listaJueces = JuezViewModel()
+    
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -66,7 +70,7 @@ struct HomeAdminView: View {
             }
             .sheet(isPresented: $isActivated) {
                 // Pasa formData a la vista AddHackView
-                AddHackView(formData: formData, listaHacks: hackData)
+                AddHackView(formData: formData, listaHacks: hackData, listaRubros: listaRubros, listaEquipos: listaEquipos, listaJueces: listaJueces)
             }
         }
         .onAppear {

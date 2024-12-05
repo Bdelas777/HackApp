@@ -132,6 +132,7 @@ struct ResultsView: View {
     }
 
     func fetchScores() {
+        // Obtener los puntajes generales
         viewModel.getScores(for: hack.clave) { result in
             isLoading = false
             switch result {
@@ -145,6 +146,7 @@ struct ResultsView: View {
             }
         }
 
+        // Obtener las calificaciones por criterio
         viewModel.getCalificacionesPorCriterio(for: hack.clave) { result in
             switch result {
             case .success(let calificacionesPorCriterio):
@@ -175,6 +177,7 @@ struct ResultsView: View {
         var currentScore: Double? = nil
         var sameRankTeams: [(team: String, score: Double)] = []
         
+
         let teamsToRank = selectedCriterio != nil ? topTeamsPorCriterio : topTeams
         
         for team in teamsToRank {

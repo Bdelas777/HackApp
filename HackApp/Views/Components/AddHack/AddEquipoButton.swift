@@ -8,13 +8,14 @@ import SwiftUI
 
 struct AddEquipoButton: View {
     @Binding var showingAddEquipoPopover: Bool
-    @ObservedObject var formData: FormDataViewModel
+    @ObservedObject var listaEquipos: EquipoViewModel
     @Binding var equipoNombre: String
     @Binding var showingAlert: Bool
-    @Binding var equipoAEditar: Equipo?
+    @Binding var equipoAEditar: Equipo? // Este binding lo recibimos desde EquiposForm
+    
     var body: some View {
         Button {
-            equipoAEditar = nil
+            equipoAEditar = nil // Resetear el equipo a editar al pulsar "Añadir equipo"
             showingAddEquipoPopover.toggle()
         } label: {
             Label("Añadir equipo", systemImage: "plus")
@@ -40,14 +41,13 @@ struct AddEquipoButton: View {
         if !equipoNombre.isEmpty {
             if let equipoAEditar = equipoAEditar {
                 // Si existe un equipo a editar, lo actualizamos
-                if let index = formData.listaEquipos.equipoList.firstIndex(where: { $0.id == equipoAEditar.id }) {
-                    formData.listaEquipos.equipoList[index].nombre = equipoNombre                }
+                if let index = listaEquipos.equipoList.firstIndex(where: { $0.id == equipoAEditar.id }) {
+                    listaEquipos.equipoList[index].nombre = equipoNombre
+                }
             } else {
-            
+                // Si no existe un equipo a editar, agregamos uno nuevo
                 let nuevoEquipo = Equipo(id: UUID(), nombre: equipoNombre)
-                formData.listaEquipos.equipoList.append(nuevoEquipo)
-               
-                
+                listaEquipos.equipoList.append(nuevoEquipo)
             }
             equipoNombre = ""
             showingAddEquipoPopover = false

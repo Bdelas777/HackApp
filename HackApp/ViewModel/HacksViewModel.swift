@@ -313,10 +313,8 @@ class HacksViewModel: ObservableObject {
                 completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No se encontró el hack para la clave proporcionada."])))
                 return
             }
-
             let existingData = document.data()
             var existingCalificaciones = existingData["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
-
             for (equipo, jueces) in calificaciones {
                 for (juez, rubros) in jueces ?? [:] {
                     if existingCalificaciones[equipo] == nil {
@@ -375,7 +373,6 @@ class HacksViewModel: ObservableObject {
             }
         }
     }
-
 
     /// Obtiene las calificaciones de todos los jueces para un equipo en un hackathon específico.
     /// - Parameters:

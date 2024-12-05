@@ -6,16 +6,7 @@
 //
 
 import SwiftUI
-/// Vista que presenta un botón para añadir un rubro (criterio de calificación).
-/// Al presionar el botón, se muestra un `Popover` para ingresar el nombre y el valor del rubro, y agregarlo a la lista de rubros.
-///
-/// - `showingAddRubroPopover`: Bandera vinculada para mostrar u ocultar el popover de añadir rubro.
-/// - `listaRubros`: El `RubroViewModel` que gestiona la lista de rubros.
-/// - `rubroNombre`: El nombre del rubro a agregar o editar.
-/// - `rubroValor`: El valor del rubro a agregar o editar.
-/// - `showingAlert`: Bandera que indica si se debe mostrar una alerta en caso de error al agregar el rubro.
-///
-/// Esta vista permite agregar o editar rubros. También valida que la suma total de los valores de los rubros no exceda el 100%.
+
 
 struct AddRubroButton: View {
     @Binding var showingAddRubroPopover: Bool

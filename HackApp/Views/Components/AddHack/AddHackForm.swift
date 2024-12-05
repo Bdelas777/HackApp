@@ -18,6 +18,9 @@ struct AddHackForm: View {
     @State private var juezNombre: String = ""
     @State private var juezAEditar: Juez?
     @State private var equipoAEditar: Equipo?
+    @ObservedObject var listaRubros = RubroViewModel()
+    @ObservedObject var listaEquipos = EquipoViewModel()
+    @ObservedObject  var listaJueces = JuezViewModel()
 
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
@@ -67,7 +70,6 @@ struct AddHackForm: View {
         }
     }
 
-    // Información básica
     var basicInfoForm: some View {
         Form {
             Section(header: Text("Nombre del Hackathon")) {
@@ -83,7 +85,6 @@ struct AddHackForm: View {
         }
     }
 
-    // Fechas
     var dateForm: some View {
         Form {
             Section(header: Text("Fecha de inicio del Hackathon")) {
@@ -108,12 +109,12 @@ struct AddHackForm: View {
             Section(header: Text("Rúbrica")) {
                 AddRubroButton(
                     showingAddRubroPopover: $showingAddRubroPopover,
-                    listaRubros: formData.listaRubros,
+                    listaRubros: listaRubros,
                     rubroNombre: $rubroNombre,
                     rubroValor: $rubroValor,
                     showingAlert: $showingAlert
                 )
-                ForEach(formData.listaRubros.rubroList, id: \.id) { rubro in
+                ForEach(listaRubros.rubroList, id: \.id) { rubro in
                     HStack {
                         Text(rubro.nombre)
                         Spacer()
@@ -137,14 +138,14 @@ struct AddHackForm: View {
             Section(header: Text("Equipos")) {
                 AddEquipoButton(
                     showingAddEquipoPopover: $showingAddEquipoPopover,
-                    formData: formData,
+                    listaEquipos: listaEquipos,
                     equipoNombre: $equipoNombre,
                     showingAlert: $showingAlert,
                     equipoAEditar: $equipoAEditar
                 )
                 
                 // Mostrar la lista de equipos
-                ForEach(formData.listaEquipos.equipoList) { equipo in
+                ForEach(listaEquipos.equipoList) { equipo in
                     HStack {
                         Text(equipo.nombre)
                         Button(action: {
@@ -160,20 +161,19 @@ struct AddHackForm: View {
             }
         }
     }
-
-
+    
     var juecesForm: some View {
         Form {
             Section(header: Text("Jueces")) {
                 AddJuezButton(
                     showingAddJuezPopover: $showingAddJuezPopover,
-                    listaJueces: formData.listaJueces,
+                    listaJueces: listaJueces,
                     juezNombre: $juezNombre,
                     showingAlert: $showingAlert,
                     juezAEditar: $juezAEditar
                 )
                 
-                ForEach(formData.listaJueces.juezList) { juez in
+                ForEach(listaJueces.juezList) { juez in
                     HStack {
                         Text(juez.nombre)
                         
@@ -223,7 +223,7 @@ struct AddHackForm: View {
                             Spacer()
                             
                             Button(action: {
-                                eliminarRubro(rubro)  // Llamamos a la función para eliminar el rubro
+                                eliminarRubro(rubro)
                             }) {
                                 Image(systemName: "trash.circle.fill")
                                     .foregroundColor(.red)
@@ -237,8 +237,6 @@ struct AddHackForm: View {
                                            Text(equipo.nombre)
                                            
                                            Spacer()
-                                           
-                                           // Botón de eliminación
                                            Button(action: {
                                                eliminarEquipo(equipo)  // Llamamos a la función para eliminar el equipo
                                            }) {
@@ -248,7 +246,6 @@ struct AddHackForm: View {
                                        }
                                    }
                                }
-
 
                                Section(header: Text("Jueces")) {
                                    ForEach(formData.listaJueces.juezList) { juez in
@@ -400,8 +397,6 @@ struct AddHackForm: View {
                 },
                 estaIniciado: false
             )
-
-            // Guardar el Hack
             listaHacks.addHack(hack: nuevoHack) { result in
                 switch result {
                 case .success:

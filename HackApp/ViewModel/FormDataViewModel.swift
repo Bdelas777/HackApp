@@ -1,9 +1,3 @@
-//
-//  FormDataViewModel.swift
-//  HackApp
-//
-//  Created by Alumno on 04/12/24.
-//
 import Foundation
 import SwiftUI
 
@@ -15,6 +9,7 @@ class FormDataViewModel: ObservableObject {
     @Published var dateEnd: Date = Date()
     @Published var valorRubro: String = ""
     @Published var tiempoPitch: String = ""
+    
     @ObservedObject var listaRubros: RubroViewModel
     @ObservedObject var listaEquipos: EquipoViewModel
     @ObservedObject var listaJueces: JuezViewModel
@@ -25,11 +20,12 @@ class FormDataViewModel: ObservableObject {
         self.listaJueces = listaJueces
     }
     
+    // Reset all data
     func resetForm() {
         self.nombre = ""
         self.clave = ""
         self.descripcion = ""
-        self.date = Date() 
+        self.date = Date()
         self.dateEnd = Date()
         self.valorRubro = ""
         self.tiempoPitch = ""
