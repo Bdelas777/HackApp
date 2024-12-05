@@ -21,23 +21,28 @@ struct AddJuezButton: View {
     @ObservedObject var listaJueces: JuezViewModel
     @Binding var juezNombre: String
     @Binding var showingAlert: Bool
-    @Binding var juezAEditar: Juez?
+    @Binding var juezAEditar: Juez? // Este binding lo recibimos desde JuecesForm
+    
     var body: some View {
         Button {
-            if juezAEditar != nil {
-                juezAEditar = nil
-            }
+            juezAEditar = nil // Resetear el juez a editar al pulsar "Añadir juez"
             showingAddJuezPopover.toggle()
         } label: {
             Label("Añadir juez", systemImage: "plus")
                 .foregroundColor(.blue)
-                .autocorrectionDisabled(true)
         }
         .popover(isPresented: $showingAddJuezPopover) {
             AddJuezPopoverView(
                 juezNombre: $juezNombre,
-                onSave: addJuez
+                onSave: addJuez,
+                onCancel: resetForm
             )
+            .onDisappear {
+                // Restablecer el valor del juez si el popover desaparece
+                if !showingAddJuezPopover {
+                    resetForm()
+                }
+            }
             .alert(isPresented: $showingAlert) {
                 Alert(
                     title: Text("Error"),
@@ -51,18 +56,25 @@ struct AddJuezButton: View {
     private func addJuez() {
         if !juezNombre.isEmpty {
             if let juezAEditar = juezAEditar {
+                // Si estamos editando un juez, actualizamos su nombre
                 if let index = listaJueces.juezList.firstIndex(where: { $0.id == juezAEditar.id }) {
                     listaJueces.juezList[index].nombre = juezNombre
                 }
             } else {
+                // Si no existe un juez a editar, agregamos uno nuevo
                 let nuevoJuez = Juez(id: UUID(), nombre: juezNombre)
                 listaJueces.juezList.append(nuevoJuez)
-                
             }
             juezNombre = ""
             showingAddJuezPopover = false
         } else {
             showingAlert = true
         }
+    }
+    
+    private func resetForm() {
+        juezNombre = ""
+        juezAEditar = nil
+        showingAddJuezPopover = false
     }
 }

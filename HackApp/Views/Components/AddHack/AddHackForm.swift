@@ -16,11 +16,13 @@ struct AddHackForm: View {
     @State private var rubroValor: String = ""
     @State private var equipoNombre: String = ""
     @State private var juezNombre: String = ""
+    @State private var rubroAEditar: Rubro?
     @State private var juezAEditar: Juez?
     @State private var equipoAEditar: Equipo?
     @ObservedObject var listaRubros = RubroViewModel()
     @ObservedObject var listaEquipos = EquipoViewModel()
     @ObservedObject  var listaJueces = JuezViewModel()
+    
 
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
@@ -112,14 +114,17 @@ struct AddHackForm: View {
                     listaRubros: listaRubros,
                     rubroNombre: $rubroNombre,
                     rubroValor: $rubroValor,
-                    showingAlert: $showingAlert
+                    showingAlert: $showingAlert, rubroAEditar: $rubroAEditar
                 )
+
                 ForEach(listaRubros.rubroList, id: \.id) { rubro in
                     HStack {
                         Text(rubro.nombre)
                         Spacer()
                         Text("\(rubro.valor, specifier: "%.0f")%")
+
                         Button(action: {
+                            rubroAEditar = rubro
                             rubroNombre = rubro.nombre
                             rubroValor = "\(rubro.valor)"
                             showingAddRubroPopover.toggle()
@@ -127,11 +132,19 @@ struct AddHackForm: View {
                             Image(systemName: "pencil.circle.fill")
                                 .foregroundColor(.yellow)
                         }
+
+                        Button(action: {
+                            eliminarRubro(rubro)
+                        }) {
+                            Image(systemName: "trash.circle.fill")
+                                .foregroundColor(.red)
+                        }
                     }
                 }
             }
         }
     }
+
 
     var equiposForm: some View {
         Form {
@@ -145,9 +158,10 @@ struct AddHackForm: View {
                 )
                 
                 // Mostrar la lista de equipos
-                ForEach(listaEquipos.equipoList) { equipo in
+                ForEach(listaEquipos.equipoList, id: \.id) { equipo in
                     HStack {
                         Text(equipo.nombre)
+                        Spacer()
                         Button(action: {
                             equipoAEditar = equipo
                             equipoNombre = equipo.nombre
@@ -156,11 +170,19 @@ struct AddHackForm: View {
                             Image(systemName: "pencil.circle.fill")
                                 .foregroundColor(.yellow)
                         }
+
+                        Button(action: {
+                            eliminarEquipo(equipo)
+                        }) {
+                            Image(systemName: "trash.circle.fill")
+                                .foregroundColor(.red)
+                        }
                     }
                 }
             }
         }
     }
+
     
     var juecesForm: some View {
         Form {
@@ -173,25 +195,32 @@ struct AddHackForm: View {
                     juezAEditar: $juezAEditar
                 )
                 
-                ForEach(listaJueces.juezList) { juez in
+                // Mostrar la lista de jueces
+                ForEach(listaJueces.juezList, id: \.id) { juez in
                     HStack {
                         Text(juez.nombre)
-                        
-                        // Botón para editar el juez
+                        Spacer()
                         Button(action: {
-                            // Cuando se toca un juez, se carga su nombre para editar
                             juezAEditar = juez
                             juezNombre = juez.nombre
-                            showingAddJuezPopover.toggle() // Mostrar popover de edición
+                            showingAddJuezPopover.toggle()
                         }) {
                             Image(systemName: "pencil.circle.fill")
                                 .foregroundColor(.yellow)
+                        }
+
+                        Button(action: {
+                            eliminarJuez(juez)
+                        }) {
+                            Image(systemName: "trash.circle.fill")
+                                .foregroundColor(.red)
                         }
                     }
                 }
             }
         }
     }
+
 
     // Revisión final
     var reviewForm: some View {

@@ -6,6 +6,8 @@
 //
 import SwiftUI
 
+import SwiftUI
+
 struct AddEquipoButton: View {
     @Binding var showingAddEquipoPopover: Bool
     @ObservedObject var listaEquipos: EquipoViewModel
@@ -20,13 +22,19 @@ struct AddEquipoButton: View {
         } label: {
             Label("Añadir equipo", systemImage: "plus")
                 .foregroundColor(.blue)
-                .autocorrectionDisabled(true)
         }
         .popover(isPresented: $showingAddEquipoPopover) {
             AddEquipoPopoverView(
                 equipoNombre: $equipoNombre,
-                onSave: addEquipo
+                onSave: addEquipo,  // Pasar el closure de guardar
+                onCancel: resetForm  // Pasar el closure de cancelar
             )
+            .onDisappear {
+                // Restablecer el valor del equipo si el popover desaparece
+                if !showingAddEquipoPopover {
+                    resetForm()
+                }
+            }
             .alert(isPresented: $showingAlert) {
                 Alert(
                     title: Text("Error"),
@@ -54,5 +62,11 @@ struct AddEquipoButton: View {
         } else {
             showingAlert = true
         }
+    }
+    
+    private func resetForm() {
+        equipoNombre = ""
+        equipoAEditar = nil
+        showingAddEquipoPopover = false
     }
 }
