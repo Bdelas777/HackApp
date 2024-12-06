@@ -373,13 +373,13 @@ struct AddHackForm: View {
         }
 
         // Validación de rubros
-        if formData.listaRubros.rubroList.isEmpty {
+        if listaRubros.rubroList.isEmpty {
             alertMessage = "Debe agregar al menos un rubro."
             showingAlert = true
             return
         }
 
-        let totalRubroValue = formData.listaRubros.rubroList.reduce(0) { $0 + $1.valor }
+        let totalRubroValue = listaRubros.rubroList.reduce(0) { $0 + $1.valor }
         if totalRubroValue < 100 {
             alertMessage = "La suma de los valores de los rubros debe ser al menos 100."
             showingAlert = true
@@ -387,14 +387,14 @@ struct AddHackForm: View {
         }
 
         // Validación de equipos
-        if formData.listaEquipos.equipoList.isEmpty {
+        if listaEquipos.equipoList.isEmpty {
             alertMessage = "Debe agregar al menos un equipo."
             showingAlert = true
             return
         }
 
         // Validación de jueces
-        if formData.listaJueces.juezList.isEmpty {
+        if listaJueces.juezList.isEmpty {
             alertMessage = "Debe agregar al menos un juez."
             showingAlert = true
             return
