@@ -175,9 +175,9 @@
 				F8BD956A2BE070A3002E496B /* Model */,
 				F8B0CAC52BC6F22D00CB8497 /* HackApp.swift */,
 				FB8ACC0A2C9E4254002479D5 /* GoogleService-Info.plist */,
+				F8B0CACB2BC6F22F00CB8497 /* Preview Content */,
 				F8C2E1B22BD2D91D00B470F0 /* SupportingElements */,
 				F8B0CAC92BC6F22F00CB8497 /* Assets.xcassets */,
-				F8B0CACB2BC6F22F00CB8497 /* Preview Content */,
 			);
 			path = HackApp;
 			sourceTree = "<group>";

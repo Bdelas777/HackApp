@@ -123,28 +123,34 @@ struct AddHackForm: View {
                         Spacer()
                         Text("\(rubro.valor, specifier: "%.0f")%")
 
-                        Button(action: {
-                            rubroAEditar = rubro
-                            rubroNombre = rubro.nombre
-                            rubroValor = "\(rubro.valor)"
-                            showingAddRubroPopover.toggle()
-                        }) {
-                            Image(systemName: "pencil.circle.fill")
-                                .foregroundColor(.yellow)
-                        }
+                        // Aquí es donde agregamos el menú de opciones con tres puntos
+                        Menu {
+                            Button(action: {
+                                rubroAEditar = rubro
+                                rubroNombre = rubro.nombre
+                                rubroValor = "\(rubro.valor)"
+                                showingAddRubroPopover.toggle()
+                            }) {
+                                Label("Editar", systemImage: "pencil.circle.fill")
+                                    .foregroundColor(.yellow)
+                            }
 
-                        Button(action: {
-                            eliminarRubro(rubro)
-                        }) {
-                            Image(systemName: "trash.circle.fill")
-                                .foregroundColor(.red)
+                            Button(action: {
+                                eliminarRubro(rubro)
+                            }) {
+                                Label("Eliminar", systemImage: "trash.circle.fill")
+                                    .foregroundColor(.red)
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis.circle.fill")
+                                .foregroundColor(.blue)
+                                .imageScale(.large)
                         }
                     }
                 }
             }
         }
     }
-
 
     var equiposForm: some View {
         Form {
@@ -162,20 +168,28 @@ struct AddHackForm: View {
                     HStack {
                         Text(equipo.nombre)
                         Spacer()
-                        Button(action: {
-                            equipoAEditar = equipo
-                            equipoNombre = equipo.nombre
-                            showingAddEquipoPopover.toggle()
-                        }) {
-                            Image(systemName: "pencil.circle.fill")
-                                .foregroundColor(.yellow)
-                        }
+                        
+                        // Aquí agregamos el menú de tres puntos
+                        Menu {
+                            Button(action: {
+                                equipoAEditar = equipo
+                                equipoNombre = equipo.nombre
+                                showingAddEquipoPopover.toggle()
+                            }) {
+                                Label("Editar", systemImage: "pencil.circle.fill")
+                                    .foregroundColor(.yellow)
+                            }
 
-                        Button(action: {
-                            eliminarEquipo(equipo)
-                        }) {
-                            Image(systemName: "trash.circle.fill")
-                                .foregroundColor(.red)
+                            Button(action: {
+                                eliminarEquipo(equipo)
+                            }) {
+                                Label("Eliminar", systemImage: "trash.circle.fill")
+                                    .foregroundColor(.red)
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis.circle.fill")
+                                .foregroundColor(.blue)
+                                .imageScale(.large)
                         }
                     }
                 }
@@ -194,26 +208,34 @@ struct AddHackForm: View {
                     showingAlert: $showingAlert,
                     juezAEditar: $juezAEditar
                 )
-                
+                    
                 // Mostrar la lista de jueces
                 ForEach(listaJueces.juezList, id: \.id) { juez in
                     HStack {
                         Text(juez.nombre)
                         Spacer()
-                        Button(action: {
-                            juezAEditar = juez
-                            juezNombre = juez.nombre
-                            showingAddJuezPopover.toggle()
-                        }) {
-                            Image(systemName: "pencil.circle.fill")
-                                .foregroundColor(.yellow)
-                        }
+                        
+                        // Menú de tres puntos para editar o eliminar
+                        Menu {
+                            Button(action: {
+                                juezAEditar = juez
+                                juezNombre = juez.nombre
+                                showingAddJuezPopover.toggle()
+                            }) {
+                                Label("Editar", systemImage: "pencil.circle.fill")
+                                    .foregroundColor(.yellow)
+                            }
 
-                        Button(action: {
-                            eliminarJuez(juez)
-                        }) {
-                            Image(systemName: "trash.circle.fill")
-                                .foregroundColor(.red)
+                            Button(action: {
+                                eliminarJuez(juez)
+                            }) {
+                                Label("Eliminar", systemImage: "trash.circle.fill")
+                                    .foregroundColor(.red)
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis.circle.fill")
+                                .foregroundColor(.blue)
+                                .imageScale(.large)
                         }
                     }
                 }
@@ -245,51 +267,35 @@ struct AddHackForm: View {
                     Text("Tiempo Pitch: \(formData.tiempoPitch) minutos")
                     Text("Calificación máxima: \(formData.valorRubro) ")
                     
-                    ForEach(formData.listaRubros.rubroList) { rubro in
+                    ForEach(listaRubros.rubroList) { rubro in
                         HStack {
                             Text("\(rubro.nombre): \(rubro.valor, specifier: "%.0f")%")
                             
                             Spacer()
                             
-                            Button(action: {
-                                eliminarRubro(rubro)
-                            }) {
-                                Image(systemName: "trash.circle.fill")
-                                    .foregroundColor(.red)
-                            }
+                           
                         }
                     }
                 }
                 Section(header: Text("Equipos")) {
-                    ForEach(formData.listaEquipos.equipoList) { equipo in
+                    ForEach(listaEquipos.equipoList) { equipo in
                                        HStack {
                                            Text(equipo.nombre)
                                            
                                            Spacer()
-                                           Button(action: {
-                                               eliminarEquipo(equipo)  // Llamamos a la función para eliminar el equipo
-                                           }) {
-                                               Image(systemName: "trash.circle.fill")
-                                                   .foregroundColor(.red)
-                                           }
+                                         
                                        }
                                    }
                                }
 
                                Section(header: Text("Jueces")) {
-                                   ForEach(formData.listaJueces.juezList) { juez in
+                                   ForEach(listaJueces.juezList) { juez in
                                        HStack {
                                            Text(juez.nombre)
                                            
                                            Spacer()
                                            
-                                           // Botón de eliminación
-                                           Button(action: {
-                                               eliminarJuez(juez)  // Llamamos a la función para eliminar el juez
-                                           }) {
-                                               Image(systemName: "trash.circle.fill")
-                                                   .foregroundColor(.red)
-                                           }
+                                          
                                        }
                                    }
                                }
@@ -299,15 +305,15 @@ struct AddHackForm: View {
     }
 
     func eliminarRubro(_ rubro: Rubro) {
-        formData.listaRubros.eliminarRubro(rubro)
+       listaRubros.eliminarRubro(rubro)
     }
 
     func eliminarEquipo(_ equipo: Equipo) {
-        formData.listaEquipos.eliminarEquipo(equipo)
+        listaEquipos.eliminarEquipo(equipo)
     }
 
     func eliminarJuez(_ juez: Juez) {
-        formData.listaJueces.eliminarJuez(juez)
+        listaJueces.eliminarJuez(juez)
     }
 
     private func validateAndSave() {
@@ -394,7 +400,6 @@ struct AddHackForm: View {
             return
         }
 
-        // Verificar si la clave ya existe
         listaHacks.checkIfKeyExists(formData.clave) { exists in
             if exists {
                 DispatchQueue.main.async {
@@ -404,13 +409,12 @@ struct AddHackForm: View {
                 return
             }
 
-            // Crear el nuevo HackModel
             let nuevoHack = HackModel(
                 clave: formData.clave,
                 descripcion: formData.descripcion,
-                equipos: formData.listaEquipos.equipoList.map { $0.nombre },
-                jueces: formData.listaJueces.juezList.map { $0.nombre },
-                rubros: formData.listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
+                equipos: listaEquipos.equipoList.map { $0.nombre },
+                jueces: listaJueces.juezList.map { $0.nombre },
+                rubros: listaRubros.rubroList.reduce(into: [String: Double]()) { $0[$1.nombre] = $1.valor },
                 estaActivo: true,
                 nombre: formData.nombre,
                 tiempoPitch: Double(formData.tiempoPitch) ?? 0.0,
