@@ -39,57 +39,62 @@ struct ResultsView: View {
                     updateTopTeamsPorCriterio() // Actualizamos los equipos por criterio cada vez que se cambia la selección
                 }
 
-                
-                // Mostrar gráfico de barras
-                if let criterio = selectedCriterio {
-                    // Mostrar calificaciones por criterio
-                    if let calificaciones = calificacionesPorCriterio[criterio] {
-                        Chart(calificaciones.keys.sorted(), id: \.self) { equipo in
-                            BarMark(
-                                x: .value("Puntuación", calificaciones[equipo] ?? 0.0),
-                                y: .value("Equipo", equipo)
-                            )
-                            .foregroundStyle(by: .value("Equipo", equipo))
-                            .annotation(position: .top) {
-                                Text(String(format: "%.1f", calificaciones[equipo]!))
-                                    .font(.caption)
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(Color.white)
-                                    .cornerRadius(5)
-                                    .shadow(color: Color.black.opacity(0.1), radius: 1)
-                            }
-                        }
-                        .frame(height: 500)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(12)
-                        .shadow(color: Color.black.opacity(0.1), radius: 8)
-                    }
-                } else {
-                    // Mostrar los resultados generales (finalScores)
-                    Chart(topTeams, id: \.team) { team in
-                        BarMark(
-                            x: .value("Puntuación", team.score),
-                            y: .value("Equipo", team.team)
-                        )
-                        .foregroundStyle(by: .value("Equipo", team.team))
-                        .annotation(position: .top) {
-                            Text(String(format: "%.1f", team.score))
-                                .font(.caption)
-                                .foregroundColor(.black)
-                                .padding(5)
+                // Envolvemos la gráfica en un ScrollView vertical para hacerla desplazable
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack {
+                        // Mostrar gráfico de barras
+                        if let criterio = selectedCriterio {
+                            // Mostrar calificaciones por criterio
+                            if let calificaciones = calificacionesPorCriterio[criterio] {
+                                Chart(calificaciones.keys.sorted(), id: \.self) { equipo in
+                                    BarMark(
+                                        x: .value("Puntuación", calificaciones[equipo] ?? 0.0),
+                                        y: .value("Equipo", equipo)
+                                    )
+                                    .foregroundStyle(by: .value("Equipo", equipo))
+                                    .annotation(position: .top) {
+                                        Text(String(format: "%.1f", calificaciones[equipo]!))
+                                            .font(.caption)
+                                            .foregroundColor(.black)
+                                            .padding(5)
+                                            .background(Color.white)
+                                            .cornerRadius(5)
+                                            .shadow(color: Color.black.opacity(0.1), radius: 1)
+                                    }
+                                }
+                                .frame(height: 500)
+                                .padding()
                                 .background(Color.white)
-                                .cornerRadius(5)
-                                .shadow(color: Color.black.opacity(0.1), radius: 1)
+                                .cornerRadius(12)
+                                .shadow(color: Color.black.opacity(0.1), radius: 8)
+                            }
+                        } else {
+                            // Mostrar los resultados generales (finalScores)
+                            Chart(topTeams, id: \.team) { team in
+                                BarMark(
+                                    x: .value("Puntuación", team.score),
+                                    y: .value("Equipo", team.team)
+                                )
+                                .foregroundStyle(by: .value("Equipo", team.team))
+                                .annotation(position: .top) {
+                                    Text(String(format: "%.1f", team.score))
+                                        .font(.caption)
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .background(Color.white)
+                                        .cornerRadius(5)
+                                        .shadow(color: Color.black.opacity(0.1), radius: 1)
+                                }
+                            }
+                            .frame(height: 500)
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(12)
+                            .shadow(color: Color.black.opacity(0.1), radius: 8)
                         }
                     }
-                    .frame(height: 500)
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .shadow(color: Color.black.opacity(0.1), radius: 8)
                 }
+                .padding()
             }
             
             Text("Mejores Equipos")
@@ -128,7 +133,6 @@ struct ResultsView: View {
             fetchScores()
             updateTopTeamsPorCriterio()
         }
-
     }
 
     func fetchScores() {
@@ -165,7 +169,6 @@ struct ResultsView: View {
             return
         }
 
-        // Aquí creamos el ranking de equipos por el criterio seleccionado
         let calificaciones = calificacionesPorCriterio[criterioSeleccionado] ?? [:]
         topTeamsPorCriterio = calificaciones.map { (team: $0.key, score: $0.value) }
             .sorted(by: { $0.score > $1.score })

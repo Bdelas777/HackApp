@@ -13,92 +13,93 @@ struct GradeView: View {
     @State private var alertMessage = ""
     @State private var showConfirmationAlert = false
     @State private var judgeNotes: String = ""
-    @State private var calificacionesPrevias: [String: Double]? = nil // Calificaciones previas
+    @State private var calificacionesPrevias: [String: Double]? = nil
     @Environment(\.dismiss) var dismiss
     let isActive: Bool
     @ObservedObject var viewModel = HacksViewModel()
+    @State private var isNotesExpanded: Bool = false  // Variable para controlar el Toggle de notas
 
     var body: some View {
-        VStack(spacing: 24) {
-            if !isActive {
-                Text("El hackathon ha cerrado. No se puede calificar.")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.red.opacity(0.8))
-                    .cornerRadius(16)
-                    .shadow(radius: 10)
-                    .padding(.horizontal)
-            } else {
-                // Título principal
-                Text("Calificación de \(selectedEquipo)")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                    .padding(.top)
-
-                Text("Rubros de evaluación")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 12)
-                
-                // Sección de calificaciones previas
-                if alreadyRated {
-                    VStack(spacing: 12) {
-                        HStack {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(.green)
-                                .font(.title)
-                            Text("Ya has calificado este equipo.")
-                                .font(.headline)
-                                .foregroundColor(.green)
-                        }
+        ScrollView {  // Agregar ScrollView para hacer la vista desplazable
+            VStack(spacing: 24) {
+                if !isActive {
+                    Text("El hackathon ha cerrado. No se puede calificar.")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
                         .padding()
-                        .background(Color.green.opacity(0.1))
-                        .cornerRadius(12)
-                        .shadow(radius: 5)
-                        
-                        // Desglose de calificaciones previas
-                                               VStack(alignment: .center, spacing: 16) {
-                                                   Text("Desglose de calificaciones:")
-                                                       .font(.title)
-                                                       .fontWeight(.bold)
-                                                       .foregroundColor(.white)
-                                                       .padding()
-                                                       .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]), startPoint: .top, endPoint: .bottom))
-                                                       .cornerRadius(16)
-                                                       .shadow(radius: 10)
-                                                       .frame(maxWidth: .infinity)
-                                                       .multilineTextAlignment(.center)
-                                                   
-                                                   if let calificacionesPrevias = calificacionesPrevias {
-                                                       VStack(spacing: 12) {
-                                                           ForEach(calificacionesPrevias.keys.sorted(), id: \.self) { rubro in
-                                                               HStack {
-                                                                   Text(rubro)
-                                                                       .font(.body)
-                                                                       .foregroundColor(.gray)
-                                                                       .padding(.leading)
-                                                                   Spacer()
-                                                                   Text("\(String(format: "%.2f", calificacionesPrevias[rubro] ?? 0.0))")
-                                                                       .font(.body)
-                                                                       .foregroundColor(.black)
-                                                                       .padding(.trailing)
-                                                               }
-                                                               .padding(.vertical, 8)
-                                                               .background(RoundedRectangle(cornerRadius: 8).fill(Color(UIColor.systemGray5)))
-                                                           }
-                                                       }
-                                                       .padding(.top, 12)
-                                                   }
-                                               }
-                                               .padding(.horizontal)
-                                           }
-                                           .padding(.vertical, 24)
+                        .background(Color.red.opacity(0.8))
+                        .cornerRadius(16)
+                        .shadow(radius: 10)
+                        .padding(.horizontal)
                 } else {
-                    // Formulario de calificación
-                    ScrollView {
+                    // Título principal
+                    Text("Calificación de \(selectedEquipo)")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
+                        .padding(.top)
+
+                    Text("Rubros de evaluación")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .padding(.bottom, 12)
+                    
+                    // Sección de calificaciones previas
+                    if alreadyRated {
+                        VStack(spacing: 12) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                                    .font(.title)
+                                Text("Ya has calificado este equipo.")
+                                    .font(.headline)
+                                    .foregroundColor(.green)
+                            }
+                            .padding()
+                            .background(Color.green.opacity(0.1))
+                            .cornerRadius(12)
+                            .shadow(radius: 5)
+                            
+                            // Desglose de calificaciones previas
+                            VStack(alignment: .center, spacing: 16) {
+                                Text("Desglose de calificaciones:")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]), startPoint: .top, endPoint: .bottom))
+                                    .cornerRadius(16)
+                                    .shadow(radius: 10)
+                                    .frame(maxWidth: .infinity)
+                                    .multilineTextAlignment(.center)
+                                
+                                if let calificacionesPrevias = calificacionesPrevias {
+                                    VStack(spacing: 12) {
+                                        ForEach(calificacionesPrevias.keys.sorted(), id: \.self) { rubro in
+                                            HStack {
+                                                Text(rubro)
+                                                    .font(.body)
+                                                    .foregroundColor(.gray)
+                                                    .padding(.leading)
+                                                Spacer()
+                                                Text("\(String(format: "%.2f", calificacionesPrevias[rubro] ?? 0.0))")
+                                                    .font(.body)
+                                                    .foregroundColor(.black)
+                                                    .padding(.trailing)
+                                            }
+                                            .padding(.vertical, 8)
+                                            .background(RoundedRectangle(cornerRadius: 8).fill(Color(UIColor.systemGray5)))
+                                        }
+                                    }
+                                    .padding(.top, 12)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .padding(.vertical, 24)
+                    } else {
+                        // Formulario de calificación
                         VStack(spacing: 24) {
                             ForEach(rubros.keys.sorted(), id: \.self) { key in
                                 VStack(spacing: 16) {
@@ -160,38 +161,36 @@ struct GradeView: View {
                             secondaryButton: .cancel()
                         )
                     }
-                }
-
-                // Sección de notas
-                VStack(spacing: 16) {
-                    Text("Notas del Juez")
-                        .font(.headline)
-                        .foregroundColor(.primary)
-
-                    TextEditor(text: $judgeNotes)
-                        .frame(height: 150)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 12).fill(Color(UIColor.systemGray5)))
-                        .shadow(radius: 5)
                     
-                    Button(action: {
-                        saveNotes()
-                    }) {
-                        Text("Guardar Notas")
-                            .font(.headline)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.green.opacity(0.7)]), startPoint: .top, endPoint: .bottom))
-                            .foregroundColor(.white)
-                            .cornerRadius(16)
-                            .shadow(radius: 5)
+                    // Sección de notas
+                    VStack(spacing: 16) {
+                        Toggle(isOn: $isNotesExpanded) {
+                            Text("Notas del Juez")
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                        }
+                        .padding()
+                        .toggleStyle(SwitchToggleStyle(tint: .blue))
+
+                        if isNotesExpanded {
+                            TextEditor(text: $judgeNotes)
+                                .frame(height: 150)
+                                .padding()
+                                .background(RoundedRectangle(cornerRadius: 12).fill(Color(UIColor.systemGray5)))
+                                .shadow(radius: 5)
+                                .onChange(of: judgeNotes) { newValue in
+                                    // Guardar las notas automáticamente al cambiar el texto
+                                    saveNotes()
+                                }
+
+                            // El botón de guardar ya no es necesario, las notas se guardan automáticamente
+                        }
                     }
-                    .padding(.top, 12)
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
+            .padding(.top, 24)
         }
-        .padding(.top, 24)
         .onAppear {
             fetchValorRubro()
             fetchRubros()
@@ -202,7 +201,6 @@ struct GradeView: View {
         }
     }
 
-    // Función para obtener las calificaciones previas del juez
     private func getCalificacionesPrevias() {
         viewModel.getCalificacionesJuez(for: selectedEquipo, judgeName: nombreJuez, hackClave: hackClaveInput) { result in
             switch result {
@@ -214,7 +212,6 @@ struct GradeView: View {
         }
     }
     
-    // Fetch de rubros
     private func fetchRubros() {
         viewModel.fetchRubros(for: hackClaveInput) { result in
             switch result {
@@ -291,7 +288,6 @@ struct GradeView: View {
         }
     }
 }
-
 
 #Preview {
     GradeView(hackClaveInput: "HACK24", selectedEquipo: "Equipo 1", nombreJuez: "NombreJuez", isActive: true)
