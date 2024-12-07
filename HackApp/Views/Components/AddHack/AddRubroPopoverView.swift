@@ -5,7 +5,7 @@ struct AddRubroPopoverView: View {
     @Binding var rubroNombre: String
     @Binding var rubroValor: String
     var onSave: () -> Void
-    var onCancel: () -> Void  // Nueva función de cancelación
+    var onCancel: () -> Void  
 
     var body: some View {
         VStack {
@@ -32,7 +32,7 @@ struct AddRubroPopoverView: View {
                 .padding()
 
                 Button(action: {
-                    onSave()  // Guardamos el rubro
+                    onSave()
                 }) {
                     Text("Guardar")
                 }

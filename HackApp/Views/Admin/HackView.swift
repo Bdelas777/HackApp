@@ -60,7 +60,7 @@ struct HackView: View {
                 statusMessageView
                 toggleSectionView(title: "Equipos", isExpanded: $showEquipos, content: equiposView)
                 toggleSectionView(title: "Jueces", isExpanded: $showJueces, content: juecesView)
-                toggleSectionView(title: "Criterios", isExpanded: $showRubros, content: rubrosView)
+                toggleSectionView(title: "Rubrica", isExpanded: $showRubros, content: rubrosView)
                 ActionButtons(
                     hack: hack,
                     showCloseAlert: { alertType = .closeHack },
@@ -372,7 +372,7 @@ struct HackView: View {
                 return
             }
 
-            // Si la clave no existe, continúa con el proceso de guardado
+            
             let updatedHack = HackModel(
                 clave: clave,
                 descripcion: descripcion,
@@ -471,6 +471,7 @@ struct HackView: View {
         viewModel.updateHackStatus(hackClave: hack.clave, isActive: false) { success in
             if success {
                 alertType = .closeSucess
+                presentationMode.wrappedValue.dismiss()
             } else {
                 alertType = .errorProcess
             }
@@ -492,6 +493,7 @@ struct HackView: View {
         viewModel.updateHackStart(hackClave: hack.clave) { success in
             if success {
                 alertType = .startSucess
+                presentationMode.wrappedValue.dismiss()
             } else {
                 alertType = .errorProcess
             }

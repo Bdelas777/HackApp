@@ -17,11 +17,9 @@ struct GradeView: View {
     @Environment(\.dismiss) var dismiss
     let isActive: Bool
     @ObservedObject var viewModel = HacksViewModel()
-    @State private var isNotesExpanded: Bool = false  // Variable para controlar el Toggle de notas
-
+    
     var body: some View {
-        ScrollView {  // Agregar ScrollView para hacer la vista desplazable
-            VStack(spacing: 24) {
+        ScrollView {              VStack(spacing: 24) {
                 if !isActive {
                     Text("El hackathon ha cerrado. No se puede calificar.")
                         .font(.title2)
@@ -33,7 +31,6 @@ struct GradeView: View {
                         .shadow(radius: 10)
                         .padding(.horizontal)
                 } else {
-                    // Título principal
                     Text("Calificación de \(selectedEquipo)")
                         .font(.largeTitle)
                         .fontWeight(.bold)
@@ -137,54 +134,50 @@ struct GradeView: View {
                         .padding(.bottom, 24)
                     }
                     
-                    // Botón de calificación
-                    Button(action: {
-                        showConfirmationAlert = true
-                    }) {
-                        Text("Calificar")
-                            .font(.headline)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]), startPoint: .top, endPoint: .bottom))
-                            .foregroundColor(.white)
-                            .cornerRadius(16)
-                            .shadow(radius: 5)
+                    if !alreadyRated {
+                        Button(action: {
+                            showConfirmationAlert = true
+                        }) {
+                            Text("Calificar")
+                                .font(.headline)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]), startPoint: .top, endPoint: .bottom))
+                                .foregroundColor(.white)
+                                .cornerRadius(16)
+                                .shadow(radius: 5)
+                        }
+                        .padding(.top, 24)
+                        .alert(isPresented: $showConfirmationAlert) {
+                            Alert(
+                                title: Text("Confirmación"),
+                                message: Text("¿Estás seguro de que quieres calificar? Después de esto no podrás modificar tu calificación."),
+                                primaryButton: .destructive(Text("Confirmar")) {
+                                    submitCalificaciones()
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
                     }
-                    .padding(.top, 24)
-                    .alert(isPresented: $showConfirmationAlert) {
-                        Alert(
-                            title: Text("Confirmación"),
-                            message: Text("¿Estás seguro de que quieres calificar? Después de esto no podrás modificar tu calificación."),
-                            primaryButton: .destructive(Text("Confirmar")) {
-                                submitCalificaciones()
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    }
-                    
                     // Sección de notas
                     VStack(spacing: 16) {
-                        Toggle(isOn: $isNotesExpanded) {
+                     
                             Text("Notas del Juez")
                                 .font(.headline)
                                 .foregroundColor(.primary)
-                        }
-                        .padding()
-                        .toggleStyle(SwitchToggleStyle(tint: .blue))
-
-                        if isNotesExpanded {
+                        
+                       
                             TextEditor(text: $judgeNotes)
                                 .frame(height: 150)
                                 .padding()
                                 .background(RoundedRectangle(cornerRadius: 12).fill(Color(UIColor.systemGray5)))
                                 .shadow(radius: 5)
                                 .onChange(of: judgeNotes) { newValue in
-                                    // Guardar las notas automáticamente al cambiar el texto
                                     saveNotes()
                                 }
 
-                            // El botón de guardar ya no es necesario, las notas se guardan automáticamente
-                        }
+                          
+                        
                     }
                     .padding(.horizontal)
                 }

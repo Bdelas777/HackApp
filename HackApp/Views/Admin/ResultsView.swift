@@ -104,7 +104,6 @@ struct ResultsView: View {
             
             ScrollView {
                 VStack(spacing: 10) {
-                    // Si se selecciona un criterio, mostramos los mejores equipos basados en ese criterio
                     ForEach(getRankedTeams(), id: \.team) { rankedGroup in
                         NavigationLink(destination: TeamView(hack: hack, equipoSeleccionado: rankedGroup.team)) {
                             HStack {
@@ -117,7 +116,7 @@ struct ResultsView: View {
                                     .foregroundColor(.accentColor)
                             }
                             .padding()
-                            .background(getBackgroundColor(for: rankedGroup.rank))
+                            .background(getBackgroundColor(for: rankedGroup.team, rank: rankedGroup.rank))
                             .cornerRadius(12)
                             .shadow(color: Color.black.opacity(0.1), radius: 4)
                         }
@@ -163,7 +162,6 @@ struct ResultsView: View {
         }
     }
 
-    
     private func updateTopTeamsPorCriterio() {
         guard let criterioSeleccionado = selectedCriterio, !criterioSeleccionado.isEmpty else {
             return
@@ -180,7 +178,6 @@ struct ResultsView: View {
         var currentScore: Double? = nil
         var sameRankTeams: [(team: String, score: Double)] = []
         
-
         let teamsToRank = selectedCriterio != nil ? topTeamsPorCriterio : topTeams
         
         for team in teamsToRank {
@@ -201,17 +198,21 @@ struct ResultsView: View {
         }
     }
 
+    private func getBackgroundColor(for team: String, rank: Int) -> Color {
+        guard let score = scores[team], score > 0 else {
+            // Si no tiene calificación (score <= 0), ponemos color gris
+            return Color.gray.opacity(0.3)
+        }
 
-    private func getBackgroundColor(for rank: Int) -> Color {
         switch rank {
         case 1:
-            return Color.yellow.opacity(0.6)
+            return Color.yellow.opacity(0.6)   // Oro para el primer lugar
         case 2:
-            return Color.gray.opacity(0.6)
+            return Color.gray.opacity(0.6)      // Plata para el segundo lugar
         case 3:
-            return Color.brown.opacity(0.6)
+            return Color.brown.opacity(0.6)     // Bronce para el tercer lugar
         default:
-            return Color(.systemGray6)
+            return Color.green.opacity(0.3)    // Verde para otros equipos calificados
         }
     }
 }

@@ -1,11 +1,6 @@
-//
-//  TimerView.swift
-//  HackApp
-//
-//  Created by Alumno on 11/10/24.
-//
 import SwiftUI
-import Charts
+import AVFoundation
+
 /// Vista que muestra un temporizador interactivo con un círculo de progreso.
 /// Permite iniciar, detener y visualizar el tiempo restante en formato `mm:ss`.
 ///
@@ -16,6 +11,7 @@ struct TimerView: View {
     @State private var timeRemaining: TimeInterval
     @State private var isRunning: Bool = false
     @State private var timer: Timer?
+    @State private var player: AVAudioPlayer?
 
     init(tiempoPitch: Int) {
         self._timeRemaining = State(initialValue: TimeInterval(tiempoPitch * 60))
@@ -52,6 +48,12 @@ struct TimerView: View {
                     .font(.largeTitle)
             }
         }
+        .onAppear {
+            // Intentamos cargar el tiempo guardado al iniciar la vista
+            if let savedTime = UserDefaults.standard.value(forKey: "savedTimeRemaining") as? TimeInterval {
+                self.timeRemaining = savedTime
+            }
+        }
     }
 
     private func formattedTime() -> String {
@@ -66,6 +68,7 @@ struct TimerView: View {
                 timeRemaining -= 1
             } else {
                 stopTimer()
+                playSound()  // Reproducir sonido cuando el temporizador llega a cero
             }
         }
     }
@@ -73,6 +76,24 @@ struct TimerView: View {
     private func stopTimer() {
         isRunning = false
         timer?.invalidate()
-        timeRemaining = 0
+        timer = nil
+        
+        // Guardar el tiempo restante cuando se detiene el temporizador
+        UserDefaults.standard.set(timeRemaining, forKey: "savedTimeRemaining")
+    }
+
+    private func playSound() {
+        // Asegúrate de tener un archivo de sonido adecuado en tu proyecto
+        guard let url = Bundle.main.url(forResource: "bell", withExtension: "mp3") else {
+            print("No se pudo encontrar el archivo de sonido.")
+            return
+        }
+        
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        } catch {
+            print("No se pudo reproducir el sonido: \(error.localizedDescription)")
+        }
     }
 }
