@@ -575,10 +575,8 @@ class HacksViewModel: ObservableObject {
                 return
             }
 
-            // Obtener el documentID del primer hack encontrado
             let documentID = documents[0].documentID
 
-            // Los datos que deseas actualizar
             let hackData: [String: Any] = [
                 "nombre": hack.nombre,
                 "descripcion": hack.descripcion,
@@ -588,8 +586,6 @@ class HacksViewModel: ObservableObject {
                 "FechaStart": Timestamp(date: hack.FechaStart),
                 "FechaEnd": Timestamp(date: hack.FechaEnd)
             ]
-
-            // Actualizar el documento con los nuevos datos
             self.db.collection("hacks").document(documentID).updateData(hackData) { error in
                 if let error = error {
                     print("Error al actualizar el hack: \(error)")
@@ -627,7 +623,12 @@ class HacksViewModel: ObservableObject {
         }
     }
     
-    
+    /// Esta función busca un documento en la colección "hacks" donde el campo `clave` coincida con el valor proporcionado.
+    /// Si el hackathon es encontrado, se actualiza el campo `estaIniciado` a `true`.
+    ///
+    /// - Parameters:
+    ///   - hackClave: La clave del hackathon que se desea actualizar.
+    ///   - completion: Un cierre (`closure`) que se llama al finalizar la operación. El valor `true` indica que la operación fue exitosa, mientras que `false` indica que ocurrió un error.
     func updateHackStart(hackClave: String, completion: @escaping (Bool) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -671,7 +672,11 @@ class HacksViewModel: ObservableObject {
         }
     }
 
-   
+    /// Guarda las notas de un juez para un equipo en un hackathon específico.
+    ///
+    /// Esta función busca un hackathon en la base de datos utilizando la clave del hackathon (`hackClave`),
+    /// y luego guarda las notas proporcionadas para un juez y un equipo específicos. Las notas se almacenan
+    /// en la colección de "notas", con la estructura: `notas.[juez].[equipo]`.
     func saveNotes(for hackClave: String, judgeName: String, teamName: String, notes: String, completion: @escaping (Result<Void, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -697,6 +702,12 @@ class HacksViewModel: ObservableObject {
         }
     }
     
+    /// Recupera las notas de un juez para un equipo específico en un hackathon.
+    ///
+    /// Esta función busca las notas de un juez para un equipo dentro de un hackathon, utilizando la clave
+    /// del hackathon (`hackClave`), el nombre del juez (`judgeName`) y el nombre del equipo (`teamName`).
+    /// Si las notas existen, se devuelven a través de un cierre. Si no se encuentran notas, se devuelve
+    /// una cadena vacía.
     func getNotas(for hackClave: String, judgeName: String, teamName: String, completion: @escaping (Result<String, Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -724,8 +735,13 @@ class HacksViewModel: ObservableObject {
         }
     }
     
+    /// Guarda las calificaciones de todos los jueces para un equipo en un hackathon.
+    ///
+    /// Esta función guarda una calificación proporcionada para un equipo en todos los jueces del hackathon,
+    /// asociando la calificación a cada rubro de evaluación. Si el hackathon y los jueces existen en la base
+    /// de datos, se actualizan las calificaciones para el equipo. Si ocurre algún error, se maneja de forma adecuada.
+    ///
     func saveCalificacionesForAllJudges(for hackClave: String, equipo: String, calificacion: Double, completion: @escaping (Result<Void, Error>) -> Void) {
-        // Obtiene el hackathon desde Firestore
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
@@ -739,26 +755,20 @@ class HacksViewModel: ObservableObject {
 
             let existingData = document.data()
             var existingCalificaciones = existingData["calificaciones"] as? [String: [String: [String: Double]]] ?? [:]
-
-            // Recorremos todos los jueces
             if let jueces = existingData["jueces"] as? [String] {
                 for juez in jueces {
-                    // Si no existe el equipo o el juez en las calificaciones, lo inicializamos
                     if existingCalificaciones[equipo] == nil {
                         existingCalificaciones[equipo] = [:]
                     }
                     if existingCalificaciones[equipo]?[juez] == nil {
                         existingCalificaciones[equipo]?[juez] = [:]
                     }
-
-                    // Asignamos la calificación para todos los rubros
                     for rubro in existingData["rubros"] as? [String: Double] ?? [:] {
                         existingCalificaciones[equipo]?[juez]?[rubro.key] = calificacion
                     }
                 }
             }
 
-            // Actualizamos las calificaciones en Firestore
             let documentRef = document.reference
             documentRef.updateData(["calificaciones": existingCalificaciones]) { error in
                 if let error = error {
@@ -772,6 +782,14 @@ class HacksViewModel: ObservableObject {
 
     @Published var calificacionesGenerales: [String: Double] = [:] // Para almacenar las calificaciones generales
        @Published var calificacionesPorCriterio: [String: [String: Double]] = [:] // Para almacenar calificaciones por criterio
+    
+    /// Obtiene las puntuaciones finales de todos los equipos para un hackathon.
+    ///
+    /// Esta función consulta la base de datos de Firestore para obtener las puntuaciones finales de todos los equipos
+    /// en un hackathon específico. Utiliza la clave del hackathon (`hackClave`) para encontrar el hackathon y obtener
+    /// las puntuaciones finales almacenadas en el campo `finalScores` dentro del documento del hackathon. Si no se encuentran
+    /// puntuaciones o si ocurre un error durante la consulta, se maneja el caso adecuadamente.
+    ///
         func getScores(for hackClave: String, completion: @escaping (Result<[String: Double], Error>) -> Void) {
             db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -795,6 +813,13 @@ class HacksViewModel: ObservableObject {
             }
         }
         
+    /// Obtiene las calificaciones de los equipos por criterio de evaluación.
+    ///
+    /// Esta función consulta la base de datos de Firestore para obtener las calificaciones de los equipos en un hackathon
+    /// específico, organizadas por criterio de evaluación. Utiliza la clave del hackathon (`hackClave`) para identificar el
+    /// hackathon y extraer las calificaciones de los equipos. Las calificaciones se agrupan por criterio y equipo, y se calcula
+    /// el promedio por equipo para cada criterio. Si no se encuentran calificaciones o si ocurre un error, se maneja adecuadamente.
+    ///
     func getCalificacionesPorCriterio(for hackClave: String, completion: @escaping (Result<[String: [String: Double]], Error>) -> Void) {
         db.collection("hacks").whereField("clave", isEqualTo: hackClave).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -810,34 +835,23 @@ class HacksViewModel: ObservableObject {
             let data = document.data()
 
             if let calificaciones = data["calificaciones"] as? [String: [String: [String: Double]]], !calificaciones.isEmpty {
-                var calificacionesPorEquipo: [String: [String: (suma: Double, jueces: Int)]] = [:]  // Para almacenar la suma y el número de jueces por criterio
-
-                // Reorganizamos las calificaciones para cada equipo y criterio
+                var calificacionesPorEquipo: [String: [String: (suma: Double, jueces: Int)]] = [:]
                 for (equipo, jueces) in calificaciones {
                     for (_, criterios) in jueces {
                         for (criterio, calificacion) in criterios {
-                            // Si ya existe el criterio para el equipo, sumamos la calificación y aumentamos el número de jueces
                             calificacionesPorEquipo[equipo, default: [:]][criterio, default: (0.0, 0)].suma += calificacion
                             calificacionesPorEquipo[equipo, default: [:]][criterio, default: (0.0, 0)].jueces += 1
                         }
                     }
                 }
-
-                // Calculamos los promedios para cada criterio de cada equipo
                 var promediosPorEquipo: [String: [String: Double]] = [:]
 
                 for (equipo, criterios) in calificacionesPorEquipo {
                     for (criterio, sumaYJueces) in criterios {
-                        // Calculamos el promedio (suma / número de jueces)
                         let promedio = sumaYJueces.suma / Double(sumaYJueces.jueces)
                         promediosPorEquipo[criterio, default: [:]][equipo] = promedio
                     }
                 }
-
-                // Ahora imprimimos el resultado para verificar
-                print("Promedios por equipo y criterio: \(promediosPorEquipo)")
-
-                // Devolvemos la estructura que contiene los promedios de las calificaciones
                 completion(.success(promediosPorEquipo))
             } else {
                 completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No se encontraron calificaciones"])))

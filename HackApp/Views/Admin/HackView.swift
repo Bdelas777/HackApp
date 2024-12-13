@@ -1,5 +1,6 @@
 import SwiftUI
 
+// Enum para los tipos de alertas que pueden ser mostradas en la vista.
 enum AlertType: Identifiable {
     case closeHack, invalidDate, editHack, errorProcess, closeSucess, startSucess, confirmNoShow(equipo: String), passwordError
 
@@ -16,7 +17,7 @@ enum AlertType: Identifiable {
         }
     }
 }
-
+// Vista principal que maneja la interfaz de detalles de un hackathon.
 struct HackView: View {
     var hack: HackModel
     @State private var hasChanges = false
@@ -97,31 +98,31 @@ struct HackView: View {
                     .onChange(of: nombre) { _ in
                         checkForChanges()
                     }
-                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+                    .disabled(hack.estaIniciado)
 
                 InfoField(title: "Descripción:", text: $descripcion)
                     .onChange(of: descripcion) { _ in
                         checkForChanges()
                     }
-                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+                    .disabled(hack.estaIniciado)
 
                 DateField(title: "Fecha Inicio:", date: $fechaStart)
                     .onChange(of: fechaStart) { _ in
                         checkForChanges()
                     }
-                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+                    .disabled(hack.estaIniciado)
 
                 DateField(title: "Fecha Fin:", date: $fechaEnd)
                     .onChange(of: fechaEnd) { _ in
                         checkForChanges()
                     }
-                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+                    .disabled(hack.estaIniciado)
 
                 InfoFieldInt(title: "Valor Rubro:", value: $valorRubro)
                     .onChange(of: valorRubro) { _ in
                         checkForChanges()
                     }
-                    .disabled(hack.estaIniciado)  // Deshabilitar si el hack está iniciado
+                    .disabled(hack.estaIniciado)
                 
                 InfoFieldDouble(title: "Tiempo Pitch:", value: $tiempoPitch)
                     .onChange(of: tiempoPitch) { _ in
@@ -229,7 +230,6 @@ struct HackView: View {
                     .background(Color.white)
                     .cornerRadius(10)
                     .padding(.bottom, 8)
-                    // Llamamos al método para verificar las calificaciones cuando la vista aparece
                     .onAppear {
                         checkEquipoCalificado(for: equipo)
                     }
@@ -266,7 +266,7 @@ struct HackView: View {
                 Text("No hay jueces asignados.")
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity, alignment: .leading) // Alineación y ocupación del espacio
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .padding(.leading, 20)
@@ -368,7 +368,7 @@ struct HackView: View {
 
         checkIfKeyExists(clave) { exists in
             if exists  && clave != hack.clave {
-                alertType = .passwordError  // Cambia al tipo de alerta que prefieras
+                alertType = .passwordError
                 return
             }
 

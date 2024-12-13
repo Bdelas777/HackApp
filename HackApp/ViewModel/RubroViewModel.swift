@@ -1,12 +1,7 @@
-//
-//  RubroViewModel.swift
-//  HackApp
-//
-//  Created by Sebastian Presno Alvarado on 30/05/24.
-//
 
 import Foundation
 
+/// ViewModel encargado de gestionar la lista de rubros en el sistema.
 
 class RubroViewModel: ObservableObject {
     @Published var rubroList: [Rubro] = []

@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftData
-
+// Modelo antoguo de presno
 @Model
 class Hack: Hashable, ObservableObject, Identifiable, Codable {
     var id: UUID

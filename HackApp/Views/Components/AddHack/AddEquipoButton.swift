@@ -1,23 +1,27 @@
-//
-//  AddEquipoButton.swift
-//  HackApp
-//
-//  Created by Alumno on 13/09/24.
-//
-import SwiftUI
 
 import SwiftUI
+/// Vista que muestra un botón para agregar un nuevo equipo o editar un equipo existente.
+///
+/// Este componente proporciona un botón para agregar un nuevo equipo al listado de equipos. Si un equipo está seleccionado para editar, este se actualiza con el nuevo nombre. También muestra un popover con un formulario para ingresar el nombre del equipo.
+///
+/// - Parameters:
+///   - showingAddEquipoPopover: Un `Binding` que controla si el popover de agregar equipo está visible o no.
+///   - listaEquipos: Un `ObservedObject` que contiene la lista de equipos, y permite agregar, editar o eliminar equipos.
+///   - equipoNombre: Un `Binding` que contiene el nombre del equipo que se está agregando o editando.
+///   - showingAlert: Un `Binding` para controlar la visibilidad de una alerta de error.
+///   - equipoAEditar: Un `Binding` que puede contener un equipo seleccionado para editar.
+
 
 struct AddEquipoButton: View {
     @Binding var showingAddEquipoPopover: Bool
     @ObservedObject var listaEquipos: EquipoViewModel
     @Binding var equipoNombre: String
     @Binding var showingAlert: Bool
-    @Binding var equipoAEditar: Equipo? // Este binding lo recibimos desde EquiposForm
+    @Binding var equipoAEditar: Equipo?
     
     var body: some View {
         Button {
-            equipoAEditar = nil // Resetear el equipo a editar al pulsar "Añadir equipo"
+            equipoAEditar = nil
             showingAddEquipoPopover.toggle()
         } label: {
             Label("Añadir equipo", systemImage: "plus")
@@ -26,11 +30,10 @@ struct AddEquipoButton: View {
         .popover(isPresented: $showingAddEquipoPopover) {
             AddEquipoPopoverView(
                 equipoNombre: $equipoNombre,
-                onSave: addEquipo,  // Pasar el closure de guardar
-                onCancel: resetForm  // Pasar el closure de cancelar
+                onSave: addEquipo,
+                onCancel: resetForm
             )
             .onDisappear {
-                // Restablecer el valor del equipo si el popover desaparece
                 if !showingAddEquipoPopover {
                     resetForm()
                 }
@@ -48,12 +51,10 @@ struct AddEquipoButton: View {
     private func addEquipo() {
         if !equipoNombre.isEmpty {
             if let equipoAEditar = equipoAEditar {
-                // Si existe un equipo a editar, lo actualizamos
                 if let index = listaEquipos.equipoList.firstIndex(where: { $0.id == equipoAEditar.id }) {
                     listaEquipos.equipoList[index].nombre = equipoNombre
                 }
             } else {
-                // Si no existe un equipo a editar, agregamos uno nuevo
                 let nuevoEquipo = Equipo(id: UUID(), nombre: equipoNombre)
                 listaEquipos.equipoList.append(nuevoEquipo)
             }

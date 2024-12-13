@@ -1,12 +1,9 @@
-//
-//  SimplePage.swift
-//  HackApp
-//
-//  Created by Alumno on 09/10/24.
-//
+
 import SwiftUI
 
-
+/// `TeamView` es una vista que muestra las calificaciones de un equipo en un hackathon específico.
+/// La vista se encarga de mostrar las calificaciones de los rubros evaluados por los jueces y calcular la puntuación final.
+struct TeamView: View {
 struct TeamView: View {
     var hack: HackModel
     @ObservedObject var viewModel: TeamViewModel

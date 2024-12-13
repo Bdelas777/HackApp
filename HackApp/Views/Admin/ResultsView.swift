@@ -1,6 +1,6 @@
 import SwiftUI
 import Charts
-
+/// Vista que muestra los resultados del hackathon, con la opción de ver puntuaciones generales o por criterio.
 struct ResultsView: View {
     var hack: HackModel
     @ObservedObject var viewModel = HacksViewModel()
@@ -149,7 +149,6 @@ struct ResultsView: View {
             }
         }
 
-        // Obtener las calificaciones por criterio
         viewModel.getCalificacionesPorCriterio(for: hack.clave) { result in
             switch result {
             case .success(let calificacionesPorCriterio):
@@ -200,19 +199,18 @@ struct ResultsView: View {
 
     private func getBackgroundColor(for team: String, rank: Int) -> Color {
         guard let score = scores[team], score > 0 else {
-            // Si no tiene calificación (score <= 0), ponemos color gris
             return Color.gray.opacity(0.3)
         }
 
         switch rank {
         case 1:
-            return Color.yellow.opacity(0.6)   // Oro para el primer lugar
+            return Color.yellow.opacity(0.6)
         case 2:
-            return Color.gray.opacity(0.6)      // Plata para el segundo lugar
+            return Color.gray.opacity(0.6)
         case 3:
-            return Color.brown.opacity(0.6)     // Bronce para el tercer lugar
+            return Color.brown.opacity(0.6)
         default:
-            return Color.green.opacity(0.3)    // Verde para otros equipos calificados
+            return Color.green.opacity(0.3)
         }
     }
 }

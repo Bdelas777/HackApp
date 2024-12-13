@@ -1,10 +1,3 @@
-//
-//  JuezViewModel.swift
-//  HackApp
-//
-//  Created by Alumno on 18/09/24.
-//
-
 
 import Foundation
 import Combine

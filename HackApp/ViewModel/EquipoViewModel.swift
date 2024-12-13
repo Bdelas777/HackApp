@@ -1,6 +1,7 @@
 
 import Foundation
-
+/// `EquipoViewModel` es un modelo de vista para gestionar la lista de equipos en un hackathon.
+/// Permite agregar y eliminar equipos en la lista `equipoList`.
 class EquipoViewModel: ObservableObject {
     @Published var equipoList: [Equipo] = []
     

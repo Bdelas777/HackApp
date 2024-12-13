@@ -1,12 +1,10 @@
-//
-//  TeamViewModel.swift
-//  HackApp
-//
-//  Created by Alumno on 07/11/24.
-//
+
 import SwiftUI
 import Foundation
 
+/// `TeamViewModel` es un modelo de vista que gestiona los datos de calificación y rubros de un equipo en un hackathon.
+/// Esta clase se encarga de recuperar las calificaciones de los jueces, calcular las puntuaciones finales y gestionar los rubros de evaluación.
+class TeamViewModel: ObservableObject {
 class TeamViewModel: ObservableObject {
     @Published var calificaciones: [String: [String: Double]] = [:]
     @Published var rubros: [String: Double] = [:]

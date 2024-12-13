@@ -1,5 +1,14 @@
 import SwiftUI
+/// Vista que permite calificar a un equipo en un hackathon.
+///
+/// Este componente permite a los jueces calificar un equipo según varios rubros de evaluación. Los rubros y sus valores son dinámicos, obtenidos desde una fuente externa, y el juez puede calificar cada rubro con un puntaje entre 1 y un valor máximo predefinido. Si el juez ya ha calificado al equipo, se muestra un resumen de las calificaciones previas. Además, el juez puede agregar notas adicionales. Al finalizar la calificación, el juez puede confirmar y enviar las calificaciones y notas.
 
+/// - Parameters:
+///   - hackClaveInput: Clave del hackathon utilizada para acceder a los rubros y calificaciones.
+///   - selectedEquipo: El nombre del equipo seleccionado para calificar.
+///   - nombreJuez: El nombre del juez que está calificando al equipo.
+///   - isActive: Indica si el hackathon está activo o cerrado, lo que afecta si se puede calificar.
+///   - viewModel: Un `ObservedObject` que maneja la lógica de negocio, incluyendo la obtención y almacenamiento de calificaciones y notas.
 struct GradeView: View {
     let hackClaveInput: String
     let selectedEquipo: String

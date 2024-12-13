@@ -1,6 +1,8 @@
 import Foundation
 import SwiftUI
 
+/// `FormDataViewModel` es un modelo de vista que gestiona los datos del formulario para crear o editar un hackathon.
+/// Esta clase contiene los valores de los campos que se ingresan en el formulario, como el nombre, la clave, la descripción, las fechas, el valor de los rubros, el tiempo del pitch, y las listas de equipos, jueces y rubros.
 class FormDataViewModel: ObservableObject {
     @Published var nombre: String = ""
     @Published var clave: String = ""

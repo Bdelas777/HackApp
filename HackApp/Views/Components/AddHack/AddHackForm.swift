@@ -1,6 +1,16 @@
 
 import SwiftUI
-
+/// Vista que permite agregar un nuevo hackathon mediante un formulario dividido en varios pasos.
+///
+/// Este formulario está dividido en varias secciones que incluyen la información básica del hackathon, las fechas, la rúbrica, los equipos, los jueces y una revisión final antes de guardar. Se utilizan varios popovers para agregar rubros, equipos y jueces, y validaciones detalladas aseguran que todos los datos sean correctos antes de guardar el hackathon.
+///
+/// - Parameters:
+///   - formData: Un `ObservedObject` que contiene los datos del formulario, como el nombre, la clave, la descripción, etc.
+///   - listaHacks: Un `ObservedObject` que gestiona la lista de hackathons.
+///   - showingAlert: Un `Binding` que controla si se debe mostrar una alerta.
+///   - listaRubros: Un `ObservedObject` que gestiona la lista de rubros para calificar el hackathon.
+///   - listaEquipos: Un `ObservedObject` que gestiona la lista de equipos del hackathon.
+///   - listaJueces: Un `ObservedObject` que gestiona la lista de jueces del hackathon.
 struct AddHackForm: View {
     @ObservedObject var formData: FormDataViewModel
     @ObservedObject var listaHacks: HacksViewModel
@@ -122,8 +132,6 @@ struct AddHackForm: View {
                         Text(rubro.nombre)
                         Spacer()
                         Text("\(rubro.valor, specifier: "%.0f")%")
-
-                        // Aquí es donde agregamos el menú de opciones con tres puntos
                         Menu {
                             Button(action: {
                                 rubroAEditar = rubro
@@ -162,14 +170,10 @@ struct AddHackForm: View {
                     showingAlert: $showingAlert,
                     equipoAEditar: $equipoAEditar
                 )
-                
-                // Mostrar la lista de equipos
                 ForEach(listaEquipos.equipoList, id: \.id) { equipo in
                     HStack {
                         Text(equipo.nombre)
                         Spacer()
-                        
-                        // Aquí agregamos el menú de tres puntos
                         Menu {
                             Button(action: {
                                 equipoAEditar = equipo
@@ -208,14 +212,10 @@ struct AddHackForm: View {
                     showingAlert: $showingAlert,
                     juezAEditar: $juezAEditar
                 )
-                    
-                // Mostrar la lista de jueces
                 ForEach(listaJueces.juezList, id: \.id) { juez in
                     HStack {
                         Text(juez.nombre)
                         Spacer()
-                        
-                        // Menú de tres puntos para editar o eliminar
                         Menu {
                             Button(action: {
                                 juezAEditar = juez
@@ -242,9 +242,7 @@ struct AddHackForm: View {
             }
         }
     }
-
-
-    // Revisión final
+    
     var reviewForm: some View {
         VStack {
             Text("Revisa la información antes de guardar")
@@ -272,8 +270,6 @@ struct AddHackForm: View {
                             Text("\(rubro.nombre): \(rubro.valor, specifier: "%.0f")%")
                             
                             Spacer()
-                            
-                           
                         }
                     }
                 }
@@ -281,13 +277,10 @@ struct AddHackForm: View {
                     ForEach(listaEquipos.equipoList) { equipo in
                                        HStack {
                                            Text(equipo.nombre)
-                                           
                                            Spacer()
-                                         
                                        }
                                    }
                                }
-
                                Section(header: Text("Jueces")) {
                                    ForEach(listaJueces.juezList) { juez in
                                        HStack {
@@ -317,7 +310,6 @@ struct AddHackForm: View {
     }
 
     private func validateAndSave() {
-        // Validaciones de los campos básicos
         if formData.nombre.isEmpty {
             alertMessage = "El nombre es obligatorio."
             showingAlert = true
@@ -371,8 +363,6 @@ struct AddHackForm: View {
             showingAlert = true
             return
         }
-
-        // Validación de rubros
         if listaRubros.rubroList.isEmpty {
             alertMessage = "Debe agregar al menos un rubro."
             showingAlert = true
@@ -386,14 +376,11 @@ struct AddHackForm: View {
             return
         }
 
-        // Validación de equipos
         if listaEquipos.equipoList.isEmpty {
             alertMessage = "Debe agregar al menos un equipo."
             showingAlert = true
             return
         }
-
-        // Validación de jueces
         if listaJueces.juezList.isEmpty {
             alertMessage = "Debe agregar al menos un juez."
             showingAlert = true

@@ -25,7 +25,7 @@ struct TimerView: View {
                     .opacity(0.3)
                     .padding()
                 Circle()
-                    .trim(from: 0, to: CGFloat(1 - (timeRemaining / (60 * 9)))) // Ajusta el tiempo total según sea necesario
+                    .trim(from: 0, to: CGFloat(1 - (timeRemaining / (60 * 9))))
                     .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
                     .rotationEffect(.degrees(-90))
                     .padding()
@@ -49,7 +49,6 @@ struct TimerView: View {
             }
         }
         .onAppear {
-            // Intentamos cargar el tiempo guardado al iniciar la vista
             if let savedTime = UserDefaults.standard.value(forKey: "savedTimeRemaining") as? TimeInterval {
                 self.timeRemaining = savedTime
             }
@@ -68,7 +67,7 @@ struct TimerView: View {
                 timeRemaining -= 1
             } else {
                 stopTimer()
-                playSound()  // Reproducir sonido cuando el temporizador llega a cero
+                playSound()
             }
         }
     }
@@ -77,13 +76,10 @@ struct TimerView: View {
         isRunning = false
         timer?.invalidate()
         timer = nil
-        
-        // Guardar el tiempo restante cuando se detiene el temporizador
         UserDefaults.standard.set(timeRemaining, forKey: "savedTimeRemaining")
     }
 
     private func playSound() {
-        // Asegúrate de tener un archivo de sonido adecuado en tu proyecto
         guard let url = Bundle.main.url(forResource: "bell", withExtension: "mp3") else {
             print("No se pudo encontrar el archivo de sonido.")
             return

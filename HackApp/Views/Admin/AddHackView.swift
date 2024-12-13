@@ -1,6 +1,9 @@
 
 import SwiftUI
-
+/// `AddHackView` es una vista de SwiftUI que permite a los usuarios agregar un nuevo hackathon mediante un formulario.
+/// Utiliza múltiples modelos de vista para gestionar los datos del formulario, como equipos, jueces, rubros y hacks existentes.
+/// Esta vista también maneja la lógica para mostrar alertas cuando ocurren eventos importantes o errores.
+struct AddHackView: View {
 struct AddHackView: View {
     @ObservedObject var formData: FormDataViewModel
     @State private var showingAlert = false
@@ -30,8 +33,8 @@ struct AddHackView: View {
     AddHackView(
         formData: FormDataViewModel(listaRubros: RubroViewModel(), listaEquipos: EquipoViewModel(), listaJueces: JuezViewModel()),
         listaHacks: HacksViewModel(),
-        listaRubros: RubroViewModel(),  // Pasa la instancia de RubroViewModel
-        listaEquipos: EquipoViewModel(),  // Pasa la instancia de EquipoViewModel
-        listaJueces: JuezViewModel()  // Pasa la instancia de JuezViewModel
+        listaRubros: RubroViewModel(),
+        listaEquipos: EquipoViewModel(),
+        listaJueces: JuezViewModel()
     )
 }

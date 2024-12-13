@@ -1,9 +1,3 @@
-//
-//  JudgeHomeView.swift
-//  HackApp
-//
-//  Created by Sebastian Presno Alvarado on 01/05/24.
-//
 import SwiftUI
 /// Vista para que los jueces puedan seleccionar un hackathon y luego elegir su nombre de juez para calificar.
 ///
@@ -26,7 +20,6 @@ struct JudgeHomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                // Título principal con un subtítulo informativo
                 Text("Hackathon: \(nombreHack)")
                     .font(.largeTitle)
                     .fontWeight(.bold)
@@ -36,18 +29,13 @@ struct JudgeHomeView: View {
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .padding(.bottom)
-
-                // Lista de equipos
                 if let equipos = selectedEquipos, !equipos.isEmpty {
                     List {
                         ForEach(equipos, id: \.self) { equipo in
                             HStack {
-                                // Icono indicando si el equipo está calificado
                                 Image(systemName: equiposEvaluados[equipo] == true ? "checkmark.circle.fill" : "circle")
                                     .foregroundColor(equiposEvaluados[equipo] == true ? .green : .gray)
                                     .padding(.leading)
-
-                                // Nombre del equipo
                                 Text(equipo)
                                     .font(.title2)
                                     .fontWeight(.medium)
@@ -55,8 +43,6 @@ struct JudgeHomeView: View {
                                     .foregroundColor(.primary)
 
                                 Spacer()
-
-                                // Etiqueta si ya está calificado
                                 if equiposEvaluados[equipo] == true {
                                     Text("Calificado")
                                         .font(.footnote)
@@ -76,15 +62,14 @@ struct JudgeHomeView: View {
                                         nombreJuez: selectedJudge,
                                         isActive: isActive)
                                 ) {
-                                    EmptyView() // EmptyView acts as a trigger for NavigationLink without altering layout
+                                    EmptyView()
                                 }
-                                .opacity(0) // Hide the NavigationLink visual element
+                                .opacity(0)
                             )
                         }
                     }
                     .listStyle(PlainListStyle())
                 } else {
-                    // Si no hay equipos disponibles
                     Text("No hay equipos disponibles para evaluar.")
                         .font(.title3)
                         .foregroundColor(.gray)
@@ -112,9 +97,9 @@ struct JudgeHomeView: View {
         viewModel.fetchHackAndEvaluateTeams(for: hackClaveInput, selectedJudge: selectedJudge) { result in
             switch result {
             case .success(let equiposEvaluadosDict):
-                self.equiposEvaluados = equiposEvaluadosDict // Actualizamos el diccionario con los resultados
+                self.equiposEvaluados = equiposEvaluadosDict
             case .failure:
-                self.equiposEvaluados = [:]  // En caso de error, reseteamos el estado
+                self.equiposEvaluados = [:]
             }
         }
     }

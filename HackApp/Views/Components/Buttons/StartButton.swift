@@ -1,9 +1,3 @@
-//
-//  StartButton.swift
-//  HackApp
-//
-//  Created by Alumno on 05/09/24.
-//
 import SwiftUI
 /// Vista personalizada que crea un botón de inicio con un icono, título y una vista de destino.
 /// Al presionar el botón, navega hacia la vista `destination` proporcionada.

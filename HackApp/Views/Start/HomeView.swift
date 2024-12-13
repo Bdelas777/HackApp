@@ -1,9 +1,3 @@
-//
-//  HomeView.swift
-//  HackApp
-//
-//  Created by Alumno on 06/09/24.
-//
 
 import SwiftUI
 /// Vista principal que presenta la pantalla de inicio con botones para navegar a diferentes vistas,
