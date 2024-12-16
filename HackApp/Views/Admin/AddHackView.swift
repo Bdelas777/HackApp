@@ -4,7 +4,6 @@ import SwiftUI
 /// Utiliza múltiples modelos de vista para gestionar los datos del formulario, como equipos, jueces, rubros y hacks existentes.
 /// Esta vista también maneja la lógica para mostrar alertas cuando ocurren eventos importantes o errores.
 struct AddHackView: View {
-struct AddHackView: View {
     @ObservedObject var formData: FormDataViewModel
     @State private var showingAlert = false
     @State private var alertMessage: String = ""

@@ -3,7 +3,6 @@ import SwiftUI
 /// `HomeAdminView` es la vista principal del administrador donde se visualizan los hackathons disponibles.
 /// Permite al administrador acceder a los hackathons existentes, ver sus detalles, y crear nuevos hackathons.
 struct HomeAdminView: View {
-struct HomeAdminView: View {
     @EnvironmentObject var hackData: HacksViewModel
     @State var isActivated: Bool = false
     @StateObject private var formData = FormDataViewModel(
